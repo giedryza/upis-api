@@ -5,11 +5,11 @@
   "author": "Giedrius Blažulionis <giedrius.bla@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": "12.18.4"
+    "node": "12.18.4",
+    "npm": "6.14.6"
   },
   "scripts": {
     "build": "yarn clean && tsc",
-    "heroku-prebuild": "yarn install --production=false",
     "start": "yarn build && yarn start:prod",
     "start:dev": "nodemon",
     "start:prod": "cross-env NODE_PATH=build NODE_ENV=production node -r ./dotenv.js ./build/index.js",
