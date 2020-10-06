@@ -7,10 +7,6 @@
   "engines": {
     "node": "12.18.4"
   },
-  "workspaces": [
-    "api"
-  ],
-  "private": true,
   "scripts": {
     "build": "yarn clean && tsc",
     "start": "yarn build && yarn start:prod",
