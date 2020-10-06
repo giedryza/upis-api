@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "yarn clean && tsc",
+    "heroku-prebuild": "yarn install --production=false",
     "start": "yarn build && yarn start:prod",
     "start:dev": "nodemon",
     "start:prod": "cross-env NODE_PATH=build NODE_ENV=production node -r ./dotenv.js ./build/index.js",
