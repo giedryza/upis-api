@@ -4,7 +4,7 @@ app.get('/', (req, res) => {
   res.status(200).send({});
 });
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT;
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
