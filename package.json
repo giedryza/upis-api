@@ -5,7 +5,8 @@
   "author": "Giedrius Blažulionis <giedrius.bla@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": "12.18.4"
+    "node": "12.18.*",
+    "yarn": "1.16.*"
   },
   "scripts": {
     "build": "yarn clean && tsc",
