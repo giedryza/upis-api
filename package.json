@@ -9,10 +9,11 @@
     "yarn": "1.16.*"
   },
   "scripts": {
-    "build": "yarn clean && tsc",
+    "build": "yarn clean && yarn compile",
     "start": "yarn build && yarn start:prod",
     "start:dev": "nodemon",
     "start:prod": "cross-env NODE_PATH=build NODE_ENV=production node ./build/index.js",
+    "compile": "tsc",
     "clean": "rimraf ./build",
     "lint": "eslint \"src/**\"",
     "lint:fix": "yarn lint --fix",
