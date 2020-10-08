@@ -1,12 +1,3 @@
-import { app } from 'core/app';
+import { server } from 'core/server.core';
 
-app.get('/', (req, res) => {
-  res.status(200).send({});
-});
-
-const port = process.env.PORT;
-
-app.listen(port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`server started on port ${port}`);
-});
+server.start();
