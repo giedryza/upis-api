@@ -31,6 +31,8 @@ class Db {
       console.info(`mongoose connected to ${name} on ${host}`);
     } catch (err) {
       console.error(err);
+
+      throw new Error(err.message);
     }
   };
 }
