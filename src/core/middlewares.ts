@@ -1,5 +1,5 @@
 import { Express } from 'express';
-import { Common } from 'middlewares/common.middleware';
+import { Common } from 'middlewares/common';
 
 class Middlewares {
   static common = (app: Express) => {

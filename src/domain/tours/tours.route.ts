@@ -6,7 +6,7 @@ import { controller } from 'domain/tours/tours.controller';
 class Route implements BaseRoute {
   router = Router({ caseSensitive: true });
 
-  name = 'tours';
+  path = '/tours';
 
   constructor() {
     this.init();

@@ -1,4 +1,4 @@
-import { app } from 'core/app.core';
+import { app } from 'core/app';
 
 class Server {
   private port = process.env.PORT;
@@ -20,8 +20,7 @@ class Server {
 
   private listen = () => {
     app.listen(this.port, () => {
-      // eslint-disable-next-line no-console
-      console.log(`server started on port ${this.port}`);
+      console.info(`server started on port ${this.port}`);
     });
   };
 }
