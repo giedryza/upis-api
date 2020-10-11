@@ -28,7 +28,7 @@ class Db {
 
       const { name, host } = connection.connections[0];
 
-      console.info(`mongoose connected to ${name} on ${host}`);
+      console.info(`connected to ${name} database on ${host}`);
     } catch (err) {
       console.error(err);
 
