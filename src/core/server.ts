@@ -1,21 +1,16 @@
 import { app } from 'core/app';
+import { db } from 'core/db';
+import { environment } from 'core/environment';
 
 class Server {
   private port = process.env.PORT;
 
-  private requiredVariables = ['PORT'];
-
   start = async () => {
-    this.verifyEnvVariables();
-    this.listen();
-  };
+    await environment.verify();
 
-  private verifyEnvVariables = () => {
-    this.requiredVariables.forEach((variable) => {
-      if (!process.env[variable]) {
-        throw new Error(`Missing Environment Variable: ${variable}`);
-      }
-    });
+    await db.connect();
+
+    this.listen();
   };
 
   private listen = () => {
