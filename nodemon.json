@@ -1,7 +1,8 @@
 {
   "watch": ["src"],
+  "ignore": ["*.test.ts"],
   "ext": "ts",
-  "exec": "cross-env NODE_PATH=src ts-node -r ./dotenv.js ./src/index.ts",
+  "exec": "cross-env NODE_PATH=src ts-node --files -r ./dotenv.js ./src/index.ts",
   "env": {
     "NODE_ENV": "development"
   }
