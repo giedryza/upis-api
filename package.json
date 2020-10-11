@@ -17,7 +17,7 @@
     "clean": "rimraf ./build",
     "lint": "eslint \"src/**\"",
     "lint:fix": "yarn lint --fix",
-    "prettier:fix": "prettier --write \"src/**\""
+    "style:fix": "prettier --write \"src/**\""
   },
   "dependencies": {
     "cors": "^2.8.5",
