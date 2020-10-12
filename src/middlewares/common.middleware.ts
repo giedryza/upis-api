@@ -1,7 +1,7 @@
 import { json, Express } from 'express';
 import cors from 'cors';
 
-class Common {
+class CommonMiddleware {
   constructor(private app: Express) {}
 
   useJson = () => {
@@ -13,4 +13,4 @@ class Common {
   };
 }
 
-export { Common };
+export { CommonMiddleware };

@@ -1,12 +1,19 @@
 import { Express } from 'express';
-import { Common } from 'middlewares/common';
+import { CommonMiddleware } from 'middlewares/common.middleware';
+import { ErrorMiddleware } from 'middlewares/error.middleware';
 
 class Middlewares {
   static common = (app: Express) => {
-    const middleware = new Common(app);
+    const middleware = new CommonMiddleware(app);
 
     middleware.useJson();
     middleware.useCors();
+  };
+
+  static error = (app: Express) => {
+    const middleware = new ErrorMiddleware(app);
+
+    middleware.useError();
   };
 }
 
