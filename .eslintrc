@@ -32,6 +32,7 @@
     "import/prefer-default-export": "off",
     "no-empty-function": ["error", { "allow": ["constructors"] }],
     "class-methods-use-this": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "func-names": ["error", "never"]
   }
 }

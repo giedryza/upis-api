@@ -8,6 +8,7 @@ class Middlewares {
 
     middleware.useJson();
     middleware.useCors();
+    middleware.useCookieSession();
   };
 
   static error = (app: Express) => {
