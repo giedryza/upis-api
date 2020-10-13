@@ -7,6 +7,10 @@ class Environment {
     'DB_CONNECTION_STRING',
     'DB_USERNAME',
     'DB_PASSWORD',
+    'JWT_SECRET',
+    'JWT_EXPIRES_IN_DAYS',
+    'COOKIE_KEY_1',
+    'COOKIE_KEY_2',
   ];
 
   verify = () =>
