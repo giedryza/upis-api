@@ -1,4 +1,5 @@
-import { Payload } from 'domain/users/users.types';
+import { Request } from 'express';
+import { Payload } from 'domain/auth/auth.types';
 import { BadRequestError } from 'errors/bad-request.error';
 import { Jwt } from 'utils/jwt';
 import { User } from 'domain/users/users.model';
@@ -52,5 +53,10 @@ export class Service {
       user: { _id: user.id, email: user.email },
       token,
     };
+  };
+
+  static resetSession = (req: Request) => {
+    req.session = null;
+    req.currentUser = undefined;
   };
 }
