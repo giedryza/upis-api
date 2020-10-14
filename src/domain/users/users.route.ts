@@ -14,6 +14,8 @@ class Route implements BaseRoute {
 
   init = () => {
     this.router.route('/signup').post(controller.signup);
+    this.router.route('/signin').post(controller.signin);
+    this.router.route('/signout').post(controller.signout);
   };
 }
 
