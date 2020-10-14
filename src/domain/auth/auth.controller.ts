@@ -29,7 +29,8 @@ class Controller {
   };
 
   signout = async (req: Request, res: Response) => {
-    Service.resetSession(req);
+    req.session = null;
+    req.currentUser = undefined;
 
     res.status(StatusCode.Ok).send({});
   };

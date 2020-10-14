@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Jwt } from 'utils/jwt';
 import { UnauthorizedError } from 'errors/unauthorized.error';
-import { Service } from 'domain/auth/auth.service';
 
 export class Middleware {
   static currentUser = async (
@@ -18,7 +17,8 @@ export class Middleware {
 
       req.currentUser = user;
     } catch (err) {
-      Service.resetSession(req);
+      req.session = null;
+      req.currentUser = undefined;
     }
 
     next();
