@@ -13,12 +13,15 @@ class CommonMiddleware {
     this.app.use(cors());
   };
 
+  useTrustProxy = () => {
+    this.app.set('trust proxy', true);
+  };
+
   useCookieSession = () => {
     this.app.use(
       cookieSession({
-        signed: true,
+        signed: false,
         secure: true,
-        keys: [process.env.COOKIE_KEY_1, process.env.COOKIE_KEY_2],
       })
     );
   };
