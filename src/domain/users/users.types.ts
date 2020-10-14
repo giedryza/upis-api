@@ -4,3 +4,10 @@ export declare namespace Body {
     password: string;
   }
 }
+
+export declare namespace Payload {
+  interface signup {
+    email: string;
+    password: string;
+  }
+}
