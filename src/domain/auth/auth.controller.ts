@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { StatusCode } from 'constants/status-code';
-import { Body } from 'domain/users/users.types';
-import { Service } from 'domain/users/users.service';
+import { Body } from 'domain/auth/auth.types';
+import { Service } from 'domain/auth/auth.service';
 
 class Controller {
   signup = async (req: Request<{}, {}, Body.signup>, res: Response) => {
@@ -29,7 +29,7 @@ class Controller {
   };
 
   signout = async (req: Request, res: Response) => {
-    req.session = null;
+    Service.resetSession(req);
 
     res.status(StatusCode.Ok).send({});
   };

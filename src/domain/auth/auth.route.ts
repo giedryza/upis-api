@@ -1,12 +1,12 @@
 import { Router } from 'express';
 
 import { BaseRoute } from 'types/base/route.base';
-import { controller } from 'domain/users/users.controller';
+import { controller } from 'domain/auth/auth.controller';
 
 class Route implements BaseRoute {
   router = Router({ caseSensitive: true });
 
-  path = '/users';
+  path = '/auth';
 
   constructor() {
     this.init();

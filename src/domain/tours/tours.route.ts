@@ -1,7 +1,7 @@
 import { Router } from 'express';
-
 import { BaseRoute } from 'types/base/route.base';
 import { controller } from 'domain/tours/tours.controller';
+import { Middleware as AuthMiddleware } from 'domain/auth/auth.middleware';
 
 class Route implements BaseRoute {
   router = Router({ caseSensitive: true });
@@ -13,7 +13,10 @@ class Route implements BaseRoute {
   }
 
   init = () => {
-    this.router.route('/').get(controller.getTours).post(controller.addTour);
+    this.router
+      .route('/')
+      .get(AuthMiddleware.protect, controller.getTours)
+      .post(controller.addTour);
   };
 }
 

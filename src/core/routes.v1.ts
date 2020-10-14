@@ -1,21 +1,21 @@
 import { Router } from 'express';
 import { route as toursRoute } from 'domain/tours/tours.route';
-import { route as usersRoute } from 'domain/users/users.route';
+import { route as authRoute } from 'domain/auth/auth.route';
 
 class Routes {
   router = Router({ caseSensitive: true });
 
   constructor() {
     this.tours();
-    this.users();
+    this.auth();
   }
 
   tours = () => {
     this.router.use(toursRoute.path, toursRoute.router);
   };
 
-  users = () => {
-    this.router.use(usersRoute.path, usersRoute.router);
+  auth = () => {
+    this.router.use(authRoute.path, authRoute.router);
   };
 }
 
