@@ -6,6 +6,7 @@ class Middlewares {
   static common = (app: Express) => {
     const middleware = new CommonMiddleware(app);
 
+    middleware.useTrustProxy();
     middleware.useJson();
     middleware.useCors();
     middleware.useCookieSession();
