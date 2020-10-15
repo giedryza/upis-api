@@ -6,7 +6,7 @@ export class Jwt {
 
   static expiresIn = +process.env.JWT_EXPIRES_IN_DAYS * 24 * 60 * 60;
 
-  static token = (payload: object) =>
+  static token = (payload: CurrentUser) =>
     jwt.sign(payload, Jwt.secret, {
       expiresIn: Jwt.expiresIn,
     });
