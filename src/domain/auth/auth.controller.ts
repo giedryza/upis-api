@@ -5,13 +5,9 @@ import { Service } from 'domain/auth/auth.service';
 
 class Controller {
   signup = async (req: Request<{}, {}, Body.signup>, res: Response) => {
-    const { email, password, confirmPassword } = req.body;
+    const { email, password } = req.body;
 
-    const { user, token } = await Service.signup({
-      email,
-      password,
-      confirmPassword,
-    });
+    const { user, token } = await Service.signup({ email, password });
 
     req.session = { token };
 

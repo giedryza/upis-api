@@ -5,15 +5,7 @@ import { User } from 'domain/users/users.model';
 import { Password } from 'utils/password';
 
 export class Service {
-  static signup = async ({
-    email,
-    password,
-    confirmPassword,
-  }: Payload.signup) => {
-    if (password !== confirmPassword) {
-      throw new BadRequestError("Passwords didn't match. Try again.");
-    }
-
+  static signup = async ({ email, password }: Payload.signup) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
