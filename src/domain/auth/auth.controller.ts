@@ -30,7 +30,7 @@ class Controller {
 
   signout = async (req: Request, res: Response) => {
     req.session = null;
-    req.currentUser = undefined;
+    req.user = undefined;
 
     res.status(StatusCode.Ok).send({});
   };

@@ -10,7 +10,7 @@ class Middlewares {
     middleware.useJson();
     middleware.useCors();
     middleware.useCookieSession();
-    middleware.useCurrentUser();
+    middleware.useUser();
   };
 
   static error = (app: Express) => {

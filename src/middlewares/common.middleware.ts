@@ -30,8 +30,8 @@ class CommonMiddleware {
     );
   };
 
-  useCurrentUser = () => {
-    this.app.use(AuthMiddleware.currentUser);
+  useUser = () => {
+    this.app.use(AuthMiddleware.user);
   };
 }
 

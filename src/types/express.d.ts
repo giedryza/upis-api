@@ -1,4 +1,4 @@
-export interface CurrentUser {
+export interface User {
   id: string;
   email: string;
 }
@@ -6,7 +6,7 @@ export interface CurrentUser {
 declare global {
   namespace Express {
     interface Request {
-      currentUser?: CurrentUser;
+      user?: User;
     }
   }
 }
