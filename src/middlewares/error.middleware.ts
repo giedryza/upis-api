@@ -3,8 +3,6 @@ import { BaseError } from 'types/base/error.base';
 import { StatusCode } from 'constants/status-code';
 
 class ErrorMiddleware {
-  private genericMessage = 'Something went wrong';
-
   constructor(private app: Express) {}
 
   useError = () => {
@@ -25,7 +23,7 @@ class ErrorMiddleware {
     console.error(err);
 
     res.status(StatusCode.InternalServerError).send({
-      data: [{ message: err.message || this.genericMessage }],
+      data: [{ message: err.message || 'Something went wrong' }],
     });
   };
 }

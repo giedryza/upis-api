@@ -1,6 +1,6 @@
 export type NodeEnv = 'production' | 'development';
 
-export interface CustomProcessEnv {
+export interface Env {
   NODE_ENV: NodeEnv;
   PORT: string;
   DB_CONNECTION_STRING: string;
@@ -14,6 +14,6 @@ export interface CustomProcessEnv {
 
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends CustomProcessEnv {}
+    interface ProcessEnv extends Env {}
   }
 }

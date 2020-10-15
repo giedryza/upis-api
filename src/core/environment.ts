@@ -1,7 +1,7 @@
-import { CustomProcessEnv } from 'types/env';
+import { Env } from 'types/env';
 
 class Environment {
-  private requiredVariables: (keyof CustomProcessEnv)[] = [
+  private requiredVariables: (keyof Env)[] = [
     'NODE_ENV',
     'PORT',
     'DB_CONNECTION_STRING',
