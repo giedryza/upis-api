@@ -1,19 +1,21 @@
 import { Router } from 'express';
-import { BaseRoute } from 'types/base/route.base';
+import { BaseRoute } from 'utils/route.base';
 import { controller } from 'domain/tours/tours.controller';
 import { Middleware as AuthMiddleware } from 'domain/auth/auth.middleware';
 import { Role } from 'domain/users/users.types';
 
-class Route implements BaseRoute {
+class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
 
   path = '/tours';
 
   constructor() {
+    super();
+
     this.init();
   }
 
-  init = () => {
+  protected init = () => {
     this.router
       .route('/')
       .get(

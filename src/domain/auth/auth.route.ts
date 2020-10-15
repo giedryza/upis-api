@@ -1,19 +1,21 @@
 import { Router } from 'express';
-import { BaseRoute } from 'types/base/route.base';
+import { BaseRoute } from 'utils/route.base';
 import { controller } from 'domain/auth/auth.controller';
 import { Validator } from 'utils/validator';
 import { Validation } from 'domain/auth/auth.validation';
 
-class Route implements BaseRoute {
+class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
 
   path = '/auth';
 
   constructor() {
+    super();
+
     this.init();
   }
 
-  init = () => {
+  protected init = () => {
     this.router
       .route('/signup')
       .post(Validation.signup, Validator.validate, controller.signup);
