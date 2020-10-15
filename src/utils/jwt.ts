@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { User } from 'types/express';
+import { User } from 'domain/users/users.types';
 
 export class Jwt {
   private static secret = process.env.JWT_SECRET;

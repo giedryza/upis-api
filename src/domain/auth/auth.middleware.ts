@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Jwt } from 'utils/jwt';
 import { UnauthorizedError } from 'errors/unauthorized.error';
+import { Role } from 'domain/users/users.types';
 
 export class Middleware {
   static user = async (req: Request, _res: Response, next: NextFunction) => {
@@ -26,5 +27,15 @@ export class Middleware {
     }
 
     next();
+  };
+
+  static restrict = (roles: Role[]) => {
+    return (req: Request, _res: Response, next: NextFunction) => {
+      if (!req.user || !roles.includes(req.user.role)) {
+        throw new UnauthorizedError();
+      }
+
+      next();
+    };
   };
 }
