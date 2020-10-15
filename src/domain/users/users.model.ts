@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { Password } from 'utils/password';
 import { UnauthorizedError } from 'errors/unauthorized.error';
+import { Role } from 'domain/users/users.types';
 
 interface Payload {
   email: string;
@@ -10,6 +11,7 @@ interface Payload {
 interface Document extends mongoose.Document {
   email: string;
   password: string;
+  role: Role;
   createdAt: Date;
 }
 
@@ -30,6 +32,11 @@ const schema = new mongoose.Schema(
       required: true,
       minlength: 8,
       select: false,
+    },
+    role: {
+      type: String,
+      enum: Object.values(Role),
+      default: Role.User,
     },
     createdAt: {
       type: Date,

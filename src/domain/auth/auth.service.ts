@@ -23,7 +23,11 @@ export class Service {
     const user = User.construct({ email, password });
     await user.save();
 
-    const token = Jwt.token({ id: user.id, email: user.email });
+    const token = Jwt.token({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
 
     return {
       user: { _id: user.id, email: user.email },
@@ -46,7 +50,11 @@ export class Service {
       );
     }
 
-    const token = Jwt.token({ id: user.id, email: user.email });
+    const token = Jwt.token({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
 
     return {
       user: { _id: user.id, email: user.email },
