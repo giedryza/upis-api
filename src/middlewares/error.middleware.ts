@@ -1,5 +1,5 @@
 import { Express, Request, Response, NextFunction } from 'express';
-import { BaseError } from 'types/base/error.base';
+import { BaseError } from 'errors/_base.error';
 import { StatusCode } from 'constants/status-code';
 
 class ErrorMiddleware {

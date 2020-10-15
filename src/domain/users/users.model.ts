@@ -1,23 +1,7 @@
 import mongoose from 'mongoose';
 import { Password } from 'utils/password';
 import { UnauthorizedError } from 'errors/unauthorized.error';
-import { Role } from 'domain/users/users.types';
-
-interface Payload {
-  email: string;
-  password: string;
-}
-
-interface Document extends mongoose.Document {
-  email: string;
-  password: string;
-  role: Role;
-  createdAt: Date;
-}
-
-interface Model extends mongoose.Model<Document> {
-  construct(payload: Payload): Document;
-}
+import { Payload, Document, Model, Role } from 'domain/users/users.types';
 
 const schema = new mongoose.Schema(
   {
