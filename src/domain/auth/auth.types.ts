@@ -14,7 +14,6 @@ export declare namespace Payload {
   interface signup {
     email: string;
     password: string;
-    confirmPassword: string;
   }
   interface signin {
     email: string;
