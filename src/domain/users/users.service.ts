@@ -1,4 +1,4 @@
-import { Payload } from 'domain/auth/auth.types';
+import { Payload } from 'domain/users/users.types';
 import { BadRequestError } from 'errors/bad-request.error';
 import { Jwt } from 'utils/jwt';
 import { User } from 'domain/users/users.model';

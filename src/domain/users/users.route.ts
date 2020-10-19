@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { BaseRoute } from 'utils/route.base';
-import { controller } from 'domain/auth/auth.controller';
+import { controller } from 'domain/users/users.controller';
 import { Validator } from 'utils/validator';
-import { Validation } from 'domain/auth/auth.validation';
+import { Validation } from 'domain/users/users.validation';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
 
-  path = '/auth';
+  path = '/users';
 
   constructor() {
     super();

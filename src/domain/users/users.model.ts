@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
 import { Password } from 'utils/password';
 import { UnauthorizedError } from 'errors/unauthorized.error';
-import { Payload, Document, Model, Role } from 'domain/users/users.types';
+import {
+  ConstructorPayload,
+  Document,
+  Model,
+  Role,
+} from 'domain/users/users.types';
 
 const schema = new mongoose.Schema(
   {
@@ -48,7 +53,7 @@ schema.pre('save', async function (next) {
 });
 
 // eslint-disable-next-line no-use-before-define
-schema.statics.construct = (payload: Payload) => new User(payload);
+schema.statics.construct = (payload: ConstructorPayload) => new User(payload);
 
 const User = mongoose.model<Document, Model>('User', schema);
 

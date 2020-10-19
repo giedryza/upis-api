@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { BaseRoute } from 'utils/route.base';
 import { controller } from 'domain/tours/tours.controller';
-import { Middleware as AuthMiddleware } from 'domain/auth/auth.middleware';
+import { Middleware as UsersMiddleware } from 'domain/users/users.middleware';
 import { Role } from 'domain/users/users.types';
 
 class Route extends BaseRoute {
@@ -19,8 +19,8 @@ class Route extends BaseRoute {
     this.router
       .route('/')
       .get(
-        AuthMiddleware.protect,
-        AuthMiddleware.restrict([Role.Admin]),
+        UsersMiddleware.protect,
+        UsersMiddleware.restrict([Role.Admin]),
         controller.getTours
       )
       .post(controller.addTour);
