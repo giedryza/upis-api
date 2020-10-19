@@ -1,49 +1,66 @@
-import { body } from 'express-validator';
+import { checkSchema } from 'express-validator';
 
 export class Validation {
-  static signup = [
-    body('email')
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage('Enter email')
-      .isEmail()
-      .withMessage('Enter valid email'),
-    body('password')
-      .not()
-      .isEmpty()
-      .withMessage('Enter password')
-      .isLength({ min: 8 })
-      .withMessage('Use 8 characters or more for password')
-      .isLength({ max: 50 })
-      .withMessage('Use 50 characters or less for password'),
-    body('confirmPassword')
-      .not()
-      .isEmpty()
-      .withMessage('Confirm password')
-      .custom((value, { req }) => value === req.body.password)
-      .withMessage("Passwords didn't match. Try again."),
-  ];
+  static signup = checkSchema({
+    email: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter email.',
+      },
+      isEmail: {
+        errorMessage: 'Enter valid email.',
+      },
+    },
+    password: {
+      in: ['body'],
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter password.',
+      },
+      isLength: {
+        options: { min: 8, max: 50 },
+        errorMessage:
+          'Use 8 characters or more for password (and less than 50).',
+      },
+    },
+    confirmPassword: {
+      in: ['body'],
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Confirm password.',
+      },
+      custom: {
+        options: (value, { req }) => value === req.body.password,
+        errorMessage: "Passwords didn't match. Try again.",
+      },
+    },
+  });
 
-  static signin = [
-    body('email')
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage('Enter email')
-      .isEmail()
-      .withMessage('Enter valid email'),
-    body('password')
-      .not()
-      .isEmpty()
-      .withMessage('Enter password')
-      .isLength({ min: 8 })
-      .withMessage(
-        'Wrong password. Try again or click Forgot password to reset it.'
-      )
-      .isLength({ max: 50 })
-      .withMessage(
-        'Wrong password. Try again or click Forgot password to reset it.'
-      ),
-  ];
+  static signin = checkSchema({
+    email: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter email.',
+      },
+      isEmail: {
+        errorMessage: 'Wrong email. Enter valid email.',
+      },
+    },
+    password: {
+      in: ['body'],
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter password.',
+      },
+      isLength: {
+        options: { min: 8, max: 50 },
+        errorMessage:
+          'Wrong password. Try again or click Forgot password to reset it.',
+      },
+    },
+  });
 }
