@@ -12,7 +12,7 @@ export interface User {
   role: Role;
 }
 
-export interface Payload {
+export interface ConstructorPayload {
   email: string;
   password: string;
 }
@@ -25,5 +25,28 @@ export interface Document extends mongoose.Document {
 }
 
 export interface Model extends mongoose.Model<Document> {
-  construct(payload: Payload): Document;
+  construct(payload: ConstructorPayload): Document;
+}
+
+export declare namespace Body {
+  interface signup {
+    email: string;
+    password: string;
+    confirmPassword: string;
+  }
+  interface signin {
+    email: string;
+    password: string;
+  }
+}
+
+export declare namespace Payload {
+  interface signup {
+    email: string;
+    password: string;
+  }
+  interface signin {
+    email: string;
+    password: string;
+  }
 }
