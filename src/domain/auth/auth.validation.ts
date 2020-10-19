@@ -21,8 +21,7 @@ export class Validation {
       },
       isLength: {
         options: { min: 8, max: 50 },
-        errorMessage:
-          'Use 8 characters or more for password (and less than 50).',
+        errorMessage: 'Use between 8 and 50 characters for password.',
       },
     },
     confirmPassword: {
