@@ -12,6 +12,7 @@ class Db {
   private options: ConnectionOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
     useCreateIndex: true,
   };
 

@@ -22,7 +22,7 @@ export class Service {
     });
 
     return {
-      user: { _id: user.id, email: user.email },
+      data: { _id: user.id, email: user.email },
       token,
     };
   };
@@ -49,7 +49,7 @@ export class Service {
     });
 
     return {
-      user: { _id: user.id, email: user.email },
+      data: { _id: user.id, email: user.email },
       token,
     };
   };
