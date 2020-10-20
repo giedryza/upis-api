@@ -27,12 +27,9 @@ const schema = new mongoose.Schema(
       enum: Object.values(Role),
       default: Role.User,
     },
-    createdAt: {
-      type: Date,
-      default: Date.now(),
-    },
   },
   {
+    timestamps: true,
     toJSON: {
       versionKey: false,
     },

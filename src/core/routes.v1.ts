@@ -1,21 +1,21 @@
 import { Router } from 'express';
-import { route as toursRoute } from 'domain/tours/tours.route';
 import { route as usersRoute } from 'domain/users/users.route';
+import { route as companiesRoute } from 'domain/companies/companies.route';
 
 class Routes {
   router = Router({ caseSensitive: true });
 
   constructor() {
     this.users();
-    this.tours();
+    this.companies();
   }
 
   users = () => {
     this.router.use(usersRoute.path, usersRoute.router);
   };
 
-  tours = () => {
-    this.router.use(toursRoute.path, toursRoute.router);
+  companies = () => {
+    this.router.use(companiesRoute.path, companiesRoute.router);
   };
 }
 

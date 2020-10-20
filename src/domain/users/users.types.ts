@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Timestamp } from 'types/document';
 
 export enum Role {
   User = 'user',
@@ -17,11 +18,10 @@ export interface ConstructorPayload {
   password: string;
 }
 
-export interface Document extends mongoose.Document {
+export interface Document extends mongoose.Document, Timestamp {
   email: string;
   password: string;
   role: Role;
-  createdAt: Date;
 }
 
 export interface Model extends mongoose.Model<Document> {
