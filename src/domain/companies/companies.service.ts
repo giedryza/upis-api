@@ -2,6 +2,7 @@ import { Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { Helpers } from 'utils/helpers';
 import { NotFoundError } from 'errors/not-found.error';
+import { UnauthorizedError } from 'errors/unauthorized.error';
 
 export class Service {
   static getAll = async () => {
@@ -46,6 +47,7 @@ export class Service {
 
   static update = async ({
     id,
+    userId,
     name,
     phone,
     email,
@@ -75,14 +77,22 @@ export class Service {
       throw new NotFoundError('Company not found.');
     }
 
+    if (company.user.toString() === userId) {
+      throw new UnauthorizedError();
+    }
+
     return { data: company };
   };
 
-  static destroy = async ({ id }: Payload.destroy) => {
+  static destroy = async ({ id, userId }: Payload.destroy) => {
     const company = await Company.findOneAndDelete({ _id: id });
 
     if (!company) {
       throw new NotFoundError('Company not found.');
+    }
+
+    if (company.user.toString() === userId) {
+      throw new UnauthorizedError();
     }
   };
 }
