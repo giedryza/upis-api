@@ -46,11 +46,9 @@ class Controller {
       address,
       location,
     } = req.body;
-    const { id: userId } = req.user!;
 
     const { data } = await Service.update({
       id,
-      userId,
       name,
       phone,
       email,
@@ -66,19 +64,19 @@ class Controller {
 
   destroy = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { id: userId } = req.user!;
 
-    await Service.destroy({ id, userId });
+    await Service.destroy({ id });
 
     res.status(StatusCode.NoContent).json({});
   };
 
-  logo = async (req: Request, res: Response) => {
+  addLogo = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { id: userId } = req.user!;
-    const { location } = (req as Request & MulterS3Request).file;
+    const logo = req.file
+      ? (req as Request & MulterS3Request).file.location
+      : undefined;
 
-    const { data } = await Service.logo({ id, userId, location });
+    const { data } = await Service.addLogo({ id, logo });
 
     res.json({ data });
   };
