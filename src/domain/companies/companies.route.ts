@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { BaseRoute } from 'utils/route.base';
 import { controller } from 'domain/companies/companies.controller';
-import { Middleware as UsersMiddleware } from 'domain/users/users.middleware';
+import { Middleware as AuthMiddleware } from 'middlewares/auth.middleware';
 import { Validator } from 'utils/validator';
 import { Validation } from 'domain/companies/companies.validation';
 import { upload } from 'utils/upload';
@@ -22,7 +22,7 @@ class Route extends BaseRoute {
       .route('/')
       .get(controller.getAll)
       .post(
-        UsersMiddleware.protect,
+        AuthMiddleware.protect,
         Validation.create,
         Validator.validate,
         controller.create
@@ -32,13 +32,13 @@ class Route extends BaseRoute {
       .route('/:id')
       .get(Validation.getOne, Validator.validate, controller.getOne)
       .patch(
-        UsersMiddleware.protect,
+        AuthMiddleware.protect,
         Validation.update,
         Validator.validate,
         controller.update
       )
       .delete(
-        UsersMiddleware.protect,
+        AuthMiddleware.protect,
         Validation.destroy,
         Validator.validate,
         controller.destroy
@@ -47,7 +47,7 @@ class Route extends BaseRoute {
     this.router
       .route('/:id/logo')
       .patch(
-        UsersMiddleware.protect,
+        AuthMiddleware.protect,
         Validation.addLogo,
         Validator.validate,
         upload.toS3(['image/jpeg', 'image/jpg', 'image/png']).single('logo'),
