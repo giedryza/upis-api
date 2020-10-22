@@ -8,3 +8,8 @@ export type Populated<M, K extends keyof M> = Omit<M, K> &
   };
 
 export type Selected<M, K extends keyof M> = Pick<M, K> & Document;
+
+export interface WithTimestamp {
+  createdAt: Date;
+  updatedAt: Date;
+}

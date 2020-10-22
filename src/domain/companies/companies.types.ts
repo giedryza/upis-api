@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Timestamp } from 'types/document';
+import { WithTimestamp } from 'types/mongoose';
 import { Document as UserDocument } from 'domain/users/users.types';
 
 export enum SocialType {
@@ -23,7 +23,7 @@ export interface ConstructorPayload {
   description?: string;
 }
 
-export interface Document extends mongoose.Document, Timestamp {
+export interface Document extends mongoose.Document, WithTimestamp {
   name: string;
   phone: string;
   email: string;
