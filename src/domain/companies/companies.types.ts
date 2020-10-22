@@ -65,7 +65,6 @@ export declare namespace Payload {
 
   interface update {
     id: string;
-    userId: string;
     name?: string;
     phone?: string;
     email?: string;
@@ -81,12 +80,10 @@ export declare namespace Payload {
 
   interface destroy {
     id: string;
-    userId: string;
   }
 
   interface logo {
     id: string;
-    userId: string;
     location: string;
   }
 }
