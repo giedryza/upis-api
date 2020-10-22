@@ -7,3 +7,9 @@ declare global {
     }
   }
 }
+
+export interface MulterS3Request {
+  file: {
+    location: string;
+  };
+}

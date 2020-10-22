@@ -77,7 +77,7 @@ export class Service {
       throw new NotFoundError('Company not found.');
     }
 
-    if (company.user.toString() === userId) {
+    if (company.user.toString() !== userId) {
       throw new UnauthorizedError();
     }
 
@@ -91,8 +91,27 @@ export class Service {
       throw new NotFoundError('Company not found.');
     }
 
-    if (company.user.toString() === userId) {
+    if (company.user.toString() !== userId) {
       throw new UnauthorizedError();
     }
+  };
+
+  static logo = async ({ id, userId, location }: Payload.logo) => {
+    const filter = { _id: id };
+    const update = { logo: location };
+
+    const company = await Company.findOneAndUpdate(filter, update, {
+      new: true,
+    });
+
+    if (!company) {
+      throw new NotFoundError('Company not found.');
+    }
+
+    if (company.user.toString() !== userId) {
+      throw new UnauthorizedError();
+    }
+
+    return { data: company };
   };
 }

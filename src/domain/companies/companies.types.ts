@@ -70,16 +70,23 @@ export declare namespace Payload {
     phone?: string;
     email?: string;
     description?: string;
-    address?: string;
     website?: string;
     social?: Social[];
+    address?: string;
     location?: {
       coordinates: number[];
     };
+    logo?: string;
   }
 
   interface destroy {
     id: string;
     userId: string;
+  }
+
+  interface logo {
+    id: string;
+    userId: string;
+    location: string;
   }
 }
