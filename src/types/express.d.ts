@@ -9,7 +9,7 @@ declare global {
 }
 
 export interface MulterS3Request {
-  file: {
+  file?: {
     location: string;
   };
 }

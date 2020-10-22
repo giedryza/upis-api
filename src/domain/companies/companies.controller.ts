@@ -70,11 +70,13 @@ class Controller {
     res.status(StatusCode.NoContent).json({});
   };
 
-  logo = async (req: Request, res: Response) => {
+  addLogo = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { location } = (req as Request & MulterS3Request).file;
+    const logo = req.file
+      ? (req as Request & MulterS3Request).file.location
+      : undefined;
 
-    const { data } = await Service.logo({ id, location });
+    const { data } = await Service.addLogo({ id, logo });
 
     res.json({ data });
   };

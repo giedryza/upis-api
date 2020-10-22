@@ -2,6 +2,7 @@ import { Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { Helpers } from 'utils/helpers';
 import { NotFoundError } from 'errors/not-found.error';
+import { BadRequestError } from 'errors/bad-request.error';
 
 export class Service {
   static getAll = async () => {
@@ -80,9 +81,13 @@ export class Service {
     return company;
   };
 
-  static logo = async ({ id, location }: Payload.logo) => {
+  static addLogo = async ({ id, logo }: Payload.addLogo) => {
     const filter = { _id: id };
-    const update = { logo: location };
+    const update = { logo };
+
+    if (!logo) {
+      throw new BadRequestError('Select company logo.');
+    }
 
     const company = await Company.findOneAndUpdate(filter, update, {
       new: true,

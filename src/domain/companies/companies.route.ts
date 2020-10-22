@@ -48,10 +48,10 @@ class Route extends BaseRoute {
       .route('/:id/logo')
       .patch(
         UsersMiddleware.protect,
-        Validation.logo,
+        Validation.addLogo,
         Validator.validate,
         upload.toS3(['image/jpeg', 'image/jpg', 'image/png']).single('logo'),
-        controller.logo
+        controller.addLogo
       );
   };
 }

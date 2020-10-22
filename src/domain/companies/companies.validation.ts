@@ -163,7 +163,7 @@ export class Validation {
     },
   });
 
-  static logo = checkSchema({
+  static addLogo = checkSchema({
     id: {
       in: ['params'],
       isMongoId: {

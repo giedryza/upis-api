@@ -82,8 +82,8 @@ export declare namespace Payload {
     id: string;
   }
 
-  interface logo {
+  interface addLogo {
     id: string;
-    location: string;
+    logo?: string;
   }
 }
