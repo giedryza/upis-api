@@ -11,6 +11,10 @@ class Environment {
     'JWT_EXPIRES_IN_DAYS',
     'COOKIE_KEY_1',
     'COOKIE_KEY_2',
+    'AWS_ACCESS_KEY_ID',
+    'AWS_SECRET_KEY',
+    'AWS_BUCKET',
+    'AWS_REGION',
   ];
 
   verify = () =>

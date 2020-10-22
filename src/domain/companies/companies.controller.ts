@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { StatusCode } from 'constants/status-code';
 import { Body } from 'domain/companies/companies.types';
 import { Service } from 'domain/companies/companies.service';
+import { MulterS3Request } from 'types/express';
 
 class Controller {
   getAll = async (_req: Request, res: Response) => {
@@ -70,6 +71,16 @@ class Controller {
     await Service.destroy({ id, userId });
 
     res.status(StatusCode.NoContent).json({});
+  };
+
+  logo = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { id: userId } = req.user!;
+    const { location } = (req as Request & MulterS3Request).file;
+
+    const { data } = await Service.logo({ id, userId, location });
+
+    res.json({ data });
   };
 }
 

@@ -10,6 +10,10 @@ export interface Env {
   JWT_EXPIRES_IN_DAYS: string;
   COOKIE_KEY_1: string;
   COOKIE_KEY_2: string;
+  AWS_ACCESS_KEY_ID: string;
+  AWS_SECRET_KEY: string;
+  AWS_BUCKET: string;
+  AWS_REGION: string;
 }
 
 declare global {
