@@ -5,11 +5,12 @@ declare global {
     interface Request {
       user?: User;
     }
-  }
-}
 
-export interface MulterS3Request {
-  file?: {
-    location: string;
-  };
+    namespace Multer {
+      interface File {
+        location: string;
+        contentType: string;
+      }
+    }
+  }
 }

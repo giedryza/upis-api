@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { StatusCode } from 'constants/status-code';
 import { Body } from 'domain/companies/companies.types';
 import { Service } from 'domain/companies/companies.service';
-import { MulterS3Request } from 'types/express';
 
 class Controller {
   getAll = async (_req: Request, res: Response) => {
@@ -72,9 +71,7 @@ class Controller {
 
   addLogo = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const logo = req.file
-      ? (req as Request & MulterS3Request).file.location
-      : undefined;
+    const logo = req.file?.location;
 
     const { data } = await Service.addLogo({ id, logo });
 
