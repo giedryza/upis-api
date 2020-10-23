@@ -1,14 +1,14 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { Password } from 'utils/password';
 import { UnauthorizedError } from 'errors/unauthorized.error';
 import {
-  ConstructorPayload,
-  Document,
-  Model,
+  UserConstructor,
+  UserDocument,
+  UserModel,
   Role,
 } from 'domain/users/users.types';
 
-const schema = new mongoose.Schema(
+const schema = new Schema(
   {
     email: {
       type: String,
@@ -50,8 +50,8 @@ schema.pre('save', async function (next) {
 });
 
 // eslint-disable-next-line no-use-before-define
-schema.statics.construct = (payload: ConstructorPayload) => new User(payload);
+schema.statics.construct = (payload: UserConstructor) => new User(payload);
 
-const User = mongoose.model<Document, Model>('User', schema);
+const User = model<UserDocument, UserModel>('User', schema);
 
 export { User };
