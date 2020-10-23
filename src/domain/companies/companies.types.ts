@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import { Document, Model, Types } from 'mongoose';
 import { WithTimestamp } from 'types/mongoose';
-import { Document as UserDocument } from 'domain/users/users.types';
+import { UserDocument } from 'domain/users/users.types';
 
 export enum SocialType {
   Facebook = 'facebook',
@@ -15,7 +15,7 @@ interface Social {
   link: string;
 }
 
-export interface ConstructorPayload {
+export interface CompanyConstructor {
   user: string;
   name: string;
   phone: string;
@@ -23,7 +23,7 @@ export interface ConstructorPayload {
   description?: string;
 }
 
-export interface Document extends mongoose.Document, WithTimestamp {
+export interface CompanyDocument extends Document, WithTimestamp {
   name: string;
   phone: string;
   email: string;
@@ -31,14 +31,14 @@ export interface Document extends mongoose.Document, WithTimestamp {
   website?: string;
   social?: Social[];
   address?: string;
-  user: mongoose.Types.ObjectId | UserDocument;
+  user: Types.ObjectId | UserDocument;
   location?: {
     coordinates: number[];
   };
 }
 
-export interface Model extends mongoose.Model<Document> {
-  construct(payload: ConstructorPayload): Document;
+export interface CompanyModel extends Model<CompanyDocument> {
+  construct(payload: CompanyConstructor): CompanyDocument;
 }
 
 export declare namespace Body {

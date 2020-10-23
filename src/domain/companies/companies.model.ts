@@ -1,12 +1,12 @@
-import mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 import {
-  ConstructorPayload,
-  Document,
-  Model,
+  CompanyConstructor,
+  CompanyDocument,
+  CompanyModel,
   SocialType,
 } from 'domain/companies/companies.types';
 
-const schema = new mongoose.Schema(
+const schema = new Schema(
   {
     name: {
       type: String,
@@ -56,7 +56,7 @@ const schema = new mongoose.Schema(
       type: String,
     },
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
@@ -69,10 +69,10 @@ const schema = new mongoose.Schema(
   }
 );
 
-schema.statics.construct = (payload: ConstructorPayload) =>
+schema.statics.construct = (payload: CompanyConstructor) =>
   // eslint-disable-next-line no-use-before-define
   new Company(payload);
 
-const Company = mongoose.model<Document, Model>('Company', schema);
+const Company = model<CompanyDocument, CompanyModel>('Company', schema);
 
 export { Company };

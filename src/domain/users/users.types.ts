@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { WithTimestamp } from 'types/mongoose';
 
 export enum Role {
@@ -13,19 +13,19 @@ export interface User {
   role: Role;
 }
 
-export interface ConstructorPayload {
+export interface UserConstructor {
   email: string;
   password: string;
 }
 
-export interface Document extends mongoose.Document, WithTimestamp {
+export interface UserDocument extends Document, WithTimestamp {
   email: string;
   password: string;
   role: Role;
 }
 
-export interface Model extends mongoose.Model<Document> {
-  construct(payload: ConstructorPayload): Document;
+export interface UserModel extends Model<UserDocument> {
+  construct(payload: UserConstructor): UserDocument;
 }
 
 export declare namespace Body {

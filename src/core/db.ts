@@ -1,4 +1,4 @@
-import mongoose, { ConnectionOptions } from 'mongoose';
+import { connect, ConnectionOptions } from 'mongoose';
 
 class Db {
   private name = process.env.NODE_ENV;
@@ -25,7 +25,7 @@ class Db {
 
   connect = async () => {
     try {
-      const connection = await mongoose.connect(this.uri, this.options);
+      const connection = await connect(this.uri, this.options);
 
       const { name, host } = connection.connections[0];
 
