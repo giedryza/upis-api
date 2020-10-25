@@ -18,19 +18,10 @@ export class Service {
     return { data: document };
   };
 
-  static create = async ({
-    user,
-    name,
-    phone,
-    email,
-    description,
-  }: Payload.create) => {
+  static create = async ({ user, update }: Payload.create) => {
     const company = Company.construct({
       user,
-      name,
-      phone,
-      email,
-      description,
+      ...update,
     });
 
     await company.save();
@@ -38,28 +29,7 @@ export class Service {
     return { data: company };
   };
 
-  static update = async ({
-    document,
-    name,
-    phone,
-    email,
-    website,
-    social,
-    location,
-    description,
-    address,
-  }: Payload.update) => {
-    const update = {
-      name,
-      phone,
-      email,
-      description,
-      website,
-      social,
-      address,
-      location,
-    };
-
+  static update = async ({ document, update }: Payload.update) => {
     const company = await Document.update(document, update);
 
     return { data: company };

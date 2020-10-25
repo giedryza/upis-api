@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { StatusCode } from 'constants/status-code';
 import { Body, CompanyDocument } from 'domain/companies/companies.types';
 import { Service } from 'domain/companies/companies.service';
-import { RequestWithDocument } from 'types/express';
+import { Document } from 'utils/document';
 
 class Controller {
   getAll = async (_req: Request, res: Response) => {
@@ -12,7 +12,7 @@ class Controller {
   };
 
   getOne = async (req: Request, res: Response) => {
-    const { document } = req as RequestWithDocument<CompanyDocument>;
+    const document = Document.getDocument<CompanyDocument>(req);
 
     const { data } = Service.getOne({ document });
 
@@ -20,50 +20,31 @@ class Controller {
   };
 
   create = async (req: Request<{}, {}, Body.create>, res: Response) => {
-    const { name, phone, email, description } = req.body;
+    const body = Document.getBody<Body.create>(req);
     const { id } = req.user!;
 
     const { data } = await Service.create({
       user: id,
-      name,
-      phone,
-      email,
-      description,
+      update: body,
     });
 
     res.status(StatusCode.Created).json({ data });
   };
 
   update = async (req: Request, res: Response) => {
-    const { document } = req as RequestWithDocument<CompanyDocument>;
-    const {
-      name,
-      phone,
-      email,
-      description,
-      website,
-      social,
-      address,
-      location,
-    } = req.body;
+    const document = Document.getDocument<CompanyDocument>(req);
+    const body = Document.getBody<Body.update>(req);
 
     const { data } = await Service.update({
       document,
-      name,
-      phone,
-      email,
-      website,
-      social,
-      location,
-      description,
-      address,
+      update: body,
     });
 
     res.status(StatusCode.Ok).json({ data });
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { document } = req as RequestWithDocument<CompanyDocument>;
+    const document = Document.getDocument<CompanyDocument>(req);
 
     await Service.destroy({ document });
 
@@ -71,7 +52,7 @@ class Controller {
   };
 
   addLogo = async (req: Request, res: Response) => {
-    const { document } = req as RequestWithDocument<CompanyDocument>;
+    const document = Document.getDocument<CompanyDocument>(req);
     const logo = req.file?.location;
 
     const { data } = await Service.addLogo({ document, logo });
