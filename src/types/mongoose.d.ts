@@ -13,3 +13,7 @@ export interface WithTimestamp {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface DocumentWithUser extends Document {
+  user: ID;
+}

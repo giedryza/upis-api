@@ -1,7 +1,6 @@
-import { Payload } from 'domain/companies/companies.types';
+import { CompanyDocument, Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
-import { Helpers } from 'utils/helpers';
-import { NotFoundError } from 'errors/not-found.error';
+import { Document } from 'utils/document';
 import { BadRequestError } from 'errors/bad-request.error';
 
 export class Service {
@@ -15,14 +14,8 @@ export class Service {
     return { data: companies, meta };
   };
 
-  static getOne = async ({ id }: Payload.getOne) => {
-    const company = await Company.findOne({ _id: id });
-
-    if (!company) {
-      throw new NotFoundError('Company not found.');
-    }
-
-    return { data: company };
+  static getOne = ({ document }: Payload.getOne) => {
+    return { data: document };
   };
 
   static create = async ({
@@ -46,7 +39,7 @@ export class Service {
   };
 
   static update = async ({
-    id,
+    document,
     name,
     phone,
     email,
@@ -56,8 +49,7 @@ export class Service {
     description,
     address,
   }: Payload.update) => {
-    const filter = { _id: id };
-    const update = Helpers.stripUndefined({
+    const update = {
       name,
       phone,
       email,
@@ -66,32 +58,25 @@ export class Service {
       social,
       address,
       location,
-    });
+    };
 
-    const company = await Company.findOneAndUpdate(filter, update, {
-      new: true,
-    });
+    const company = await Document.update(document, update);
 
     return { data: company };
   };
 
-  static destroy = async ({ id }: Payload.destroy) => {
-    const company = await Company.findOneAndDelete({ _id: id });
-
-    return company;
+  static destroy = async ({ document }: Payload.destroy) => {
+    await document.remove();
   };
 
-  static addLogo = async ({ id, logo }: Payload.addLogo) => {
-    const filter = { _id: id };
-    const update = { logo };
+  static addLogo = async ({ document, logo }: Payload.addLogo) => {
+    const update: Partial<CompanyDocument> = { logo };
 
     if (!logo) {
       throw new BadRequestError('Select company logo.');
     }
 
-    const company = await Company.findOneAndUpdate(filter, update, {
-      new: true,
-    });
+    const company = await Document.update(document, update);
 
     return { data: company };
   };

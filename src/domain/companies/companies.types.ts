@@ -35,6 +35,7 @@ export interface CompanyDocument extends Document, WithTimestamp {
   location?: {
     coordinates: number[];
   };
+  logo?: string;
 }
 
 export interface CompanyModel extends Model<CompanyDocument> {
@@ -52,7 +53,7 @@ export declare namespace Body {
 
 export declare namespace Payload {
   interface getOne {
-    id: string;
+    document: CompanyDocument;
   }
 
   interface create {
@@ -64,7 +65,7 @@ export declare namespace Payload {
   }
 
   interface update {
-    id: string;
+    document: CompanyDocument;
     name?: string;
     phone?: string;
     email?: string;
@@ -75,15 +76,14 @@ export declare namespace Payload {
     location?: {
       coordinates: number[];
     };
-    logo?: string;
   }
 
   interface destroy {
-    id: string;
+    document: CompanyDocument;
   }
 
   interface addLogo {
-    id: string;
+    document: CompanyDocument;
     logo?: string;
   }
 }
