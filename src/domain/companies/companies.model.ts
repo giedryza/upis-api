@@ -22,9 +22,11 @@ const schema = new Schema(
     },
     description: {
       type: String,
+      default: '',
     },
     website: {
       type: String,
+      default: '',
     },
     social: [
       {
@@ -41,6 +43,7 @@ const schema = new Schema(
     ],
     address: {
       type: String,
+      default: '',
     },
     location: {
       type: {
@@ -54,6 +57,7 @@ const schema = new Schema(
     },
     logo: {
       type: String,
+      default: '',
     },
     user: {
       type: Schema.Types.ObjectId,

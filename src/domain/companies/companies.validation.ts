@@ -48,7 +48,7 @@ export class Validation {
     },
     description: {
       in: ['body'],
-      optional: true,
+      optional: { options: { checkFalsy: true } },
       trim: true,
     },
   });
@@ -82,17 +82,17 @@ export class Validation {
     },
     description: {
       in: ['body'],
-      optional: true,
+      optional: { options: { checkFalsy: true } },
       trim: true,
     },
     address: {
       in: ['body'],
-      optional: true,
+      optional: { options: { checkFalsy: true } },
       trim: true,
     },
     website: {
       in: ['body'],
-      optional: true,
+      optional: { options: { checkFalsy: true } },
       trim: true,
       isURL: {
         errorMessage: 'Enter valid website.',
@@ -100,7 +100,7 @@ export class Validation {
     },
     social: {
       in: ['body'],
-      optional: true,
+      optional: { options: { checkFalsy: true } },
       isArray: {
         errorMessage: 'Invalid value.',
       },
@@ -120,7 +120,7 @@ export class Validation {
     },
     'location.coordinates': {
       in: ['body'],
-      optional: true,
+      optional: { options: { checkFalsy: true } },
       isArray: {
         options: {
           max: 2,

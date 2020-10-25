@@ -49,6 +49,17 @@ export declare namespace Body {
     email: string;
     description?: string;
   }
+
+  interface update {
+    name: string | undefined;
+    phone: string | undefined;
+    email: string | undefined;
+    description: string | undefined;
+    website: string | undefined;
+    social: Social[] | undefined;
+    address: string | undefined;
+    location: { coordinates: number[] } | undefined;
+  }
 }
 
 export declare namespace Payload {
@@ -58,24 +69,12 @@ export declare namespace Payload {
 
   interface create {
     user: string;
-    name: string;
-    phone: string;
-    email: string;
-    description?: string;
+    update: Body.create;
   }
 
   interface update {
     document: CompanyDocument;
-    name?: string;
-    phone?: string;
-    email?: string;
-    description?: string;
-    website?: string;
-    social?: Social[];
-    address?: string;
-    location?: {
-      coordinates: number[];
-    };
+    update: Body.update;
   }
 
   interface destroy {
