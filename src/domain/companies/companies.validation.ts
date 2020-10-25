@@ -32,7 +32,7 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Provide company contact phone.',
+        errorMessage: 'Enter company contact phone.',
       },
     },
     email: {
@@ -66,11 +66,19 @@ export class Validation {
       in: ['body'],
       optional: true,
       trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter company name.',
+      },
     },
     phone: {
       in: ['body'],
       optional: true,
       trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter company contact phone.',
+      },
     },
     email: {
       in: ['body'],
@@ -78,6 +86,10 @@ export class Validation {
       trim: true,
       isEmail: {
         errorMessage: 'Enter valid email.',
+      },
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter company email.',
       },
     },
     description: {
