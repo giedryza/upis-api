@@ -1,28 +1,14 @@
 import { checkSchema } from 'express-validator';
 import { SocialType } from 'domain/companies/companies.types';
 import { NotFoundError } from 'errors/not-found.error';
-import { Company } from 'domain/companies/companies.model';
-import { UnauthorizedError } from 'errors/unauthorized.error';
 
 export class Validation {
-  private static isOwner = async (companyId: string, userId: string) => {
-    const company = await Company.findById(companyId);
-
-    if (!company) {
-      throw new NotFoundError('Company not found.');
-    }
-
-    if (company.user.toString() !== userId) {
-      throw new UnauthorizedError();
-    }
-  };
-
   static getOne = checkSchema({
     id: {
       in: ['params'],
       isMongoId: {
         errorMessage: () => {
-          throw new NotFoundError('Company not found.');
+          throw new NotFoundError('Record not found.');
         },
       },
     },
@@ -72,12 +58,7 @@ export class Validation {
       in: ['params'],
       isMongoId: {
         errorMessage: () => {
-          throw new NotFoundError('Company not found.');
-        },
-      },
-      custom: {
-        options: async (value, { req }) => {
-          await Validation.isOwner(value, req.user.id);
+          throw new NotFoundError('Record not found.');
         },
       },
     },
@@ -164,12 +145,7 @@ export class Validation {
       in: ['params'],
       isMongoId: {
         errorMessage: () => {
-          throw new NotFoundError('Company not found.');
-        },
-      },
-      custom: {
-        options: async (value, { req }) => {
-          await Validation.isOwner(value, req.user.id);
+          throw new NotFoundError('Record not found.');
         },
       },
     },
@@ -180,12 +156,7 @@ export class Validation {
       in: ['params'],
       isMongoId: {
         errorMessage: () => {
-          throw new NotFoundError('Company not found.');
-        },
-      },
-      custom: {
-        options: async (value, { req }) => {
-          await Validation.isOwner(value, req.user.id);
+          throw new NotFoundError('Record not found.');
         },
       },
     },

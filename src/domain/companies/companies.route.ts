@@ -5,6 +5,8 @@ import { Middleware as AuthMiddleware } from 'middlewares/auth.middleware';
 import { Validator } from 'utils/validator';
 import { Validation } from 'domain/companies/companies.validation';
 import { upload } from 'utils/upload';
+import { Middleware as DocumentMiddleware } from 'middlewares/document.middleware';
+import { Company } from 'domain/companies/companies.model';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
@@ -30,17 +32,26 @@ class Route extends BaseRoute {
 
     this.router
       .route('/:id')
-      .get(Validation.getOne, Validator.validate, controller.getOne)
+      .get(
+        Validation.getOne,
+        Validator.validate,
+        DocumentMiddleware.exists(Company),
+        controller.getOne
+      )
       .patch(
         AuthMiddleware.protect,
         Validation.update,
         Validator.validate,
+        DocumentMiddleware.exists(Company),
+        DocumentMiddleware.isOwner,
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
         Validation.destroy,
         Validator.validate,
+        DocumentMiddleware.exists(Company),
+        DocumentMiddleware.isOwner,
         controller.destroy
       );
 
@@ -50,6 +61,8 @@ class Route extends BaseRoute {
         AuthMiddleware.protect,
         Validation.addLogo,
         Validator.validate,
+        DocumentMiddleware.exists(Company),
+        DocumentMiddleware.isOwner,
         upload.toS3(['image/jpeg', 'image/jpg', 'image/png']).single('logo'),
         controller.addLogo
       );

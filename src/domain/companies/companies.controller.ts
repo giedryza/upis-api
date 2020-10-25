@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import { StatusCode } from 'constants/status-code';
-import { Body } from 'domain/companies/companies.types';
+import { Body, CompanyDocument } from 'domain/companies/companies.types';
 import { Service } from 'domain/companies/companies.service';
+import { RequestWithDocument } from 'types/express';
 
 class Controller {
   getAll = async (_req: Request, res: Response) => {
@@ -11,9 +12,9 @@ class Controller {
   };
 
   getOne = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { document } = req as RequestWithDocument<CompanyDocument>;
 
-    const { data } = await Service.getOne({ id });
+    const { data } = Service.getOne({ document });
 
     res.status(StatusCode.Ok).json({ data });
   };
@@ -34,7 +35,7 @@ class Controller {
   };
 
   update = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { document } = req as RequestWithDocument<CompanyDocument>;
     const {
       name,
       phone,
@@ -47,7 +48,7 @@ class Controller {
     } = req.body;
 
     const { data } = await Service.update({
-      id,
+      document,
       name,
       phone,
       email,
@@ -62,18 +63,18 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { document } = req as RequestWithDocument<CompanyDocument>;
 
-    await Service.destroy({ id });
+    await Service.destroy({ document });
 
     res.status(StatusCode.NoContent).json({});
   };
 
   addLogo = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { document } = req as RequestWithDocument<CompanyDocument>;
     const logo = req.file?.location;
 
-    const { data } = await Service.addLogo({ id, logo });
+    const { data } = await Service.addLogo({ document, logo });
 
     res.json({ data });
   };
