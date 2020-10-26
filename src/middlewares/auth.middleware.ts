@@ -3,7 +3,7 @@ import { Jwt } from 'utils/jwt';
 import { UnauthorizedError } from 'errors/unauthorized.error';
 import { Role } from 'domain/users/users.types';
 
-export class Middleware {
+export class AuthMiddleware {
   static user = async (req: Request, _res: Response, next: NextFunction) => {
     if (!req.session?.token) {
       return next();

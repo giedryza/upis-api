@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { BaseRoute } from 'utils/route.base';
 import { controller } from 'domain/companies/companies.controller';
-import { Middleware as AuthMiddleware } from 'middlewares/auth.middleware';
+import { AuthMiddleware } from 'middlewares/auth.middleware';
 import { Validator } from 'utils/validator';
 import { Validation } from 'domain/companies/companies.validation';
 import { upload } from 'utils/upload';
-import { Middleware as DocumentMiddleware } from 'middlewares/document.middleware';
+import { DocumentMiddleware } from 'middlewares/document.middleware';
 import { Company } from 'domain/companies/companies.model';
 
 class Route extends BaseRoute {

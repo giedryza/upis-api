@@ -2,7 +2,7 @@ import { Express, Request, Response, NextFunction } from 'express';
 import { BaseError } from 'errors/_base.error';
 import { StatusCode } from 'constants/status-code';
 
-class ErrorMiddleware {
+export class ErrorMiddleware {
   constructor(private app: Express) {}
 
   useError = () => {
@@ -27,5 +27,3 @@ class ErrorMiddleware {
     });
   };
 }
-
-export { ErrorMiddleware };

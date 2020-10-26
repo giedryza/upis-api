@@ -2,9 +2,9 @@ import { json, Express } from 'express';
 import cors from 'cors';
 import cookieSession from 'cookie-session';
 import { Jwt } from 'utils/jwt';
-import { Middleware as AuthMiddleware } from 'middlewares/auth.middleware';
+import { AuthMiddleware } from 'middlewares/auth.middleware';
 
-class CommonMiddleware {
+export class CommonMiddleware {
   constructor(private app: Express) {}
 
   useJson = () => {
@@ -34,5 +34,3 @@ class CommonMiddleware {
     this.app.use(AuthMiddleware.user);
   };
 }
-
-export { CommonMiddleware };

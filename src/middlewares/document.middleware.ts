@@ -5,7 +5,7 @@ import { UnauthorizedError } from 'errors/unauthorized.error';
 import { DocumentWithUser } from 'types/mongoose';
 import { RequestWithDocument } from 'types/express';
 
-export class Middleware {
+export class DocumentMiddleware {
   static exists = <A extends Document, T extends Model<A>>(model: T) => {
     return async (req: Request, _res: Response, next: NextFunction) => {
       const { id } = req.params;
