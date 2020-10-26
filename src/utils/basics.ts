@@ -1,4 +1,4 @@
-export class Helpers {
+export class Basics {
   static stripUndefined = (obj: { [key: string]: any }) =>
     Object.keys(obj)
       .filter((k) => obj[k] !== undefined)

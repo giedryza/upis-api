@@ -2,14 +2,14 @@ import { Request } from 'express';
 import { matchedData } from 'express-validator';
 import { Document as MongooseDocument } from 'mongoose';
 import { RequestWithDocument } from 'types/express';
-import { Helpers } from 'utils/helpers';
+import { Basics } from 'utils/basics';
 
 export class Document {
   static update = async <T extends MongooseDocument>(
     document: T,
     update: Partial<T>
   ) => {
-    document.set(Helpers.stripUndefined(update));
+    document.set(Basics.stripUndefined(update));
 
     await document.save();
 
