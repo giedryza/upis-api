@@ -1,6 +1,6 @@
 import { CompanyDocument, Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
-import { Document } from 'utils/document';
+import { Helpers } from 'utils/helpers';
 import { BadRequestError } from 'errors/bad-request.error';
 
 export class Service {
@@ -30,7 +30,7 @@ export class Service {
   };
 
   static update = async ({ document, update }: Payload.update) => {
-    const company = await Document.update(document, update);
+    const company = await Helpers.update(document, update);
 
     return { data: company };
   };
@@ -46,7 +46,7 @@ export class Service {
       throw new BadRequestError('Select company logo.');
     }
 
-    const company = await Document.update(document, update);
+    const company = await Helpers.update(document, update);
 
     return { data: company };
   };

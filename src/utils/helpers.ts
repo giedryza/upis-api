@@ -4,7 +4,7 @@ import { Document as MongooseDocument } from 'mongoose';
 import { RequestWithDocument } from 'types/express';
 import { Basics } from 'utils/basics';
 
-export class Document {
+export class Helpers {
   static update = async <T extends MongooseDocument>(
     document: T,
     update: Partial<T>

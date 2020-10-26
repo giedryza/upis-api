@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { StatusCode } from 'constants/status-code';
 import { Body, CompanyDocument } from 'domain/companies/companies.types';
 import { Service } from 'domain/companies/companies.service';
-import { Document } from 'utils/document';
+import { Helpers } from 'utils/helpers';
 
 class Controller {
   getAll = async (_req: Request, res: Response) => {
@@ -12,7 +12,7 @@ class Controller {
   };
 
   getOne = async (req: Request, res: Response) => {
-    const document = Document.getDocument<CompanyDocument>(req);
+    const document = Helpers.getDocument<CompanyDocument>(req);
 
     const { data } = Service.getOne({ document });
 
@@ -20,7 +20,7 @@ class Controller {
   };
 
   create = async (req: Request<{}, {}, Body.create>, res: Response) => {
-    const body = Document.getBody<Body.create>(req);
+    const body = Helpers.getBody<Body.create>(req);
     const { id } = req.user!;
 
     const { data } = await Service.create({
@@ -32,8 +32,8 @@ class Controller {
   };
 
   update = async (req: Request, res: Response) => {
-    const document = Document.getDocument<CompanyDocument>(req);
-    const body = Document.getBody<Body.update>(req);
+    const document = Helpers.getDocument<CompanyDocument>(req);
+    const body = Helpers.getBody<Body.update>(req);
 
     const { data } = await Service.update({
       document,
@@ -44,7 +44,7 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const document = Document.getDocument<CompanyDocument>(req);
+    const document = Helpers.getDocument<CompanyDocument>(req);
 
     await Service.destroy({ document });
 
@@ -52,7 +52,7 @@ class Controller {
   };
 
   addLogo = async (req: Request, res: Response) => {
-    const document = Document.getDocument<CompanyDocument>(req);
+    const document = Helpers.getDocument<CompanyDocument>(req);
     const logo = req.file?.location;
 
     const { data } = await Service.addLogo({ document, logo });
