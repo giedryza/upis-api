@@ -1,4 +1,4 @@
-import { Document, Model, Types } from 'mongoose';
+import { Document, Model, Types, DocumentQuery } from 'mongoose';
 import { WithTimestamp } from 'types/mongoose';
 import { UserDocument } from 'domain/users/users.types';
 
@@ -63,6 +63,10 @@ export declare namespace Body {
 }
 
 export declare namespace Payload {
+  interface getAll {
+    documentQuery: DocumentQuery<CompanyDocument[], CompanyDocument, {}>;
+  }
+
   interface getOne {
     document: CompanyDocument;
   }

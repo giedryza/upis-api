@@ -47,18 +47,16 @@ export class DocumentMiddleware {
   };
 
   static list = <A extends Document, T extends Model<A>>(model: T) => {
-    return async (req: Request, _res: Response, next: NextFunction) => {
+    return (req: Request, _res: Response, next: NextFunction) => {
       const { documentQuery, filterQuery } = Helpers.getQueries(model, req);
 
-      const features = new QueryFeatures(documentQuery, filterQuery)
+      const query = new QueryFeatures(documentQuery, filterQuery)
         .filter()
         .select()
         .sort()
         .paginate();
 
-      const documents = await features.documentQuery;
-
-      req.documents = documents;
+      req.documentQuery = query.documentQuery;
 
       next();
     };

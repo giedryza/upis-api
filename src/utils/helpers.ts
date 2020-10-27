@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { matchedData } from 'express-validator';
-import { Document, FilterQuery, Model } from 'mongoose';
+import { Document, DocumentQuery, FilterQuery, Model } from 'mongoose';
 import { RequestWithDocument } from 'types/express';
 import { Basics } from 'utils/basics';
 
@@ -24,6 +24,9 @@ export class Helpers {
 
   static getDocument = <T extends Document>(req: Request): T =>
     (req as RequestWithDocument<T>).document;
+
+  static getDocumentQuery = <T extends Document>(req: Request) =>
+    req.documentQuery as DocumentQuery<T[], T, {}>;
 
   static getQueries = <A extends Document, T extends Model<A>>(
     model: T,
