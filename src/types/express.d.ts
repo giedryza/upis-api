@@ -7,6 +7,7 @@ declare global {
     interface Request {
       user?: User;
       document?: Document;
+      documents?: Document[];
     }
 
     namespace Multer {
