@@ -5,8 +5,10 @@ import { Service } from 'domain/companies/companies.service';
 import { Helpers } from 'utils/helpers';
 
 class Controller {
-  getAll = async (_req: Request, res: Response) => {
-    const { data, meta } = await Service.getAll();
+  getAll = async (req: Request, res: Response) => {
+    const documentQuery = Helpers.getDocumentQuery<CompanyDocument>(req);
+
+    const { data, meta } = await Service.getAll({ documentQuery });
 
     res.status(StatusCode.Ok).json({ meta, data });
   };

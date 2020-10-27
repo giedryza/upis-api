@@ -4,11 +4,11 @@ import { Helpers } from 'utils/helpers';
 import { BadRequestError } from 'errors/bad-request.error';
 
 export class Service {
-  static getAll = async () => {
-    const companies = await Company.find();
+  static getAll = async ({ documentQuery }: Payload.getAll) => {
+    const companies = await documentQuery;
 
     const meta = {
-      totalItems: companies.length,
+      total: companies.length,
     };
 
     return { data: companies, meta };
