@@ -18,10 +18,10 @@ class Route extends BaseRoute {
   protected init = () => {
     this.router
       .route('/signup')
-      .post(Validation.signup, Validator.validate, controller.signup);
+      .post(Validation.signup, Validator.catch, controller.signup);
     this.router
       .route('/signin')
-      .post(Validation.signin, Validator.validate, controller.signin);
+      .post(Validation.signin, Validator.catch, controller.signin);
     this.router.route('/signout').post(controller.signout);
   };
 }

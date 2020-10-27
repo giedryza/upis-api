@@ -26,7 +26,7 @@ class Route extends BaseRoute {
       .post(
         AuthMiddleware.protect,
         Validation.create,
-        Validator.validate,
+        Validator.catch,
         controller.create
       );
 
@@ -34,14 +34,14 @@ class Route extends BaseRoute {
       .route('/:id')
       .get(
         Validation.getOne,
-        Validator.validate,
+        Validator.catch,
         DocumentMiddleware.exists(Company),
         controller.getOne
       )
       .patch(
         AuthMiddleware.protect,
         Validation.update,
-        Validator.validate,
+        Validator.catch,
         DocumentMiddleware.exists(Company),
         DocumentMiddleware.isOwner,
         controller.update
@@ -49,7 +49,7 @@ class Route extends BaseRoute {
       .delete(
         AuthMiddleware.protect,
         Validation.destroy,
-        Validator.validate,
+        Validator.catch,
         DocumentMiddleware.exists(Company),
         DocumentMiddleware.isOwner,
         controller.destroy
@@ -60,7 +60,7 @@ class Route extends BaseRoute {
       .patch(
         AuthMiddleware.protect,
         Validation.addLogo,
-        Validator.validate,
+        Validator.catch,
         DocumentMiddleware.exists(Company),
         DocumentMiddleware.isOwner,
         upload.toS3(['image/jpeg', 'image/jpg', 'image/png']).single('logo'),
