@@ -1,17 +1,21 @@
 import { CompanyDocument, Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { Helpers } from 'utils/helpers';
+import { List } from 'types/mongoose';
 import { BadRequestError } from 'errors/bad-request.error';
+import { QueryAggregation } from 'aggregations/query.aggregation';
 
 export class Service {
-  static getAll = async ({ documentQuery }: Payload.getAll) => {
-    const companies = await documentQuery;
+  static getAll = async ({ query }: Payload.getAll) => {
+    const pipeline = new QueryAggregation(query);
 
-    const meta = {
-      total: companies.length,
-    };
+    const [{ meta, data }] = await Company.aggregate<List<CompanyDocument>>([
+      pipeline.filter,
+      pipeline.sort,
+      pipeline.paginate,
+    ]);
 
-    return { data: companies, meta };
+    return { data, meta };
   };
 
   static getOne = ({ document }: Payload.getOne) => {

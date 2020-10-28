@@ -17,3 +17,14 @@ export interface WithTimestamp {
 export interface DocumentWithUser extends Document {
   user: ID;
 }
+
+export interface Meta {
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface List<T> {
+  meta: Meta;
+  data: T[];
+}

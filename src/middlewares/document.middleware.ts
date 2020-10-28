@@ -4,8 +4,6 @@ import { NotFoundError } from 'errors/not-found.error';
 import { UnauthorizedError } from 'errors/unauthorized.error';
 import { DocumentWithUser } from 'types/mongoose';
 import { RequestWithDocument } from 'types/express';
-import { QueryFeatures } from 'utils/query-features';
-import { Helpers } from 'utils/helpers';
 
 export class DocumentMiddleware {
   static exists = <A extends Document, T extends Model<A>>(model: T) => {
@@ -44,21 +42,5 @@ export class DocumentMiddleware {
     }
 
     next();
-  };
-
-  static list = <A extends Document, T extends Model<A>>(model: T) => {
-    return (req: Request, _res: Response, next: NextFunction) => {
-      const { documentQuery, filterQuery } = Helpers.getQueries(model, req);
-
-      const query = new QueryFeatures(documentQuery, filterQuery)
-        .filter()
-        .select()
-        .sort()
-        .paginate();
-
-      req.documentQuery = query.documentQuery;
-
-      next();
-    };
   };
 }

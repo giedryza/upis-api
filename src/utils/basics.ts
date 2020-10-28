@@ -12,4 +12,25 @@ export class Basics {
       (acc, cur) => (keys.includes(cur) ? acc : { ...acc, [cur]: obj[cur] }),
       {}
     );
+
+  static isObject = (obj: any): obj is 'object' =>
+    typeof obj === 'object' && obj !== null;
+
+  static isNumeric = (str: any) => {
+    if (typeof str !== 'string') {
+      return false;
+    }
+
+    return !Number.isNaN(str) && !Number.isNaN(parseFloat(str));
+  };
+
+  static toPositive = (value: any, fallback: number) => {
+    if (!Basics.isNumeric(value)) return fallback;
+
+    const number = +value;
+
+    if (number < 1) return fallback;
+
+    return number;
+  };
 }

@@ -6,9 +6,9 @@ import { Helpers } from 'utils/helpers';
 
 class Controller {
   getAll = async (req: Request, res: Response) => {
-    const documentQuery = Helpers.getDocumentQuery<CompanyDocument>(req);
+    const { query } = req;
 
-    const { data, meta } = await Service.getAll({ documentQuery });
+    const { data, meta } = await Service.getAll({ query });
 
     res.status(StatusCode.Ok).json({ meta, data });
   };
