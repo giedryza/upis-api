@@ -1,4 +1,5 @@
-import { Document, Model, Types, DocumentQuery } from 'mongoose';
+import { Request } from 'express';
+import { Document, Model, Types } from 'mongoose';
 import { WithTimestamp } from 'types/mongoose';
 import { UserDocument } from 'domain/users/users.types';
 
@@ -64,7 +65,7 @@ export declare namespace Body {
 
 export declare namespace Payload {
   interface getAll {
-    documentQuery: DocumentQuery<CompanyDocument[], CompanyDocument, {}>;
+    query: Request['query'];
   }
 
   interface getOne {

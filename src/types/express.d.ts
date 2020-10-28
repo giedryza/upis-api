@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { Document, DocumentQuery } from 'mongoose';
+import { Document } from 'mongoose';
 import { User } from 'domain/users/users.types';
 
 declare global {
@@ -7,7 +7,6 @@ declare global {
     interface Request {
       user?: User;
       document?: Document;
-      documentQuery?: DocumentQuery<Document[], Document, {}>;
     }
 
     namespace Multer {
