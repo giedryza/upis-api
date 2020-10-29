@@ -54,10 +54,10 @@ class Controller {
   };
 
   addLogo = async (req: Request, res: Response) => {
+    const { file } = req;
     const document = Helpers.getDocument<CompanyDocument>(req);
-    const logo = req.file?.location;
 
-    const { data } = await Service.addLogo({ document, logo });
+    const { data } = await Service.addLogo({ document, file });
 
     res.json({ data });
   };

@@ -13,6 +13,7 @@ declare global {
       interface File {
         location: string;
         contentType: string;
+        key: string;
       }
     }
   }

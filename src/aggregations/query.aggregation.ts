@@ -2,7 +2,7 @@ import { Request } from 'express';
 import { Basics } from 'utils/basics';
 
 export class QueryAggregation {
-  private reservedParams = ['sort', 'select', 'page', 'limit'];
+  private reservedParams = ['sort', 'page', 'limit'];
 
   private defaults = {
     sort: { createdAt: -1 },
