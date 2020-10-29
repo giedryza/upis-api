@@ -1,8 +1,11 @@
 import { json, Express } from 'express';
-import cors from 'cors';
 import cookieSession from 'cookie-session';
+import cors from 'cors';
+import helmet from 'helmet';
+import rateLimit, { Options } from 'express-rate-limit';
 import { Jwt } from 'utils/jwt';
 import { AuthMiddleware } from 'middlewares/auth.middleware';
+import { RateLimitError } from 'errors/rate-limit.error';
 
 export class CommonMiddleware {
   constructor(private app: Express) {}
@@ -15,8 +18,24 @@ export class CommonMiddleware {
     this.app.use(cors());
   };
 
+  useHelmet = () => {
+    this.app.use(helmet());
+  };
+
   useTrustProxy = () => {
     this.app.set('trust proxy', true);
+  };
+
+  useRateLimit = () => {
+    const options: Options = {
+      windowMs: 15 * 60 * 1000,
+      max: 150,
+      handler: (req) => {
+        throw new RateLimitError(req.rateLimit.resetTime);
+      },
+    };
+
+    this.app.use(rateLimit(options));
   };
 
   useCookieSession = () => {
