@@ -18,11 +18,13 @@ export interface UserConstructor {
   password: string;
 }
 
-export interface UserDocument extends Document, WithTimestamp {
+export interface UserRecord extends WithTimestamp {
   email: string;
   password: string;
   role: Role;
 }
+
+export interface UserDocument extends UserRecord, Document {}
 
 export interface UserModel extends Model<UserDocument> {
   construct(payload: UserConstructor): UserDocument;

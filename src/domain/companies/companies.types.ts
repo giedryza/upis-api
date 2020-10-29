@@ -24,7 +24,7 @@ export interface CompanyConstructor {
   description?: string;
 }
 
-export interface CompanyDocument extends Document, WithTimestamp {
+export interface CompanyRecord extends WithTimestamp {
   name: string;
   phone: string;
   email: string;
@@ -42,6 +42,8 @@ export interface CompanyDocument extends Document, WithTimestamp {
     contentType?: string;
   };
 }
+
+export interface CompanyDocument extends CompanyRecord, Document {}
 
 export interface CompanyModel extends Model<CompanyDocument> {
   construct(payload: CompanyConstructor): CompanyDocument;

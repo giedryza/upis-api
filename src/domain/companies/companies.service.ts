@@ -1,4 +1,4 @@
-import { CompanyDocument, Payload } from 'domain/companies/companies.types';
+import { CompanyRecord, Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { Helpers } from 'utils/helpers';
 import { List } from 'types/mongoose';
@@ -10,7 +10,7 @@ export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
     const pipeline = new QueryAggregation(query);
 
-    const [{ meta, data }] = await Company.aggregate<List<CompanyDocument>>([
+    const [{ meta, data }] = await Company.aggregate<List<CompanyRecord>>([
       pipeline.filter,
       pipeline.sort,
       pipeline.paginate,
