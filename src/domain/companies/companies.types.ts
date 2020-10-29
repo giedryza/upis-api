@@ -36,7 +36,11 @@ export interface CompanyDocument extends Document, WithTimestamp {
   location?: {
     coordinates: number[];
   };
-  logo?: string;
+  logo: {
+    location: string;
+    key?: string;
+    contentType?: string;
+  };
 }
 
 export interface CompanyModel extends Model<CompanyDocument> {
@@ -88,6 +92,6 @@ export declare namespace Payload {
 
   interface addLogo {
     document: CompanyDocument;
-    logo?: string;
+    file?: Request['file'];
   }
 }

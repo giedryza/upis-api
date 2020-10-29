@@ -6,7 +6,7 @@ import multerS3 from 'multer-s3';
 import aws from 'aws-sdk';
 import { BadRequestError } from 'errors/bad-request.error';
 
-class Upload {
+class FileStorage {
   private awsCredentials = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_KEY,
@@ -51,7 +51,7 @@ class Upload {
     },
   });
 
-  toS3 = (fileFormats: string[]) =>
+  upload = (fileFormats: string[]) =>
     multer({
       limits: {
         fileSize: this.limits.maxFileSize,
@@ -60,6 +60,24 @@ class Upload {
       fileFilter: this.fileFilter(fileFormats),
       storage: this.storage,
     });
+
+  delete = async (key: string) => {
+    try {
+      await new Promise((resolve, reject) => {
+        const params = { Bucket: this.awsCredentials.bucket, Key: key };
+
+        this.s3.deleteObject(params, (err, data) => {
+          if (err) {
+            reject(new BadRequestError('File delete failed.'));
+          }
+
+          resolve(data);
+        });
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 }
 
-export const upload = new Upload();
+export const fileStorage = new FileStorage();

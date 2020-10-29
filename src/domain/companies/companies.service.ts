@@ -4,6 +4,7 @@ import { Helpers } from 'utils/helpers';
 import { List } from 'types/mongoose';
 import { BadRequestError } from 'errors/bad-request.error';
 import { QueryAggregation } from 'aggregations/query.aggregation';
+import { fileStorage } from 'utils/file-storage';
 
 export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
@@ -40,17 +41,29 @@ export class Service {
   };
 
   static destroy = async ({ document }: Payload.destroy) => {
+    const old = document.logo.key;
+
     await document.remove();
+
+    if (old) {
+      fileStorage.delete(old);
+    }
   };
 
-  static addLogo = async ({ document, logo }: Payload.addLogo) => {
-    const update: Partial<CompanyDocument> = { logo };
-
-    if (!logo) {
-      throw new BadRequestError('Select company logo.');
+  static addLogo = async ({ document, file }: Payload.addLogo) => {
+    if (!file) {
+      throw new BadRequestError('File upload failed. Try again.');
     }
 
+    const { location, key, contentType } = file;
+    const old = document.logo.key;
+    const update = { logo: { location, key, contentType } };
+
     const company = await Helpers.update(document, update);
+
+    if (old) {
+      fileStorage.delete(old);
+    }
 
     return { data: company };
   };

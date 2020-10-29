@@ -56,8 +56,16 @@ const schema = new Schema(
       },
     },
     logo: {
-      type: String,
-      default: '',
+      location: {
+        type: String,
+        default: '',
+      },
+      key: {
+        type: String,
+      },
+      contentType: {
+        type: String,
+      },
     },
     user: {
       type: Schema.Types.ObjectId,

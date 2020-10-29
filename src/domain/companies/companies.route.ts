@@ -4,7 +4,7 @@ import { controller } from 'domain/companies/companies.controller';
 import { AuthMiddleware } from 'middlewares/auth.middleware';
 import { Validator } from 'utils/validator';
 import { Validation } from 'domain/companies/companies.validation';
-import { upload } from 'utils/upload';
+import { fileStorage } from 'utils/file-storage';
 import { DocumentMiddleware } from 'middlewares/document.middleware';
 import { Company } from 'domain/companies/companies.model';
 
@@ -63,7 +63,9 @@ class Route extends BaseRoute {
         Validator.catch,
         DocumentMiddleware.exists(Company),
         DocumentMiddleware.isOwner,
-        upload.toS3(['image/jpeg', 'image/jpg', 'image/png']).single('logo'),
+        fileStorage
+          .upload(['image/jpeg', 'image/jpg', 'image/png'])
+          .single('logo'),
         controller.addLogo
       );
   };
