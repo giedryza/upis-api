@@ -11,7 +11,7 @@ class Controller {
 
     req.session = { token };
 
-    res.status(StatusCode.Created).send({ data });
+    res.status(StatusCode.Created).json({ data });
   };
 
   signin = async (req: Request<{}, {}, Body.signin>, res: Response) => {
@@ -21,14 +21,14 @@ class Controller {
 
     req.session = { token };
 
-    res.status(StatusCode.Ok).send({ data });
+    res.status(StatusCode.Ok).json({ data });
   };
 
   signout = async (req: Request, res: Response) => {
     req.session = null;
     req.user = undefined;
 
-    res.status(StatusCode.Ok).send({});
+    res.status(StatusCode.Ok).json({});
   };
 }
 

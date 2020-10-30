@@ -16,13 +16,13 @@ export class ErrorMiddleware {
     _next: NextFunction
   ) => {
     if (err instanceof BaseError) {
-      res.status(err.statusCode).send({ data: err.serialize() });
+      res.status(err.statusCode).json({ data: err.serialize() });
       return;
     }
 
     console.error(err);
 
-    res.status(StatusCode.InternalServerError).send({
+    res.status(StatusCode.InternalServerError).json({
       data: [{ message: err.message || 'Something went wrong' }],
     });
   };
