@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { BaseRoute } from 'utils/route.base';
+import { BaseRoute } from 'routes/_base.route';
 import { controller } from 'domain/companies/companies.controller';
 import { AuthMiddleware } from 'middlewares/auth.middleware';
 import { Validator } from 'utils/validator';

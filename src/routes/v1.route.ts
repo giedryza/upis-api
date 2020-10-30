@@ -1,22 +1,31 @@
 import { Router } from 'express';
+import { BaseRoute } from 'routes/_base.route';
 import { route as usersRoute } from 'domain/users/users.route';
 import { route as companiesRoute } from 'domain/companies/companies.route';
 
-class Routes {
+class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
 
+  path = '/api/v1';
+
   constructor() {
-    this.users();
-    this.companies();
+    super();
+
+    this.init();
   }
 
-  users = () => {
+  init = () => {
+    this.users();
+    this.companies();
+  };
+
+  private users = () => {
     this.router.use(usersRoute.path, usersRoute.router);
   };
 
-  companies = () => {
+  private companies = () => {
     this.router.use(companiesRoute.path, companiesRoute.router);
   };
 }
 
-export const routes = new Routes();
+export const v1Route = new Route();
