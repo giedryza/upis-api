@@ -59,7 +59,7 @@ class Controller {
 
     const { data } = await Service.addLogo({ document, file });
 
-    res.json({ data });
+    res.status(StatusCode.Ok).json({ data });
   };
 }
 
