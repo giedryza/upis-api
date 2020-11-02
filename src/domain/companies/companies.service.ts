@@ -2,18 +2,19 @@ import { CompanyRecord, Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { Helpers } from 'utils/helpers';
 import { List } from 'types/mongoose';
+import { CompaniesAggregation } from 'domain/companies/aggregations/companies.aggregation';
 import { BadRequestError } from 'errors/bad-request.error';
-import { QueryAggregation } from 'aggregations/query.aggregation';
 import { fileStorage } from 'utils/file-storage';
 
 export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
-    const pipeline = new QueryAggregation(query);
+    const pipeline = new CompaniesAggregation(query);
 
     const [{ meta, data }] = await Company.aggregate<List<CompanyRecord>>([
       pipeline.filter,
       pipeline.sort,
       pipeline.paginate,
+      pipeline.serialize,
     ]);
 
     return { data, meta };

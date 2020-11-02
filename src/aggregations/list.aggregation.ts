@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { Basics } from 'utils/basics';
 
-export class QueryAggregation {
+export class ListAggregation {
   private reservedParams = ['sort', 'page', 'limit'];
 
   private defaults = {
@@ -9,6 +9,14 @@ export class QueryAggregation {
     limit: 30,
     page: 1,
   };
+
+  private get paginationParams() {
+    const page = Basics.toPositive(this.query.page, this.defaults.page);
+    const limit = Basics.toPositive(this.query.limit, this.defaults.limit);
+    const skip = (page - 1) * limit;
+
+    return { page, limit, skip };
+  }
 
   constructor(private query: Request['query']) {}
 
@@ -33,14 +41,33 @@ export class QueryAggregation {
   }
 
   get paginate() {
-    const page = Basics.toPositive(this.query.page, this.defaults.page);
-    const limit = Basics.toPositive(this.query.limit, this.defaults.limit);
-    const skip = (page - 1) * limit;
+    const { page, limit, skip } = this.paginationParams;
 
     return {
       $facet: {
         meta: [{ $count: 'total' }, { $addFields: { page, limit } }],
         data: [{ $skip: skip }, { $limit: limit }],
+      },
+    };
+  }
+
+  get serialize() {
+    const { page, limit } = this.paginationParams;
+
+    return {
+      $project: {
+        meta: {
+          $cond: {
+            if: { $gt: [{ $size: '$meta' }, 0] },
+            then: { $arrayElemAt: ['$meta', 0] },
+            else: {
+              total: { $size: '$data' },
+              page,
+              limit,
+            },
+          },
+        },
+        data: 1,
       },
     };
   }

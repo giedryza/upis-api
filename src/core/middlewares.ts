@@ -2,7 +2,7 @@ import { Express } from 'express';
 import { CommonMiddleware } from 'middlewares/common.middleware';
 import { ErrorMiddleware } from 'middlewares/error.middleware';
 
-class Middlewares {
+export class Middlewares {
   static common = (app: Express) => {
     const middleware = new CommonMiddleware(app);
 
@@ -21,5 +21,3 @@ class Middlewares {
     middleware.useError();
   };
 }
-
-export { Middlewares };
