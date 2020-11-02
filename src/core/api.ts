@@ -2,7 +2,7 @@ import { Express } from 'express';
 import { v1Route } from 'routes/v1.route';
 import { NotFoundError } from 'errors/not-found.error';
 
-class Api {
+export class Api {
   static v1 = (app: Express) => {
     app.use(v1Route.path, v1Route.router);
   };
@@ -13,5 +13,3 @@ class Api {
     });
   };
 }
-
-export { Api };
