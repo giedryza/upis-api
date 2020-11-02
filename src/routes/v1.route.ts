@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { BaseRoute } from 'routes/_base.route';
-import { route as usersRoute } from 'domain/users/users.route';
-import { route as companiesRoute } from 'domain/companies/companies.route';
+import { usersRoute } from 'domain/users/users.route';
+import { companiesRoute } from 'domain/companies/companies.route';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });

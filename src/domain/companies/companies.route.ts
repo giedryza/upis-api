@@ -71,4 +71,4 @@ class Route extends BaseRoute {
   };
 }
 
-export const route = new Route();
+export const companiesRoute = new Route();
