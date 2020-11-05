@@ -13,14 +13,3 @@ export interface WithTimestamp {
   createdAt: Date;
   updatedAt: Date;
 }
-
-export interface Meta {
-  total: number;
-  page: number;
-  limit: number;
-}
-
-export interface List<T> {
-  meta: Meta;
-  data: T[];
-}
