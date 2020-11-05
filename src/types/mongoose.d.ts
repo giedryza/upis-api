@@ -14,10 +14,6 @@ export interface WithTimestamp {
   updatedAt: Date;
 }
 
-export interface DocumentWithUser extends Document {
-  user: ID;
-}
-
 export interface Meta {
   total: number;
   page: number;
