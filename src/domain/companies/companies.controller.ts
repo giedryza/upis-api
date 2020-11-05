@@ -1,8 +1,11 @@
 import { Request, Response } from 'express';
-import { StatusCode } from 'constants/status-code';
+import { Helpers } from 'utils/helpers';
+import { ListResponse } from 'responses/list.response';
+import { SuccessResponse } from 'responses/success.response';
+import { CreatedResponse } from 'responses/created.response';
+import { NoContentResponse } from 'responses/no-content.response';
 import { Body } from 'domain/companies/companies.types';
 import { Service } from 'domain/companies/companies.service';
-import { Helpers } from 'utils/helpers';
 
 class Controller {
   getAll = async (req: Request, res: Response) => {
@@ -10,7 +13,7 @@ class Controller {
 
     const { data, meta } = await Service.getAll({ query });
 
-    res.status(StatusCode.Ok).json({ meta, data });
+    return new ListResponse(res, data, meta).send();
   };
 
   getOne = async (req: Request, res: Response) => {
@@ -18,7 +21,7 @@ class Controller {
 
     const { data } = await Service.getOne({ id });
 
-    res.status(StatusCode.Ok).json({ data });
+    return new SuccessResponse(res, data).send();
   };
 
   create = async (req: Request<{}, {}, Body.create>, res: Response) => {
@@ -30,7 +33,7 @@ class Controller {
       body,
     });
 
-    res.status(StatusCode.Created).json({ data });
+    return new CreatedResponse(res, data).send();
   };
 
   update = async (req: Request, res: Response) => {
@@ -44,7 +47,7 @@ class Controller {
       body,
     });
 
-    res.status(StatusCode.Ok).json({ data });
+    return new SuccessResponse(res, data).send();
   };
 
   destroy = async (req: Request, res: Response) => {
@@ -53,7 +56,7 @@ class Controller {
 
     await Service.destroy({ id, userId });
 
-    res.status(StatusCode.NoContent).json({});
+    return new NoContentResponse(res).send();
   };
 
   addLogo = async (req: Request, res: Response) => {
@@ -63,7 +66,7 @@ class Controller {
 
     const { data } = await Service.addLogo({ id, userId, file });
 
-    res.status(StatusCode.Ok).json({ data });
+    return new SuccessResponse(res, data).send();
   };
 }
 

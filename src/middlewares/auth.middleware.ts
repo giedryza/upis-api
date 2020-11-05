@@ -29,13 +29,15 @@ export class AuthMiddleware {
     next();
   };
 
-  static restrict = (roles: Role[]) => {
-    return (req: Request, _res: Response, next: NextFunction) => {
-      if (!req.user || !roles.includes(req.user.role)) {
-        throw new UnauthorizedError();
-      }
+  static restrict = (roles: Role[]) => (
+    req: Request,
+    _res: Response,
+    next: NextFunction
+  ) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      throw new UnauthorizedError();
+    }
 
-      next();
-    };
+    next();
   };
 }
