@@ -1,33 +1,39 @@
-import { CompanyRecord, Payload } from 'domain/companies/companies.types';
+import { Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
-import { Helpers } from 'utils/helpers';
-import { List } from 'types/mongoose';
-import { CompaniesAggregation } from 'domain/companies/aggregations/companies.aggregation';
 import { BadRequestError } from 'errors/bad-request.error';
 import { fileStorage } from 'utils/file-storage';
+import { Basics } from 'utils/basics';
+import { NotFoundError } from 'errors/not-found.error';
+import { Query } from 'utils/query';
 
 export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
-    const pipeline = new CompaniesAggregation(query);
+    const { filter, sort, select, page, limit } = new Query(query);
 
-    const [{ meta, data }] = await Company.aggregate<List<CompanyRecord>>([
-      pipeline.filter,
-      pipeline.sort,
-      pipeline.paginate,
-      pipeline.serialize,
-    ]);
+    const { docs, total } = await Company.paginate(filter, {
+      page,
+      limit,
+      sort,
+      select,
+    });
 
-    return { data, meta };
+    return { data: docs, meta: { total, page, limit } };
   };
 
-  static getOne = ({ document }: Payload.getOne) => {
-    return { data: document };
+  static getOne = async ({ id }: Payload.getOne) => {
+    const company = await Company.findById(id).lean();
+
+    if (!company) {
+      throw new NotFoundError('Record not found.');
+    }
+
+    return { data: company };
   };
 
-  static create = async ({ user, update }: Payload.create) => {
+  static create = async ({ userId, body }: Payload.create) => {
     const company = Company.construct({
-      user,
-      ...update,
+      user: userId,
+      ...body,
     });
 
     await company.save();
@@ -35,37 +41,66 @@ export class Service {
     return { data: company };
   };
 
-  static update = async ({ document, update }: Payload.update) => {
-    const company = await Helpers.update(document, update);
+  static update = async ({ id, userId, body }: Payload.update) => {
+    const filter = { _id: id, user: userId };
+    const update = Basics.stripUndefined(body);
+    const options = { new: true };
+
+    const company = await Company.findOneAndUpdate(
+      filter,
+      update,
+      options
+    ).lean();
+
+    if (!company) {
+      throw new BadRequestError('Failed to update the record.');
+    }
 
     return { data: company };
   };
 
-  static destroy = async ({ document }: Payload.destroy) => {
-    const old = document.logo.key;
+  static destroy = async ({ id, userId }: Payload.destroy) => {
+    const filter = { _id: id, user: userId };
 
-    await document.remove();
+    const company = await Company.findOneAndDelete(filter).lean();
 
-    if (old) {
-      fileStorage.delete(old);
+    if (!company) {
+      throw new BadRequestError('Failed to update the record.');
+    }
+
+    const logo = company.logo.key;
+
+    if (logo) {
+      fileStorage.delete(logo);
     }
   };
 
-  static addLogo = async ({ document, file }: Payload.addLogo) => {
+  static addLogo = async ({ id, userId, file }: Payload.addLogo) => {
     if (!file) {
       throw new BadRequestError('File upload failed. Try again.');
     }
 
-    const { location, key, contentType } = file;
-    const old = document.logo.key;
-    const update = { logo: { location, key, contentType } };
+    const filter = { _id: id, user: userId };
+    const update = {
+      logo: {
+        location: file.location,
+        key: file.key,
+        contentType: file.contentType,
+      },
+    };
 
-    const company = await Helpers.update(document, update);
+    const company = await Company.findOneAndUpdate(filter, update).lean();
 
-    if (old) {
-      fileStorage.delete(old);
+    if (!company) {
+      throw new BadRequestError('Failed to update the record.');
     }
 
-    return { data: company };
+    const logo = company.logo.key;
+
+    if (logo) {
+      fileStorage.delete(logo);
+    }
+
+    return { data: { ...company, ...update } };
   };
 }

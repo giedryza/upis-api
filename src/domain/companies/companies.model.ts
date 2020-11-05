@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate';
 import {
   CompanyConstructor,
   CompanyDocument,
@@ -80,6 +81,8 @@ const schema = new Schema(
     },
   }
 );
+
+schema.plugin(mongoosePaginate);
 
 schema.statics.construct = (payload: CompanyConstructor) =>
   // eslint-disable-next-line no-use-before-define

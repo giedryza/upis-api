@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { Document, Model, Types } from 'mongoose';
+import { Document, Types, PaginateModel } from 'mongoose';
 import { WithTimestamp } from 'types/mongoose';
 import { UserDocument } from 'domain/users/users.types';
 
@@ -45,8 +45,8 @@ export interface CompanyRecord extends WithTimestamp {
 
 export interface CompanyDocument extends CompanyRecord, Document {}
 
-export interface CompanyModel extends Model<CompanyDocument> {
-  construct(payload: CompanyConstructor): CompanyDocument;
+export interface CompanyModel extends PaginateModel<CompanyDocument> {
+  construct: (payload: CompanyConstructor) => CompanyDocument;
 }
 
 export declare namespace Body {
@@ -75,25 +75,28 @@ export declare namespace Payload {
   }
 
   interface getOne {
-    document: CompanyDocument;
+    id: string;
   }
 
   interface create {
-    user: string;
-    update: Body.create;
+    userId: string;
+    body: Body.create;
   }
 
   interface update {
-    document: CompanyDocument;
-    update: Body.update;
+    id: string;
+    userId: string;
+    body: Body.update;
   }
 
   interface destroy {
-    document: CompanyDocument;
+    id: string;
+    userId: string;
   }
 
   interface addLogo {
-    document: CompanyDocument;
+    id: string;
+    userId: string;
     file?: Request['file'];
   }
 }
