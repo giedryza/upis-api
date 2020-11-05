@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
-import { StatusCode } from 'constants/status-code';
+import { SuccessResponse } from 'responses/success.response';
+import { CreatedResponse } from 'responses/created.response';
+import { NoContentResponse } from 'responses/no-content.response';
 import { Body } from 'domain/users/users.types';
 import { Service } from 'domain/users/users.service';
 
@@ -11,7 +13,7 @@ class Controller {
 
     req.session = { token };
 
-    res.status(StatusCode.Created).json({ data });
+    return new CreatedResponse(res, data).send();
   };
 
   signin = async (req: Request<{}, {}, Body.signin>, res: Response) => {
@@ -21,14 +23,14 @@ class Controller {
 
     req.session = { token };
 
-    res.status(StatusCode.Ok).json({ data });
+    return new SuccessResponse(res, data).send();
   };
 
   signout = async (req: Request, res: Response) => {
     req.session = null;
     req.user = undefined;
 
-    res.status(StatusCode.Ok).json({});
+    return new NoContentResponse(res).send();
   };
 }
 
