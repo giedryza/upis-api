@@ -6,7 +6,7 @@ export class Query {
 
   private defaults = {
     sort: { createdAt: -1 },
-    limit: 3,
+    limit: 30,
     page: 1,
   };
 
