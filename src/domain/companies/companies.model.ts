@@ -82,11 +82,13 @@ const schema = new Schema(
   }
 );
 
-schema.plugin(mongoosePaginate);
-
-schema.statics.construct = (payload: CompanyConstructor) =>
+class SchemaLoader {
   // eslint-disable-next-line no-use-before-define
-  new Company(payload);
+  static construct = (payload: CompanyConstructor) => new Company(payload);
+}
+
+schema.plugin(mongoosePaginate);
+schema.loadClass(SchemaLoader);
 
 const Company = model<CompanyDocument, CompanyModel>('Company', schema);
 

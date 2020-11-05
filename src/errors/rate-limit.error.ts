@@ -25,7 +25,5 @@ export class RateLimitError extends BaseError {
     }.`;
   }
 
-  serialize() {
-    return [{ message: this.serializedMessage }];
-  }
+  serialize = () => [{ message: this.serializedMessage }];
 }
