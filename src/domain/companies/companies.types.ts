@@ -99,4 +99,8 @@ export declare namespace Payload {
     userId: string;
     file?: Request['file'];
   }
+
+  interface cleanup {
+    logo?: string;
+  }
 }

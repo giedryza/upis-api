@@ -9,19 +9,23 @@ import { Query } from 'utils/query';
 export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
     const { filter, sort, select, page, limit } = new Query(query);
-
-    const { docs, totalDocs: total } = await Company.paginate(filter, {
+    const options = {
       page,
       limit,
       sort,
       select,
-    });
+      populate: 'user',
+      lean: true,
+      leanWithId: false,
+    };
+
+    const { docs, totalDocs: total } = await Company.paginate(filter, options);
 
     return { data: docs, meta: { total, page, limit } };
   };
 
   static getOne = async ({ id }: Payload.getOne) => {
-    const company = await Company.findById(id).lean();
+    const company = await Company.findById(id).populate('user').lean();
 
     if (!company) {
       throw new NotFoundError('Record not found.');
@@ -68,11 +72,7 @@ export class Service {
       throw new BadRequestError('Failed to update the record.');
     }
 
-    const logo = company.logo.key;
-
-    if (logo) {
-      fileStorage.delete(logo);
-    }
+    Service.deleteLogo({ logo: company.logo.key });
   };
 
   static addLogo = async ({ id, userId, file }: Payload.addLogo) => {
@@ -95,12 +95,14 @@ export class Service {
       throw new BadRequestError('Failed to update the record.');
     }
 
-    const logo = company.logo.key;
+    Service.deleteLogo({ logo: company.logo.key });
 
+    return { data: { ...company, ...update } };
+  };
+
+  static deleteLogo = ({ logo }: Payload.cleanup) => {
     if (logo) {
       fileStorage.delete(logo);
     }
-
-    return { data: { ...company, ...update } };
   };
 }
