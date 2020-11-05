@@ -10,7 +10,7 @@ export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
     const { filter, sort, select, page, limit } = new Query(query);
 
-    const { docs, total } = await Company.paginate(filter, {
+    const { docs, totalDocs: total } = await Company.paginate(filter, {
       page,
       limit,
       sort,

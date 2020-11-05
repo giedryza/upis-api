@@ -1,4 +1,4 @@
-import { Document, Model } from 'mongoose';
+import { Document, PaginateModel } from 'mongoose';
 import { WithTimestamp } from 'types/mongoose';
 
 export enum Role {
@@ -26,7 +26,7 @@ export interface UserRecord extends WithTimestamp {
 
 export interface UserDocument extends UserRecord, Document {}
 
-export interface UserModel extends Model<UserDocument> {
+export interface UserModel extends PaginateModel<UserDocument> {
   construct(payload: UserConstructor): UserDocument;
 }
 
