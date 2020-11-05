@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 import { Password } from 'utils/password';
 import { UnauthorizedError } from 'errors/unauthorized.error';
 import {
@@ -35,6 +36,8 @@ const schema = new Schema(
     },
   }
 );
+
+schema.plugin(mongoosePaginate);
 
 schema.pre('save', async function (next) {
   if (this.isModified('password')) {
