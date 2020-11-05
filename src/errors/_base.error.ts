@@ -14,5 +14,5 @@ export abstract class BaseError extends Error {
     Object.setPrototypeOf(this, BaseError.prototype);
   }
 
-  abstract serialize(): ApiError[];
+  abstract serialize: () => ApiError[];
 }

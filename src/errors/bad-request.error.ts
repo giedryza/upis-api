@@ -10,7 +10,5 @@ export class BadRequestError extends BaseError {
     Object.setPrototypeOf(this, BadRequestError.prototype);
   }
 
-  serialize() {
-    return [{ message: this.message }];
-  }
+  serialize = () => [{ message: this.message }];
 }

@@ -10,7 +10,5 @@ export class NotFoundError extends BaseError {
     Object.setPrototypeOf(this, NotFoundError.prototype);
   }
 
-  serialize() {
-    return [{ message: this.message }];
-  }
+  serialize = () => [{ message: this.message }];
 }

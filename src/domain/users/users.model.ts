@@ -37,7 +37,13 @@ const schema = new Schema(
   }
 );
 
+class SchemaLoader {
+  // eslint-disable-next-line no-use-before-define
+  static construct = (payload: UserConstructor) => new User(payload);
+}
+
 schema.plugin(mongoosePaginate);
+schema.loadClass(SchemaLoader);
 
 schema.pre('save', async function (next) {
   if (this.isModified('password')) {
@@ -51,9 +57,6 @@ schema.pre('save', async function (next) {
 
   next();
 });
-
-// eslint-disable-next-line no-use-before-define
-schema.statics.construct = (payload: UserConstructor) => new User(payload);
 
 const User = model<UserDocument, UserModel>('User', schema);
 

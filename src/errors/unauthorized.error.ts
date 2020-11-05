@@ -10,7 +10,5 @@ export class UnauthorizedError extends BaseError {
     Object.setPrototypeOf(this, UnauthorizedError.prototype);
   }
 
-  serialize() {
-    return [{ message: 'Not authorized' }];
-  }
+  serialize = () => [{ message: 'Not authorized' }];
 }
