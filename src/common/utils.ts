@@ -1,4 +1,4 @@
-export class Basics {
+export class Utils {
   static stripUndefined = (obj: { [key: string]: any }) =>
     Object.keys(obj)
       .filter((k) => obj[k] !== undefined)
@@ -25,7 +25,7 @@ export class Basics {
   };
 
   static toPositive = (value: any, fallback: number) => {
-    if (!Basics.isNumeric(value)) return fallback;
+    if (!Utils.isNumeric(value)) return fallback;
 
     const number = +value;
 

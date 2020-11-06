@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Jwt } from 'utils/jwt';
+import { Jwt } from 'common/jwt';
 import { UnauthorizedError } from 'errors/unauthorized.error';
 import { Role } from 'domain/users/users.types';
 

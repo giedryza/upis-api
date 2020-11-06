@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
-import { Password } from 'utils/password';
+import { Password } from 'common/password';
 import { UnauthorizedError } from 'errors/unauthorized.error';
 import {
   UserConstructor,
