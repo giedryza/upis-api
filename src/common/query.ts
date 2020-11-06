@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { Basics } from 'utils/basics';
+import { Utils } from 'common/utils';
 
 export class Query {
   private reservedParams = ['sort', 'select', 'page', 'limit'];
@@ -13,15 +13,15 @@ export class Query {
   constructor(private query: Request['query']) {}
 
   get page() {
-    return Basics.toPositive(this.query.page, this.defaults.page);
+    return Utils.toPositive(this.query.page, this.defaults.page);
   }
 
   get limit() {
-    return Basics.toPositive(this.query.limit, this.defaults.limit);
+    return Utils.toPositive(this.query.limit, this.defaults.limit);
   }
 
   get filter() {
-    return Basics.filterObject(this.query, this.reservedParams);
+    return Utils.filterObject(this.query, this.reservedParams);
   }
 
   get select() {
@@ -33,7 +33,7 @@ export class Query {
   get sort() {
     const { sort } = this.query;
 
-    return Basics.isObject(sort)
+    return Utils.isObject(sort)
       ? Object.entries(sort).reduce(
           (acc, [key, value]) =>
             ['-1', '1'].includes(value) ? { ...acc, [key]: +value } : acc,

@@ -1,8 +1,8 @@
 import { Payload } from 'domain/users/users.types';
 import { BadRequestError } from 'errors/bad-request.error';
-import { Jwt } from 'utils/jwt';
+import { Jwt } from 'common/jwt';
 import { User } from 'domain/users/users.model';
-import { Password } from 'utils/password';
+import { Password } from 'common/password';
 
 export class Service {
   static signup = async ({ email, password }: Payload.signup) => {

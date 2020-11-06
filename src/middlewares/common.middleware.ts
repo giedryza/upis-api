@@ -3,7 +3,7 @@ import cookieSession from 'cookie-session';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit, { Options } from 'express-rate-limit';
-import { Jwt } from 'utils/jwt';
+import { Jwt } from 'common/jwt';
 import { AuthMiddleware } from 'middlewares/auth.middleware';
 import { RateLimitError } from 'errors/rate-limit.error';
 

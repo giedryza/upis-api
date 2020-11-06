@@ -1,10 +1,10 @@
 import { Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { BadRequestError } from 'errors/bad-request.error';
-import { fileStorage } from 'utils/file-storage';
-import { Basics } from 'utils/basics';
+import { fileStorage } from 'common/file-storage';
+import { Utils } from 'common/utils';
 import { NotFoundError } from 'errors/not-found.error';
-import { Query } from 'utils/query';
+import { Query } from 'common/query';
 
 export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
@@ -47,7 +47,7 @@ export class Service {
 
   static update = async ({ id, userId, body }: Payload.update) => {
     const filter = { _id: id, user: userId };
-    const update = Basics.stripUndefined(body);
+    const update = Utils.stripUndefined(body);
     const options = { new: true };
 
     const company = await Company.findOneAndUpdate(
