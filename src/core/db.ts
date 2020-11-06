@@ -16,7 +16,7 @@ class Db {
     useCreateIndex: true,
   };
 
-  get uri() {
+  private get uri() {
     return this.connectionString
       .replace('<DB_USERNAME>', this.username)
       .replace('<DB_PASSWORD>', this.password)
