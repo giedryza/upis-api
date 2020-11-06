@@ -27,7 +27,7 @@ class Db {
     try {
       const connection = await connect(this.uri, this.options);
 
-      const { name, host } = connection.connections[0];
+      const [{ name, host }] = connection.connections;
 
       console.info(`connected to ${name} database on ${host}`);
     } catch (err) {
