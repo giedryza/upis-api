@@ -1,5 +1,5 @@
 import { Express, Request, Response, NextFunction } from 'express';
-import { ApiError, BaseError } from 'errors/_base.error';
+import { BaseError } from 'errors/_base.error';
 import { StatusCode } from 'constants/status-code';
 import { ErrorResponse } from 'responses/error.response';
 
@@ -22,9 +22,7 @@ export class ErrorMiddleware {
 
     console.error(err);
 
-    const genericError: ApiError[] = [
-      { message: err.message || 'Something went wrong' },
-    ];
+    const genericError = [{ message: err.message || 'Something went wrong' }];
 
     return new ErrorResponse(
       res,
