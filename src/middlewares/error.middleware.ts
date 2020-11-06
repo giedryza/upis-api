@@ -1,6 +1,7 @@
 import { Express, Request, Response, NextFunction } from 'express';
 import { ApiError, BaseError } from 'errors/_base.error';
 import { StatusCode } from 'constants/status-code';
+import { ErrorResponse } from 'responses/error.response';
 
 export class ErrorMiddleware {
   constructor(private app: Express) {}
@@ -16,8 +17,7 @@ export class ErrorMiddleware {
     _next: NextFunction
   ) => {
     if (err instanceof BaseError) {
-      res.status(err.statusCode).json({ data: err.serialize() });
-      return;
+      return new ErrorResponse(res, err.statusCode, err.serialize()).send();
     }
 
     console.error(err);
@@ -26,8 +26,10 @@ export class ErrorMiddleware {
       { message: err.message || 'Something went wrong' },
     ];
 
-    res.status(StatusCode.InternalServerError).json({
-      data: genericError,
-    });
+    return new ErrorResponse(
+      res,
+      StatusCode.InternalServerError,
+      genericError
+    ).send();
   };
 }
