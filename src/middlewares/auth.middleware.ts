@@ -13,7 +13,7 @@ export class AuthMiddleware {
       const user = await Jwt.verify(req.session.token);
 
       req.user = user;
-    } catch (err) {
+    } catch (err: unknown) {
       req.session = null;
       req.user = undefined;
     }

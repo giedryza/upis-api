@@ -50,7 +50,7 @@ schema.pre('save', async function (next) {
     try {
       const hashed = await Password.hash(this.get('password'));
       this.set('password', hashed);
-    } catch (err) {
+    } catch (err: unknown) {
       throw new UnauthorizedError();
     }
   }

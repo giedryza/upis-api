@@ -30,10 +30,13 @@ class Db {
       const [{ name, host }] = connection.connections;
 
       console.info(`connected to ${name} database on ${host}`);
-    } catch (err) {
+    } catch (err: unknown) {
       console.error(err);
 
-      throw new Error(err.message);
+      const message =
+        err instanceof Error ? err.message : 'Something went wrong.';
+
+      throw new Error(message);
     }
   };
 }

@@ -22,7 +22,7 @@ export class ErrorMiddleware {
 
     console.error(err);
 
-    const genericError = [{ message: err.message || 'Something went wrong' }];
+    const genericError = [{ message: err.message ?? 'Something went wrong.' }];
 
     return new ErrorResponse(
       res,
