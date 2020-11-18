@@ -17,9 +17,9 @@ class Controller {
   };
 
   getOne = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { slug } = req.params;
 
-    const { data } = await Service.getOne({ id });
+    const { data } = await Service.getOne({ slug });
 
     return new SuccessResponse(res, data).send();
   };

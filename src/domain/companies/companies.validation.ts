@@ -4,17 +4,6 @@ import { NotFoundError } from 'errors/not-found.error';
 import { Company } from 'domain/companies/companies.model';
 
 export class Validation {
-  static getOne = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
-        },
-      },
-    },
-  });
-
   static create = checkSchema({
     name: {
       in: ['body'],

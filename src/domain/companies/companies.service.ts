@@ -1,10 +1,11 @@
 import { Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { BadRequestError } from 'errors/bad-request.error';
+import { NotFoundError } from 'errors/not-found.error';
 import { fileStorage } from 'common/file-storage';
 import { Utils } from 'common/utils';
-import { NotFoundError } from 'errors/not-found.error';
 import { Query } from 'common/query';
+import { Slug } from 'common/slug';
 
 export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
@@ -24,8 +25,8 @@ export class Service {
     return { data: docs, meta: { total, page, limit } };
   };
 
-  static getOne = async ({ id }: Payload.getOne) => {
-    const company = await Company.findById(id).populate('user').lean();
+  static getOne = async ({ slug }: Payload.getOne) => {
+    const company = await Company.findOne({ slug }).populate('user').lean();
 
     if (!company) {
       throw new NotFoundError('Record not found.');
@@ -39,6 +40,20 @@ export class Service {
       user: userId,
       ...body,
     });
+
+    const slug = await Slug.get(company.name);
+
+    if (!slug) {
+      throw new BadRequestError('Invalid company name. Try another.');
+    }
+
+    const taken = await Company.findOne({ slug }).lean();
+
+    if (taken) {
+      throw new BadRequestError('Company name is taken. Try another.');
+    }
+
+    company.set('slug', slug);
 
     await company.save();
 
