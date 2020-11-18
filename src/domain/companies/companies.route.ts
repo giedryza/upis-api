@@ -28,9 +28,10 @@ class Route extends BaseRoute {
         controller.create
       );
 
+    this.router.route('/:slug').get(controller.getOne);
+
     this.router
       .route('/:id')
-      .get(Validation.getOne, Validator.catch, controller.getOne)
       .patch(
         AuthMiddleware.protect,
         Validation.update,

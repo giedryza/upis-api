@@ -28,6 +28,7 @@ export interface CompanyRecord extends WithTimestamp {
   name: string;
   phone: string;
   email: string;
+  slug: string;
   description?: string;
   website?: string;
   social?: Social[];
@@ -75,7 +76,7 @@ export declare namespace Payload {
   }
 
   interface getOne {
-    id: string;
+    slug: string;
   }
 
   interface create {
