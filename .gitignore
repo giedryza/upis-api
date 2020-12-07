@@ -1,6 +1,7 @@
 node_modules/
 build/
 raw/
+.vscode/
 
 .env.development
 .env.production

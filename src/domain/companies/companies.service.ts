@@ -26,6 +26,10 @@ export class Service {
   };
 
   static getOne = async ({ slug }: Payload.getOne) => {
+    if (!slug) {
+      throw new NotFoundError('Record not found.');
+    }
+
     const company = await Company.findOne({ slug }).populate('user').lean();
 
     if (!company) {
@@ -61,6 +65,10 @@ export class Service {
   };
 
   static update = async ({ id, userId, body }: Payload.update) => {
+    if (!id) {
+      throw new NotFoundError('Record not found.');
+    }
+
     const filter = { _id: id, user: userId };
     const update = Utils.stripUndefined(body);
     const options = { new: true };
@@ -79,6 +87,10 @@ export class Service {
   };
 
   static destroy = async ({ id, userId }: Payload.destroy) => {
+    if (!id) {
+      throw new NotFoundError('Record not found.');
+    }
+
     const filter = { _id: id, user: userId };
 
     const company = await Company.findOneAndDelete(filter).lean();
@@ -91,7 +103,7 @@ export class Service {
   };
 
   static addLogo = async ({ id, userId, file }: Payload.addLogo) => {
-    if (!file) {
+    if (!id || !file) {
       throw new BadRequestError('File upload failed. Try again.');
     }
 
