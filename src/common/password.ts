@@ -1,4 +1,5 @@
 import { scrypt, randomBytes } from 'crypto';
+import { BadRequestError } from 'errors/bad-request.error';
 
 export class Password {
   static hash = async (password: string): Promise<string> =>
@@ -18,9 +19,15 @@ export class Password {
     new Promise((resolve, reject) => {
       const [key, salt] = hash.split(':');
 
+      if (!key || !salt) {
+        return reject(
+          new BadRequestError('Incorrect email or password. Try again.')
+        );
+      }
+
       scrypt(password, salt, 64, (err, buffer) => {
         if (err) {
-          reject(err);
+          return reject(err);
         }
 
         resolve(key === buffer.toString('hex'));

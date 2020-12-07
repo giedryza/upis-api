@@ -17,7 +17,7 @@ class Controller {
   };
 
   getOne = async (req: Request, res: Response) => {
-    const { slug } = req.params;
+    const { slug = '' } = req.params;
 
     const { data } = await Service.getOne({ slug });
 
@@ -37,7 +37,7 @@ class Controller {
   };
 
   update = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id = '' } = req.params;
     const { id: userId } = req.user!;
     const body = Helpers.getBody<Body.update>(req);
 
@@ -51,7 +51,7 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id = '' } = req.params;
     const { id: userId } = req.user!;
 
     await Service.destroy({ id, userId });
@@ -60,7 +60,7 @@ class Controller {
   };
 
   addLogo = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { id = '' } = req.params;
     const { id: userId } = req.user!;
     const { file } = req;
 

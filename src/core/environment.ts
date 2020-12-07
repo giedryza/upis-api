@@ -17,7 +17,7 @@ class Environment {
     'AWS_REGION',
   ];
 
-  verify = () =>
+  verify = (): Promise<void> =>
     new Promise((resolve, reject) => {
       this.requiredVariables.forEach((variable) => {
         if (!process.env[variable]) {
