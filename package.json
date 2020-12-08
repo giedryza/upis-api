@@ -15,10 +15,13 @@
     "start:prod": "cross-env NODE_PATH=build NODE_ENV=production node -r ./dotenv.js ./build/index.js",
     "compile": "tsc",
     "clean": "rimraf ./build",
-    "lint:code": "eslint \"src/**\"",
+    "browserslist": "npx browserslist",
+    "test:lint": "yarn lint:code && yarn lint:prettier && yarn lint:filenames && yarn compile",
+    "lint:code": "npx eslint \"src/**\"",
     "lint:code:fix": "yarn lint:code --fix",
     "lint:filenames": "npx @ls-lint/ls-lint",
-    "style:fix": "prettier --write \"src/**\""
+    "lint:prettier": "npx prettier --check \"src/**\"",
+    "lint:prettier:fix": "npx prettier --write \"src/**\""
   },
   "dependencies": {
     "aws-sdk": "^2.775.0",
