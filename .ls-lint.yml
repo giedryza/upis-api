@@ -1,0 +1,7 @@
+ls:
+  src:
+    .dir: kebab-case
+    .ts: lowercase
+
+ignore:
+  - node_modules
