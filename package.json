@@ -9,10 +9,10 @@
     "yarn": "1.22.10"
   },
   "scripts": {
-    "build": "yarn clean && yarn compile",
     "start": "yarn build && yarn start:prod",
     "start:dev": "nodemon",
     "start:prod": "cross-env NODE_PATH=build NODE_ENV=production node -r ./dotenv.js ./build/index.js",
+    "build": "yarn clean && yarn compile",
     "compile": "tsc",
     "clean": "rimraf ./build",
     "browserslist": "npx browserslist",
