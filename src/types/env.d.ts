@@ -3,6 +3,7 @@ export type NodeEnv = 'production' | 'development';
 export interface Env {
   NODE_ENV: NodeEnv;
   PORT: string;
+  HOST: string;
   DB_CONNECTION_STRING: string;
   DB_USERNAME: string;
   DB_PASSWORD: string;

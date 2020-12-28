@@ -32,6 +32,14 @@ class Controller {
 
     return new NoContentResponse(res).send();
   };
+
+  me = async (req: Request, res: Response) => {
+    const { user } = req;
+
+    const { data } = await Service.me({ user });
+
+    return new SuccessResponse(res, data).send();
+  };
 }
 
 export const controller = new Controller();

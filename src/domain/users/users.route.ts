@@ -3,6 +3,7 @@ import { BaseRoute } from 'routes/_base.route';
 import { controller } from 'domain/users/users.controller';
 import { Validator } from 'common/validator';
 import { Validation } from 'domain/users/users.validation';
+import { AuthMiddleware } from 'middlewares/auth.middleware';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
@@ -23,6 +24,7 @@ class Route extends BaseRoute {
       .route('/signin')
       .post(Validation.signin, Validator.catch, controller.signin);
     this.router.route('/signout').post(controller.signout);
+    this.router.route('/me').get(AuthMiddleware.user, controller.me);
   };
 }
 
