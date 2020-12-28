@@ -53,4 +53,12 @@ export class Service {
       token,
     };
   };
+
+  static me = async ({ user }: Payload.me) => {
+    return {
+      data: {
+        user: user ?? null,
+      },
+    };
+  };
 }

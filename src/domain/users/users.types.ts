@@ -51,4 +51,8 @@ export declare namespace Payload {
     email: string;
     password: string;
   }
+
+  interface me {
+    user?: User;
+  }
 }

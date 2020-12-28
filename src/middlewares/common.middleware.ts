@@ -1,6 +1,6 @@
 import { json, Express } from 'express';
 import cookieSession from 'cookie-session';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 import helmet from 'helmet';
 import rateLimit, { Options } from 'express-rate-limit';
 import { Jwt } from 'common/jwt';
@@ -15,7 +15,12 @@ export class CommonMiddleware {
   };
 
   useCors = () => {
-    this.app.use(cors());
+    const options: CorsOptions = {
+      origin: process.env.HOST,
+      credentials: true,
+    };
+
+    this.app.use(cors(options));
   };
 
   useHelmet = () => {
