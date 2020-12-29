@@ -4,7 +4,8 @@ class Environment {
   private requiredVariables: (keyof Env)[] = [
     'NODE_ENV',
     'PORT',
-    'HOST',
+    'HOST_CLIENT',
+    'HOST_API',
     'DB_CONNECTION_STRING',
     'DB_USERNAME',
     'DB_PASSWORD',

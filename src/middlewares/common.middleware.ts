@@ -16,7 +16,7 @@ export class CommonMiddleware {
 
   useCors = () => {
     const options: CorsOptions = {
-      origin: process.env.HOST,
+      origin: process.env.HOST_CLIENT,
       credentials: true,
     };
 
