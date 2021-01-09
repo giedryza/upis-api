@@ -26,10 +26,10 @@ class Controller {
 
   create = async (req: Request<{}, {}, Body.create>, res: Response) => {
     const body = Helpers.getBody<Body.create>(req);
-    const { id } = req.user!;
+    const { _id } = req.user!;
 
     const { data } = await Service.create({
-      userId: id,
+      userId: _id,
       body,
     });
 
@@ -38,7 +38,7 @@ class Controller {
 
   update = async (req: Request, res: Response) => {
     const { id = '' } = req.params;
-    const { id: userId } = req.user!;
+    const { _id: userId } = req.user!;
     const body = Helpers.getBody<Body.update>(req);
 
     const { data } = await Service.update({
@@ -52,7 +52,7 @@ class Controller {
 
   destroy = async (req: Request, res: Response) => {
     const { id = '' } = req.params;
-    const { id: userId } = req.user!;
+    const { _id: userId } = req.user!;
 
     await Service.destroy({ id, userId });
 
@@ -61,7 +61,7 @@ class Controller {
 
   addLogo = async (req: Request, res: Response) => {
     const { id = '' } = req.params;
-    const { id: userId } = req.user!;
+    const { _id: userId } = req.user!;
     const { file } = req;
 
     const { data } = await Service.addLogo({ id, userId, file });

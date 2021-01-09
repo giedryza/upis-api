@@ -34,6 +34,7 @@
     "class-methods-use-this": "off",
     "consistent-return": "off",
     "func-names": ["error", "never"],
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "no-underscore-dangle": "off"
   }
 }

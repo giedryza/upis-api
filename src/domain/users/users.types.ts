@@ -8,9 +8,14 @@ export enum Role {
 }
 
 export interface User {
-  id: string;
+  _id: string;
   email: string;
   role: Role;
+}
+
+export interface UserWithTimestamp extends User {
+  iat: number;
+  exp: number | null;
 }
 
 export interface UserConstructor {
@@ -53,6 +58,6 @@ export declare namespace Payload {
   }
 
   interface me {
-    user?: User;
+    user?: UserWithTimestamp;
   }
 }

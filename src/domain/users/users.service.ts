@@ -3,6 +3,7 @@ import { RequestValidationError } from 'errors/request-validation.error';
 import { Jwt } from 'common/jwt';
 import { User } from 'domain/users/users.model';
 import { Password } from 'common/password';
+import { Utils } from 'common/utils';
 
 export class Service {
   static signup = async ({ email, password }: Payload.signup) => {
@@ -17,14 +18,19 @@ export class Service {
     const user = User.construct({ email, password });
     await user.save();
 
-    const token = Jwt.token({
-      id: user.id,
+    const baseUser = {
+      _id: user.id,
       email: user.email,
       role: user.role,
-    });
+    };
+
+    const token = Jwt.token(baseUser);
 
     return {
-      data: { _id: user.id, email: user.email },
+      data: {
+        user: baseUser,
+        timestamp: Jwt.timestamp,
+      },
       token,
     };
   };
@@ -50,23 +56,46 @@ export class Service {
       ]);
     }
 
-    const token = Jwt.token({
-      id: user.id,
+    const baseUser = {
+      _id: user.id,
       email: user.email,
       role: user.role,
-    });
+    };
+
+    const token = Jwt.token(baseUser);
 
     return {
-      data: { _id: user.id, email: user.email },
+      data: {
+        user: baseUser,
+        timestamp: Jwt.timestamp,
+      },
       token,
     };
   };
 
   static me = async ({ user }: Payload.me) => {
+    const data = user
+      ? {
+          user: {
+            _id: user._id,
+            email: user.email,
+            role: user.role,
+          },
+          timestamp: {
+            iat: user.iat,
+            exp: user.exp,
+          },
+        }
+      : {
+          user: null,
+          timestamp: {
+            iat: Utils.nowInSeconds,
+            exp: null,
+          },
+        };
+
     return {
-      data: {
-        user: user ?? null,
-      },
+      data,
     };
   };
 }
