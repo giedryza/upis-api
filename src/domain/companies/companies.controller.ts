@@ -16,10 +16,10 @@ class Controller {
     return new ListResponse(res, data, meta).send();
   };
 
-  getByUser = async (req: Request, res: Response) => {
+  getOneByUser = async (req: Request, res: Response) => {
     const { user } = req;
 
-    const { data } = await Service.getByUser({ user });
+    const { data } = await Service.getOneByUser({ user });
 
     return new SuccessResponse(res, data).send();
   };

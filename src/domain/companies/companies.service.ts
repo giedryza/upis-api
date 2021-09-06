@@ -27,14 +27,12 @@ export class Service {
     return { data: docs, meta: { total, page, limit } };
   };
 
-  static getByUser = async ({ user }: Payload.getByUser) => {
+  static getOneByUser = async ({ user }: Payload.getOneByUser) => {
     if (!user) {
       throw new UnauthorizedError();
     }
 
-    const company = await Company.findOne({ user: user._id })
-      .populate('user')
-      .lean();
+    const company = await Company.findOne({ user: user._id }).lean();
 
     return { data: company ?? null };
   };

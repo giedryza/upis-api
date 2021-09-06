@@ -79,7 +79,7 @@ export declare namespace Payload {
     slug: string;
   }
 
-  interface getByUser {
+  interface getOneByUser {
     user?: UserWithTimestamp;
   }
 
