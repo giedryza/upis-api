@@ -12,11 +12,15 @@ class Server {
   };
 
   start = async () => {
-    await environment.verify();
+    try {
+      await environment.verify();
 
-    await db.connect();
+      await db.connect();
 
-    this.listen();
+      this.listen();
+    } catch (error) {
+      console.error(error);
+    }
   };
 }
 

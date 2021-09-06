@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { Document, Types, PaginateModel } from 'mongoose';
 import { WithTimestamp } from 'types/mongoose';
-import { UserDocument } from 'domain/users/users.types';
+import { UserDocument, UserWithTimestamp } from 'domain/users/users.types';
 
 export enum SocialType {
   Facebook = 'facebook',
@@ -75,8 +75,12 @@ export declare namespace Payload {
     query: Request['query'];
   }
 
-  interface getOne {
+  interface getOneBySlug {
     slug: string;
+  }
+
+  interface getByUser {
+    user?: UserWithTimestamp;
   }
 
   interface create {
