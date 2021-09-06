@@ -28,7 +28,9 @@ class Route extends BaseRoute {
         controller.create
       );
 
-    this.router.route('/:slug').get(controller.getOne);
+    this.router.route('/me').get(AuthMiddleware.user, controller.getByUser);
+
+    this.router.route('/:slug').get(controller.getOneBySlug);
 
     this.router
       .route('/:id')

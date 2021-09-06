@@ -16,10 +16,18 @@ class Controller {
     return new ListResponse(res, data, meta).send();
   };
 
-  getOne = async (req: Request, res: Response) => {
+  getByUser = async (req: Request, res: Response) => {
+    const { user } = req;
+
+    const { data } = await Service.getByUser({ user });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  getOneBySlug = async (req: Request, res: Response) => {
     const { slug = '' } = req.params;
 
-    const { data } = await Service.getOne({ slug });
+    const { data } = await Service.getOneBySlug({ slug });
 
     return new SuccessResponse(res, data).send();
   };
