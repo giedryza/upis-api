@@ -5,6 +5,17 @@ import { Company } from 'domain/companies/companies.model';
 import { SocialLink } from 'domain/social-links/social-links.model';
 
 export class Validation {
+  static getOneById = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new NotFoundError('Record not found.');
+        },
+      },
+    },
+  });
+
   static create = checkSchema({
     type: {
       in: ['body'],
@@ -37,6 +48,44 @@ export class Validation {
         options: async (value, { req }) => {
           await Validation.isCompanyOwner(value, req.user._id);
         },
+      },
+    },
+  });
+
+  static update = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new NotFoundError('Record not found.');
+        },
+      },
+      custom: {
+        options: async (value, { req }) => {
+          await Validation.isSocialLinkOwner(value, req.user._id);
+        },
+      },
+    },
+    url: {
+      in: ['body'],
+      optional: true,
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter social link url.',
+      },
+    },
+    type: {
+      in: ['body'],
+      optional: true,
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Choose social link type.',
+      },
+      isIn: {
+        options: [Object.values(SocialLinkType)],
+        errorMessage: 'Choose valid social link type.',
       },
     },
   });

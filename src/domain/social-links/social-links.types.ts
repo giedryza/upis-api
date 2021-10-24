@@ -40,8 +40,17 @@ export declare namespace Body {
 }
 
 export declare namespace Payload {
+  interface getOneById {
+    id: string;
+  }
+
   interface create {
     body: Body.create;
+  }
+
+  interface update {
+    id: string;
+    body: Body.update;
   }
 
   interface destroy {

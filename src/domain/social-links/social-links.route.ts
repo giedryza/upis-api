@@ -28,6 +28,13 @@ class Route extends BaseRoute {
 
     this.router
       .route('/:id')
+      .get(Validation.getOneById, Validator.catch, controller.getOneById)
+      .patch(
+        AuthMiddleware.protect,
+        Validation.update,
+        Validator.catch,
+        controller.update
+      )
       .delete(
         AuthMiddleware.protect,
         Validation.destroy,
