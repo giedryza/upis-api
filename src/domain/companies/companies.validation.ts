@@ -163,7 +163,7 @@ export class Validation {
       },
       custom: {
         options: async (value, { req }) => {
-          await Validation.isOwner(value, req.user.id);
+          await Validation.isOwner(value, req.user._id);
         },
       },
     },
