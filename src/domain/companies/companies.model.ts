@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
+import { ModelName } from 'types/model';
 import {
   CompanyConstructor,
   CompanyDocument,
@@ -74,7 +75,7 @@ const schema = new Schema(
     },
     user: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: ModelName.User,
       required: true,
     },
   },
@@ -82,6 +83,7 @@ const schema = new Schema(
     timestamps: true,
     toJSON: {
       versionKey: false,
+      virtuals: true,
     },
   }
 );
@@ -92,8 +94,13 @@ class SchemaLoader {
 }
 
 schema.plugin(mongoosePaginate);
+schema.virtual('socialLinks', {
+  ref: ModelName.SocialLink,
+  foreignField: 'host',
+  localField: '_id',
+});
 schema.loadClass(SchemaLoader);
 
-const Company = model<CompanyDocument, CompanyModel>('Company', schema);
+const Company = model<CompanyDocument, CompanyModel>(ModelName.Company, schema);
 
 export { Company };

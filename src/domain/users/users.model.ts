@@ -2,6 +2,7 @@ import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import { Password } from 'common/password';
 import { UnauthorizedError } from 'errors/unauthorized.error';
+import { ModelName } from 'types/model';
 import {
   UserConstructor,
   UserDocument,
@@ -58,6 +59,6 @@ schema.pre('save', async function (next) {
   next();
 });
 
-const User = model<UserDocument, UserModel>('User', schema);
+const User = model<UserDocument, UserModel>(ModelName.User, schema);
 
 export { User };
