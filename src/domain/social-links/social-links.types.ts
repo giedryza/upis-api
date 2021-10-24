@@ -17,6 +17,7 @@ export interface SocialLinkConstructor {
 export interface SocialLinkRecord {
   type: SocialLinkType;
   url: string;
+  host: string;
 }
 
 export interface SocialLinkDocument extends SocialLinkRecord, Document {}
@@ -41,5 +42,9 @@ export declare namespace Body {
 export declare namespace Payload {
   interface create {
     body: Body.create;
+  }
+
+  interface destroy {
+    id: string;
   }
 }

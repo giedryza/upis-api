@@ -25,6 +25,15 @@ class Route extends BaseRoute {
         Validator.catch,
         controller.create
       );
+
+    this.router
+      .route('/:id')
+      .delete(
+        AuthMiddleware.protect,
+        Validation.destroy,
+        Validator.catch,
+        controller.destroy
+      );
   };
 }
 

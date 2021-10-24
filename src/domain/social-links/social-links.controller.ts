@@ -3,6 +3,7 @@ import { Helpers } from 'common/helpers';
 import { Body } from 'domain/social-links/social-links.types';
 import { Service } from 'domain/social-links/social-links.service';
 import { CreatedResponse } from 'responses/created.response';
+import { NoContentResponse } from 'responses/no-content.response';
 
 class Controller {
   create = async (req: Request<{}, {}, Body.create>, res: Response) => {
@@ -13,6 +14,14 @@ class Controller {
     });
 
     return new CreatedResponse(res, data).send();
+  };
+
+  destroy = async (req: Request, res: Response) => {
+    const { id = '' } = req.params;
+
+    await Service.destroy({ id });
+
+    return new NoContentResponse(res).send();
   };
 }
 
