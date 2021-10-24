@@ -17,7 +17,7 @@ export class Service {
       limit,
       sort,
       select,
-      populate: 'user',
+      populate: ['user', 'socialLinks'],
       lean: true,
       leanWithId: false,
     };
@@ -32,7 +32,9 @@ export class Service {
       throw new UnauthorizedError();
     }
 
-    const company = await Company.findOne({ user: user._id }).lean();
+    const company = await Company.findOne({ user: user._id })
+      .populate('socialLinks')
+      .lean();
 
     return { data: company ?? null };
   };
@@ -42,7 +44,9 @@ export class Service {
       throw new NotFoundError('Record not found.');
     }
 
-    const company = await Company.findOne({ slug }).populate('user').lean();
+    const company = await Company.findOne({ slug })
+      .populate(['user', 'socialLinks'])
+      .lean();
 
     if (!company) {
       throw new NotFoundError('Record not found.');

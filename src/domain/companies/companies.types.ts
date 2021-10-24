@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { Document, Types, PaginateModel } from 'mongoose';
-import { WithTimestamp } from 'types/mongoose';
+import { WithTimestamp } from 'types/model';
 import { UserDocument, UserWithTimestamp } from 'domain/users/users.types';
 
 export enum SocialType {

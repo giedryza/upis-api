@@ -13,3 +13,9 @@ export interface WithTimestamp {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export enum ModelName {
+  Company = 'Company',
+  User = 'User',
+  SocialLink = 'SocialLink',
+}
