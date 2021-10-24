@@ -40,7 +40,8 @@ schema.loadClass(SchemaLoader);
 
 const SocialLink = model<SocialLinkDocument, SocialLinkModel>(
   ModelName.SocialLink,
-  schema
+  schema,
+  'social-links'
 );
 
 export { SocialLink };
