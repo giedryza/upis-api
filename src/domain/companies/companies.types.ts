@@ -3,19 +3,6 @@ import { Document, Types, PaginateModel } from 'mongoose';
 import { WithTimestamp } from 'types/model';
 import { UserDocument, UserWithTimestamp } from 'domain/users/users.types';
 
-export enum SocialType {
-  Facebook = 'facebook',
-  Instagram = 'instagram',
-  Youtube = 'youtube',
-  Linkedin = 'linkedin',
-  Twitter = 'twitter',
-}
-
-interface Social {
-  type: SocialType;
-  link: string;
-}
-
 export interface CompanyConstructor {
   user: string;
   name: string;
@@ -31,7 +18,6 @@ export interface CompanyRecord extends WithTimestamp {
   slug: string;
   description?: string;
   website?: string;
-  social?: Social[];
   address?: string;
   user: Types.ObjectId | UserDocument;
   location?: {
@@ -64,7 +50,6 @@ export declare namespace Body {
     email: string | undefined;
     description: string | undefined;
     website: string | undefined;
-    social: Social[] | undefined;
     address: string | undefined;
     location: { coordinates: number[] } | undefined;
   }

@@ -1,5 +1,4 @@
 import { checkSchema } from 'express-validator';
-import { SocialType } from 'domain/companies/companies.types';
 import { NotFoundError } from 'errors/not-found.error';
 import { Company } from 'domain/companies/companies.model';
 
@@ -98,26 +97,6 @@ export class Validation {
       trim: true,
       isURL: {
         errorMessage: 'Enter valid website.',
-      },
-    },
-    social: {
-      in: ['body'],
-      optional: { options: { checkFalsy: true } },
-      isArray: {
-        errorMessage: 'Invalid value.',
-      },
-    },
-    'social.*.type': {
-      in: ['body'],
-      isIn: {
-        options: [Object.values(SocialType)],
-        errorMessage: 'Invalid social link type.',
-      },
-    },
-    'social.*.link': {
-      in: ['body'],
-      isURL: {
-        errorMessage: 'Enter valid social links.',
       },
     },
     'location.coordinates': {
