@@ -33,7 +33,7 @@ export class Service {
     }
 
     const company = await Company.findOne({ user: user._id })
-      .populate('socialLinks')
+      .populate(['user', 'socialLinks'])
       .lean();
 
     return { data: company ?? null };
@@ -89,11 +89,9 @@ export class Service {
     const update = Utils.stripUndefined(body);
     const options = { new: true };
 
-    const company = await Company.findOneAndUpdate(
-      filter,
-      update,
-      options
-    ).lean();
+    const company = await Company.findOneAndUpdate(filter, update, options)
+      .populate(['user', 'socialLinks'])
+      .lean();
 
     if (!company) {
       throw new BadRequestError('Failed to update the record.');
@@ -132,7 +130,9 @@ export class Service {
       },
     };
 
-    const company = await Company.findOneAndUpdate(filter, update).lean();
+    const company = await Company.findOneAndUpdate(filter, update)
+      .populate(['user', 'socialLinks'])
+      .lean();
 
     if (!company) {
       throw new BadRequestError('Failed to update the record.');
