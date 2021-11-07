@@ -5,7 +5,6 @@ import {
   CompanyConstructor,
   CompanyDocument,
   CompanyModel,
-  SocialType,
 } from 'domain/companies/companies.types';
 
 const schema = new Schema(
@@ -34,19 +33,6 @@ const schema = new Schema(
       type: String,
       default: '',
     },
-    social: [
-      {
-        type: {
-          type: String,
-          enum: Object.values(SocialType),
-          required: true,
-        },
-        link: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
     address: {
       type: String,
       default: '',
