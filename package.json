@@ -5,7 +5,7 @@
   "author": "Giedrius Blažulionis <giedrius.bla@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": "14.15.1",
+    "node": ">= 16.13.0",
     "yarn": "1.22.10"
   },
   "scripts": {
