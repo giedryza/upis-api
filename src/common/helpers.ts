@@ -5,6 +5,6 @@ export class Helpers {
   static getBody = <T extends object>(req: Request): T =>
     matchedData(req, {
       locations: ['body'],
-      includeOptionals: true,
+      includeOptionals: false,
     }) as T;
 }

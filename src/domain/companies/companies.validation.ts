@@ -99,6 +99,10 @@ export class Validation {
         errorMessage: 'Enter valid website.',
       },
     },
+    location: {
+      in: ['body'],
+      optional: { options: { checkFalsy: true } },
+    },
     'location.coordinates': {
       in: ['body'],
       optional: { options: { checkFalsy: true } },
