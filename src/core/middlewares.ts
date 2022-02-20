@@ -11,8 +11,6 @@ export class Middlewares {
     middleware.useCors();
     middleware.useRateLimit();
     middleware.useJson();
-    middleware.useCookieSession();
-    middleware.useUser();
   };
 
   static error = (app: Express) => {

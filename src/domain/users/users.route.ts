@@ -23,8 +23,7 @@ class Route extends BaseRoute {
     this.router
       .route('/signin')
       .post(Validation.signin, Validator.catch, controller.signin);
-    this.router.route('/signout').post(controller.signout);
-    this.router.route('/me').get(AuthMiddleware.user, controller.me);
+    this.router.route('/me').get(AuthMiddleware.protect, controller.me);
   };
 }
 

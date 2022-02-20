@@ -1,32 +1,45 @@
 import jwt from 'jsonwebtoken';
-import { User, UserWithTimestamp } from 'domain/users/users.types';
-import { Utils } from 'common/utils';
+import { User } from 'domain/users/users.types';
 
 export class Jwt {
   private static secret = process.env.JWT_SECRET;
 
-  static expiresIn = +process.env.JWT_EXPIRES_IN_DAYS * 24 * 60 * 60;
+  private static strategy = 'Bearer';
 
-  static get timestamp() {
-    return {
-      iat: Utils.nowInSeconds,
-      exp: Utils.nowInSeconds + Jwt.expiresIn,
-    };
-  }
+  static expiresIn = +process.env.JWT_EXPIRES_IN_DAYS * 24 * 60 * 60;
 
   static token = (payload: User) =>
     jwt.sign(payload, Jwt.secret, {
       expiresIn: Jwt.expiresIn,
     });
 
-  static verify = (token: string): Promise<UserWithTimestamp> =>
-    new Promise((resolve, reject) => {
+  static verify = (token: string): Promise<User | null> =>
+    new Promise((resolve) => {
       jwt.verify(token, Jwt.secret, (err, decoded) => {
         if (err) {
-          reject(err);
+          resolve(null);
         }
 
-        resolve(decoded as UserWithTimestamp);
+        resolve(decoded as User);
       });
+    });
+
+  static parse = (authorization?: string): Promise<{ token: string | null }> =>
+    new Promise((resolve) => {
+      if (typeof authorization !== 'string') {
+        return resolve({ token: null });
+      }
+
+      if (!authorization.startsWith(Jwt.strategy)) {
+        return resolve({ token: null });
+      }
+
+      const [_, token] = authorization.split(' ');
+
+      if (!token) {
+        return resolve({ token: null });
+      }
+
+      resolve({ token });
     });
 }
