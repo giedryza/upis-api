@@ -13,11 +13,6 @@ export interface User {
   role: Role;
 }
 
-export interface UserWithTimestamp extends User {
-  iat: number;
-  exp: number | null;
-}
-
 export interface UserConstructor {
   email: string;
   password: string;
@@ -58,6 +53,6 @@ export declare namespace Payload {
   }
 
   interface me {
-    user?: UserWithTimestamp;
+    user?: User;
   }
 }

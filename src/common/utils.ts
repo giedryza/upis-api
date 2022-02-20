@@ -1,8 +1,4 @@
 export class Utils {
-  static get nowInSeconds() {
-    return Math.floor(Date.now() / 1000);
-  }
-
   static stripUndefined = (obj: { [key: string]: any }) =>
     Object.keys(obj)
       .filter((k) => obj[k] !== undefined)

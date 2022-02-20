@@ -4,27 +4,26 @@ import { UnauthorizedError } from 'errors/unauthorized.error';
 import { Role } from 'domain/users/users.types';
 
 export class AuthMiddleware {
-  static user = async (req: Request, _res: Response, next: NextFunction) => {
-    if (!req.session?.token) {
-      return next();
-    }
+  static protect = async (req: Request, _res: Response, next: NextFunction) => {
+    const { authorization } = req.headers;
 
-    try {
-      const user = await Jwt.verify(req.session.token);
-
-      req.user = user;
-    } catch (err: unknown) {
-      req.session = null;
-      req.user = undefined;
-    }
-
-    next();
-  };
-
-  static protect = (req: Request, _res: Response, next: NextFunction) => {
-    if (!req.user) {
+    if (!authorization) {
       throw new UnauthorizedError();
     }
+
+    const { token } = await Jwt.parse(authorization);
+
+    if (!token) {
+      throw new UnauthorizedError();
+    }
+
+    const user = await Jwt.verify(token);
+
+    if (!user) {
+      throw new UnauthorizedError();
+    }
+
+    req.user = user;
 
     next();
   };
@@ -34,7 +33,13 @@ export class AuthMiddleware {
     _res: Response,
     next: NextFunction
   ) => {
-    if (!req.user || !roles.includes(req.user.role)) {
+    const { user } = req;
+
+    if (!user) {
+      throw new UnauthorizedError();
+    }
+
+    if (!roles.includes(user.role)) {
       throw new UnauthorizedError();
     }
 

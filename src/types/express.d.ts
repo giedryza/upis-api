@@ -1,9 +1,9 @@
-import { UserWithTimestamp } from 'domain/users/users.types';
+import { User } from 'domain/users/users.types';
 
 declare global {
   namespace Express {
     interface Request {
-      user?: UserWithTimestamp;
+      user?: User;
     }
 
     namespace Multer {
