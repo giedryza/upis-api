@@ -1,5 +1,10 @@
 import { checkSchema } from 'express-validator';
 
+import {
+  PASSWORD_MIN_LENGTH,
+  PASSWORD_MAX_LENGTH,
+} from 'domain/users/users.constants';
+
 export class Validation {
   static signup = checkSchema({
     email: {
@@ -20,8 +25,8 @@ export class Validation {
         errorMessage: 'Enter password.',
       },
       isLength: {
-        options: { min: 8, max: 50 },
-        errorMessage: 'Use between 8 and 50 characters for password.',
+        options: { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH },
+        errorMessage: `Use between ${PASSWORD_MIN_LENGTH} and ${PASSWORD_MAX_LENGTH} characters for password.`,
       },
     },
     confirmPassword: {
@@ -32,6 +37,41 @@ export class Validation {
       },
       custom: {
         options: (value, { req }) => value === req.body.password,
+        errorMessage: "Passwords didn't match. Try again.",
+      },
+    },
+  });
+
+  static updatePassword = checkSchema({
+    currentPassword: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter current password.',
+      },
+    },
+    newPassword: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter new password.',
+      },
+      isLength: {
+        options: { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH },
+        errorMessage: `Use between ${PASSWORD_MIN_LENGTH} and ${PASSWORD_MAX_LENGTH} characters for password.`,
+      },
+    },
+    confirmPassword: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Confirm password.',
+      },
+      custom: {
+        options: (value, { req }) => value === req.body.newPassword,
         errorMessage: "Passwords didn't match. Try again.",
       },
     },
@@ -54,11 +94,6 @@ export class Validation {
       isEmpty: {
         negated: true,
         errorMessage: 'Enter password.',
-      },
-      isLength: {
-        options: { min: 8, max: 50 },
-        errorMessage:
-          'Wrong password. Try again or click Forgot password to reset it.',
       },
     },
   });

@@ -24,6 +24,14 @@ class Route extends BaseRoute {
       .route('/signin')
       .post(Validation.signin, Validator.catch, controller.signin);
     this.router.route('/me').get(AuthMiddleware.protect, controller.me);
+    this.router
+      .route('/update-password')
+      .patch(
+        AuthMiddleware.protect,
+        Validation.updatePassword,
+        Validator.catch,
+        controller.updatePassword
+      );
   };
 }
 

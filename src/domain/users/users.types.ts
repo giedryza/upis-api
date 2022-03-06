@@ -40,6 +40,11 @@ export declare namespace Body {
     email: string;
     password: string;
   }
+  interface updatePassword {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }
 }
 
 export declare namespace Payload {
@@ -51,8 +56,12 @@ export declare namespace Payload {
     email: string;
     password: string;
   }
-
   interface me {
     user?: User;
+  }
+  interface updatePassword {
+    userId: string;
+    currentPassword: string;
+    newPassword: string;
   }
 }
