@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { SuccessResponse } from 'responses/success.response';
 import { CreatedResponse } from 'responses/created.response';
+import { NoContentResponse } from 'responses/no-content.response';
 import { Body } from 'domain/users/users.types';
 import { Service } from 'domain/users/users.service';
 
@@ -27,6 +28,22 @@ class Controller {
     const { data } = await Service.me({ user });
 
     return new SuccessResponse(res, data).send();
+  };
+
+  updatePassword = async (
+    req: Request<{}, {}, Body.updatePassword>,
+    res: Response
+  ) => {
+    const { currentPassword, newPassword } = req.body;
+    const { _id: userId } = req.user!;
+
+    await Service.updatePassword({
+      userId,
+      currentPassword,
+      newPassword,
+    });
+
+    return new NoContentResponse(res).send();
   };
 }
 
