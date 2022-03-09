@@ -3,7 +3,6 @@ import { Company } from 'domain/companies/companies.model';
 import { RESERVED_SLUGS } from 'domain/companies/companies.constants';
 import { BadRequestError } from 'errors/bad-request.error';
 import { NotFoundError } from 'errors/not-found.error';
-import { UnauthorizedError } from 'errors/unauthorized.error';
 import { fileStorage } from 'common/file-storage';
 import { Utils } from 'common/utils';
 import { Query } from 'common/query';
@@ -25,18 +24,6 @@ export class Service {
     const { docs, totalDocs: total } = await Company.paginate(filter, options);
 
     return { data: docs, meta: { total, page, limit } };
-  };
-
-  static getOneByUser = async ({ user }: Payload.getOneByUser) => {
-    if (!user) {
-      throw new UnauthorizedError();
-    }
-
-    const company = await Company.findOne({ user: user._id })
-      .populate(['user', 'socialLinks'])
-      .lean();
-
-    return { data: company ?? null };
   };
 
   static getOneBySlug = async ({ slug }: Payload.getOneBySlug) => {

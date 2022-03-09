@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { Document, Types, PaginateModel } from 'mongoose';
 import { WithTimestamp } from 'types/model';
-import { UserDocument, User } from 'domain/users/users.types';
+import { UserDocument } from 'domain/users/users.types';
 
 export interface CompanyConstructor {
   user: string;
@@ -62,10 +62,6 @@ export declare namespace Payload {
 
   interface getOneBySlug {
     slug: string;
-  }
-
-  interface getOneByUser {
-    user?: User;
   }
 
   interface create {
