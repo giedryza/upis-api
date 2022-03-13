@@ -83,17 +83,17 @@ export class Validation {
     },
     description: {
       in: ['body'],
-      optional: { options: { checkFalsy: true } },
+      optional: true,
       trim: true,
     },
     address: {
       in: ['body'],
-      optional: { options: { checkFalsy: true } },
+      optional: true,
       trim: true,
     },
     website: {
       in: ['body'],
-      optional: { options: { checkFalsy: true } },
+      optional: true,
       trim: true,
       isURL: {
         errorMessage: 'Enter valid website.',
