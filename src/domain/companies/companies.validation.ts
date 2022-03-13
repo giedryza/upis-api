@@ -95,9 +95,6 @@ export class Validation {
       in: ['body'],
       optional: true,
       trim: true,
-      isURL: {
-        errorMessage: 'Enter valid website.',
-      },
     },
     location: {
       in: ['body'],
