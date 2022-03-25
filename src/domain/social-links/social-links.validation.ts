@@ -5,6 +5,17 @@ import { Company } from 'domain/companies/companies.model';
 import { SocialLink } from 'domain/social-links/social-links.model';
 
 export class Validation {
+  static getAll = checkSchema({
+    host: {
+      in: ['query'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new NotFoundError('Records not found.');
+        },
+      },
+    },
+  });
+
   static getOneById = checkSchema({
     id: {
       in: ['params'],
