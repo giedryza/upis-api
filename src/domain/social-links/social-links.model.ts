@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 import { ModelName } from 'types/model';
 import {
   SocialLinkConstructor,
@@ -36,6 +37,7 @@ class SchemaLoader {
     new SocialLink(payload);
 }
 
+schema.plugin(mongoosePaginate);
 schema.loadClass(SchemaLoader);
 
 const SocialLink = model<SocialLinkDocument, SocialLinkModel>(

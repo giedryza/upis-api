@@ -5,8 +5,17 @@ import { Service } from 'domain/social-links/social-links.service';
 import { CreatedResponse } from 'responses/created.response';
 import { NoContentResponse } from 'responses/no-content.response';
 import { SuccessResponse } from 'responses/success.response';
+import { ListResponse } from 'responses/list.response';
 
 class Controller {
+  getAll = async (req: Request, res: Response) => {
+    const { query } = req;
+
+    const { data, meta } = await Service.getAll({ query });
+
+    return new ListResponse(res, data, meta).send();
+  };
+
   getOneById = async (req: Request, res: Response) => {
     const { id = '' } = req.params;
 
