@@ -8,6 +8,7 @@ export class Validation {
   static getAll = checkSchema({
     host: {
       in: ['query'],
+      optional: true,
       isMongoId: {
         errorMessage: () => {
           throw new NotFoundError('Records not found.');
