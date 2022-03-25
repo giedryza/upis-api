@@ -19,6 +19,7 @@ class Route extends BaseRoute {
   protected init = () => {
     this.router
       .route('/')
+      .get(controller.getAll)
       .post(
         AuthMiddleware.protect,
         Validation.create,

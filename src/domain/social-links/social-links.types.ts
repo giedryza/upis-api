@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { Document, PaginateModel } from 'mongoose';
 
 export enum SocialLinkType {
@@ -40,6 +41,10 @@ export declare namespace Body {
 }
 
 export declare namespace Payload {
+  interface getAll {
+    query: Request['query'];
+  }
+
   interface getOneById {
     id: string;
   }

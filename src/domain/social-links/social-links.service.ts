@@ -3,8 +3,28 @@ import { SocialLink } from 'domain/social-links/social-links.model';
 import { NotFoundError } from 'errors/not-found.error';
 import { BadRequestError } from 'errors/bad-request.error';
 import { Utils } from 'common/utils';
+import { Query } from 'common/query';
 
 export class Service {
+  static getAll = async ({ query }: Payload.getAll) => {
+    const { filter, sort, select, page, limit } = new Query(query);
+    const options = {
+      page,
+      limit,
+      sort,
+      select,
+      lean: true,
+      leanWithId: false,
+    };
+
+    const { docs, totalDocs: total } = await SocialLink.paginate(
+      filter,
+      options
+    );
+
+    return { data: docs, meta: { total, page, limit } };
+  };
+
   static getOneById = async ({ id }: Payload.getOneById) => {
     if (!id) {
       throw new NotFoundError('Record not found.');
