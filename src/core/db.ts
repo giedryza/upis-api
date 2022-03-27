@@ -1,4 +1,4 @@
-import { connect, ConnectionOptions } from 'mongoose';
+import { connect, ConnectOptions } from 'mongoose';
 
 class Db {
   private name = process.env.NODE_ENV;
@@ -9,12 +9,7 @@ class Db {
 
   private connectionString = process.env.DB_CONNECTION_STRING;
 
-  private options: ConnectionOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-  };
+  private options: ConnectOptions = {};
 
   private get uri() {
     return this.connectionString
