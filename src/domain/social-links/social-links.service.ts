@@ -40,7 +40,7 @@ export class Service {
   };
 
   static create = async ({ body }: Payload.create) => {
-    const socialLink = SocialLink.construct(body);
+    const socialLink = new SocialLink(body);
 
     await socialLink.save();
 

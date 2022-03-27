@@ -2,13 +2,17 @@ import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import { ModelName } from 'types/model';
 import {
-  SocialLinkConstructor,
   SocialLinkDocument,
   SocialLinkModel,
   SocialLinkType,
+  SocialLinkRecord,
 } from 'domain/social-links/social-links.types';
 
-const schema = new Schema(
+const schema = new Schema<
+  SocialLinkDocument,
+  SocialLinkModel,
+  SocialLinkRecord
+>(
   {
     type: {
       type: String,
@@ -31,14 +35,7 @@ const schema = new Schema(
   }
 );
 
-class SchemaLoader {
-  static construct = (payload: SocialLinkConstructor) =>
-    // eslint-disable-next-line no-use-before-define
-    new SocialLink(payload);
-}
-
 schema.plugin(mongoosePaginate);
-schema.loadClass(SchemaLoader);
 
 const SocialLink = model<SocialLinkDocument, SocialLinkModel>(
   ModelName.SocialLink,
