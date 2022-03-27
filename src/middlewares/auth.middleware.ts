@@ -28,21 +28,18 @@ export class AuthMiddleware {
     next();
   };
 
-  static restrict = (roles: Role[]) => (
-    req: Request,
-    _res: Response,
-    next: NextFunction
-  ) => {
-    const { user } = req;
+  static restrict =
+    (roles: Role[]) => (req: Request, _res: Response, next: NextFunction) => {
+      const { user } = req;
 
-    if (!user) {
-      throw new UnauthorizedError();
-    }
+      if (!user) {
+        throw new UnauthorizedError();
+      }
 
-    if (!roles.includes(user.role)) {
-      throw new UnauthorizedError();
-    }
+      if (!roles.includes(user.role)) {
+        throw new UnauthorizedError();
+      }
 
-    next();
-  };
+      next();
+    };
 }

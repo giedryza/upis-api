@@ -49,8 +49,7 @@ export class Service {
       throw new RequestValidationError([
         {
           param: 'password',
-          msg:
-            'Wrong password. Try again or click Forgot password to reset it.',
+          msg: 'Wrong password. Try again or click Forgot password to reset it.',
         },
       ]);
     }
@@ -96,8 +95,7 @@ export class Service {
       throw new RequestValidationError([
         {
           param: 'password',
-          msg:
-            'Wrong password. Try again or click Forgot password to reset it.',
+          msg: 'Wrong password. Try again or click Forgot password to reset it.',
         },
       ]);
     }

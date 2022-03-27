@@ -27,17 +27,20 @@ export class Jwt {
   static parse = (authorization?: string): Promise<{ token: string | null }> =>
     new Promise((resolve) => {
       if (typeof authorization !== 'string') {
-        return resolve({ token: null });
+        resolve({ token: null });
+        return;
       }
 
       if (!authorization.startsWith(Jwt.strategy)) {
-        return resolve({ token: null });
+        resolve({ token: null });
+        return;
       }
 
       const [_, token] = authorization.split(' ');
 
       if (!token) {
-        return resolve({ token: null });
+        resolve({ token: null });
+        return;
       }
 
       resolve({ token });

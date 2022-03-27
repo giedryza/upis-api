@@ -20,9 +20,8 @@ export class Password {
       const [key, salt] = hash.split(':');
 
       if (!key || !salt) {
-        return reject(
-          new BadRequestError('Incorrect email or password. Try again.')
-        );
+        reject(new BadRequestError('Incorrect email or password. Try again.'));
+        return;
       }
 
       scrypt(password, salt, 64, (err, buffer) => {

@@ -28,17 +28,15 @@ class FileStorage {
     region: this.awsCredentials.region,
   });
 
-  private fileFilter = (fileFormats: string[]) => (
-    _req: Request,
-    file: Request['file'],
-    cb: FileFilterCallback
-  ) => {
-    if (file && fileFormats.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new BadRequestError('Invalid file format.'));
-    }
-  };
+  private fileFilter =
+    (fileFormats: string[]) =>
+    (_req: Request, file: Request['file'], cb: FileFilterCallback) => {
+      if (file && fileFormats.includes(file.mimetype)) {
+        cb(null, true);
+      } else {
+        cb(new BadRequestError('Invalid file format.'));
+      }
+    };
 
   private storage = multerS3({
     s3: this.s3,
