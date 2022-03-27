@@ -5,20 +5,19 @@
   "author": "Giedrius Blažulionis <giedrius.bla@gmail.com>",
   "license": "MIT",
   "engines": {
-    "node": ">= 16.13.0",
-    "yarn": "1.22.10"
+    "node": ">= 16.13.0"
   },
   "scripts": {
-    "start": "yarn build && yarn start:prod",
+    "start": "npm run build && npm run start:prod",
     "start:dev": "nodemon",
     "start:prod": "cross-env NODE_PATH=build NODE_ENV=production node -r ./dotenv.js ./build/index.js",
-    "build": "yarn clean && yarn compile",
+    "build": "npm run clean && npm run compile",
     "compile": "tsc",
     "clean": "rimraf ./build",
     "browserslist": "npx browserslist",
-    "test:lint": "yarn lint:code && yarn lint:code-style && yarn lint:filenames && yarn compile",
+    "test:lint": "npm run lint:code && npm run lint:code-style && npm run lint:filenames && npm run compile",
     "lint:code": "npx eslint \"src/**\"",
-    "lint:code:fix": "yarn lint:code --fix",
+    "lint:code:fix": "npm run lint:code -- --fix",
     "lint:filenames": "npx @ls-lint/ls-lint",
     "lint:code-style": "npx prettier --check \"src/**\"",
     "lint:code-style:fix": "npx prettier --write \"src/**\""
