@@ -2,12 +2,12 @@ import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 import { ModelName } from 'types/model';
 import {
-  CompanyConstructor,
   CompanyDocument,
   CompanyModel,
+  CompanyRecord,
 } from 'domain/companies/companies.types';
 
-const schema = new Schema(
+const schema = new Schema<CompanyDocument, CompanyModel, CompanyRecord>(
   {
     name: {
       type: String,
@@ -74,19 +74,14 @@ const schema = new Schema(
   }
 );
 
-class SchemaLoader {
-  // eslint-disable-next-line no-use-before-define
-  static construct = (payload: CompanyConstructor) => new Company(payload);
-}
-
 schema.plugin(mongoosePaginate);
 schema.virtual('socialLinks', {
   ref: ModelName.SocialLink,
   foreignField: 'host',
   localField: '_id',
 });
-schema.loadClass(SchemaLoader);
 
-const Company = model<CompanyDocument, CompanyModel>(ModelName.Company, schema);
-
-export { Company };
+export const Company = model<CompanyDocument, CompanyModel>(
+  ModelName.Company,
+  schema
+);

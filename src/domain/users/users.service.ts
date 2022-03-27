@@ -15,7 +15,7 @@ export class Service {
       ]);
     }
 
-    const user = User.construct({ email, password });
+    const user = new User({ email, password });
     await user.save();
 
     const baseUser = {

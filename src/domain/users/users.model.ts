@@ -4,13 +4,13 @@ import { Password } from 'common/password';
 import { UnauthorizedError } from 'errors/unauthorized.error';
 import { ModelName } from 'types/model';
 import {
-  UserConstructor,
   UserDocument,
   UserModel,
+  UserRecord,
   Role,
 } from 'domain/users/users.types';
 
-const schema = new Schema(
+const schema = new Schema<UserDocument, UserModel, UserRecord>(
   {
     email: {
       type: String,
@@ -38,13 +38,7 @@ const schema = new Schema(
   }
 );
 
-class SchemaLoader {
-  // eslint-disable-next-line no-use-before-define
-  static construct = (payload: UserConstructor) => new User(payload);
-}
-
 schema.plugin(mongoosePaginate);
-schema.loadClass(SchemaLoader);
 
 schema.pre('save', async function (next) {
   if (this.isModified('password')) {

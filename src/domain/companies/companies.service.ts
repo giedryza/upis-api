@@ -43,7 +43,7 @@ export class Service {
   };
 
   static create = async ({ userId, body }: Payload.create) => {
-    const company = Company.construct({
+    const company = new Company({
       user: userId,
       ...body,
     });
