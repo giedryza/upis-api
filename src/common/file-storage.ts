@@ -33,7 +33,7 @@ class FileStorage {
     file: Request['file'],
     cb: FileFilterCallback
   ) => {
-    if (fileFormats.includes(file.mimetype)) {
+    if (file && fileFormats.includes(file.mimetype)) {
       cb(null, true);
     } else {
       cb(new BadRequestError('Invalid file format.'));
