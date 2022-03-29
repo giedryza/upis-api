@@ -1,4 +1,5 @@
 import { checkSchema } from 'express-validator';
+
 import { NotFoundError } from 'errors/not-found.error';
 import { Company } from 'domain/companies/companies.model';
 

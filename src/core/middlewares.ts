@@ -1,4 +1,5 @@
 import { Express } from 'express';
+
 import { CommonMiddleware } from 'middlewares/common.middleware';
 import { ErrorMiddleware } from 'middlewares/error.middleware';
 

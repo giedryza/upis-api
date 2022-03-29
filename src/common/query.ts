@@ -1,4 +1,5 @@
 import { Request } from 'express';
+
 import { Utils } from 'common/utils';
 
 export class Query {

@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { Document, Types, PaginateModel } from 'mongoose';
+
 import { WithTimestamp } from 'types/model';
 import { UserDocument } from 'domain/users/users.types';
 

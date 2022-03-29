@@ -1,4 +1,5 @@
 import { scrypt, randomBytes } from 'crypto';
+
 import { BadRequestError } from 'errors/bad-request.error';
 
 export class Password {

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { BaseRoute } from 'routes/_base.route';
 import { AuthMiddleware } from 'middlewares/auth.middleware';
 import { Validator } from 'common/validator';

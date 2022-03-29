@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+
 import { User } from 'domain/users/users.types';
 
 export class Jwt {

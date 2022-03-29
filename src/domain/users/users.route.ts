@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { BaseRoute } from 'routes/_base.route';
 import { controller } from 'domain/users/users.controller';
 import { Validator } from 'common/validator';
