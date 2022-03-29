@@ -1,3 +1,3 @@
-import { server } from 'core/server';
+import { server } from 'core';
 
 server.start();
