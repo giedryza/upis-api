@@ -1,6 +1,7 @@
 import { Express } from 'express';
+
 import { v1Route } from 'routes/v1.route';
-import { NotFoundError } from 'errors/not-found.error';
+import { NotFoundError } from 'errors';
 
 export class Api {
   static v1 = (app: Express) => {

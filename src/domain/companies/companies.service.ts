@@ -1,8 +1,7 @@
 import { Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { RESERVED_SLUGS } from 'domain/companies/companies.constants';
-import { BadRequestError } from 'errors/bad-request.error';
-import { NotFoundError } from 'errors/not-found.error';
+import { BadRequestError, NotFoundError } from 'errors';
 import { fileStorage } from 'common/file-storage';
 import { Utils } from 'common/utils';
 import { Query } from 'common/query';

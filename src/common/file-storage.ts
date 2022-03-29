@@ -4,7 +4,8 @@ import path from 'path';
 import multer, { FileFilterCallback } from 'multer';
 import multerS3 from 'multer-s3';
 import aws from 'aws-sdk';
-import { BadRequestError } from 'errors/bad-request.error';
+
+import { BadRequestError } from 'errors';
 
 class FileStorage {
   private awsCredentials = {

@@ -1,6 +1,7 @@
 import { Types } from 'mongoose';
 import { checkSchema } from 'express-validator';
-import { NotFoundError } from 'errors/not-found.error';
+
+import { NotFoundError } from 'errors';
 import { SocialLinkType } from 'domain/social-links/social-links.types';
 import { Company } from 'domain/companies/companies.model';
 import { SocialLink } from 'domain/social-links/social-links.model';

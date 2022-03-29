@@ -1,7 +1,8 @@
 import { Express, Request, Response, NextFunction } from 'express';
-import { BaseError } from 'errors/_base.error';
+
 import { StatusCode } from 'constants/status-code';
-import { ErrorResponse } from 'responses/error.response';
+import { BaseError } from 'errors';
+import { ErrorResponse } from 'responses';
 
 export class ErrorMiddleware {
   constructor(private app: Express) {}

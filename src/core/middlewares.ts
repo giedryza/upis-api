@@ -1,6 +1,6 @@
 import { Express } from 'express';
-import { CommonMiddleware } from 'middlewares/common.middleware';
-import { ErrorMiddleware } from 'middlewares/error.middleware';
+
+import { CommonMiddleware, ErrorMiddleware } from 'middlewares';
 
 export class Middlewares {
   static common = (app: Express) => {

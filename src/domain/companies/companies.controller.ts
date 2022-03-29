@@ -1,9 +1,12 @@
 import { Request, Response } from 'express';
+
 import { Helpers } from 'common/helpers';
-import { ListResponse } from 'responses/list.response';
-import { SuccessResponse } from 'responses/success.response';
-import { CreatedResponse } from 'responses/created.response';
-import { NoContentResponse } from 'responses/no-content.response';
+import {
+  ListResponse,
+  SuccessResponse,
+  CreatedResponse,
+  NoContentResponse,
+} from 'responses';
 import { Body } from 'domain/companies/companies.types';
 import { Service } from 'domain/companies/companies.service';
 

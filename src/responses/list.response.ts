@@ -1,6 +1,8 @@
 import { Response } from 'express';
-import { BaseResponse, Meta } from 'responses/_base.response';
+
 import { StatusCode } from 'constants/status-code';
+
+import { BaseResponse, Meta } from './_base.response';
 
 export class ListResponse<T> extends BaseResponse<T> {
   protected statusCode = StatusCode.Ok;

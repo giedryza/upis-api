@@ -1,6 +1,8 @@
 import { Response } from 'express';
-import { BaseResponse } from 'responses/_base.response';
+
 import { StatusCode } from 'constants/status-code';
+
+import { BaseResponse } from './_base.response';
 
 export class CreatedResponse<T> extends BaseResponse<T> {
   protected statusCode = StatusCode.Created;

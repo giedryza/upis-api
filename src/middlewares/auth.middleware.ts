@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import { Jwt } from 'common/jwt';
-import { UnauthorizedError } from 'errors/unauthorized.error';
+import { UnauthorizedError } from 'errors';
 import { Role } from 'domain/users/users.types';
 
 export class AuthMiddleware {

@@ -2,7 +2,8 @@ import { json, Express } from 'express';
 import cors, { CorsOptions } from 'cors';
 import helmet from 'helmet';
 import { rateLimit, Options } from 'express-rate-limit';
-import { RateLimitError } from 'errors/rate-limit.error';
+
+import { RateLimitError } from 'errors';
 
 export class CommonMiddleware {
   constructor(private app: Express) {}

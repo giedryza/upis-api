@@ -1,5 +1,6 @@
 import { scrypt, randomBytes } from 'crypto';
-import { BadRequestError } from 'errors/bad-request.error';
+
+import { BadRequestError } from 'errors';
 
 export class Password {
   static hash = async (password: string): Promise<string> =>

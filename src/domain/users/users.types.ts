@@ -1,4 +1,5 @@
 import { Document, PaginateModel } from 'mongoose';
+
 import { WithTimestamp } from 'types/model';
 
 export enum Role {

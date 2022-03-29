@@ -1,4 +1,5 @@
 import { Router } from 'express';
+
 import { BaseRoute } from 'routes/_base.route';
 import { usersRoute } from 'domain/users/users.route';
 import { companiesRoute } from 'domain/companies/companies.route';
