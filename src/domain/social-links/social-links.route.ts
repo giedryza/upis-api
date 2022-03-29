@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { BaseRoute } from 'routes/_base.route';
-import { AuthMiddleware } from 'middlewares/auth.middleware';
+import { AuthMiddleware } from 'middlewares';
 import { Validator } from 'common/validator';
 import { controller } from 'domain/social-links/social-links.controller';
 import { Validation } from 'domain/social-links/social-links.validation';

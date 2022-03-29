@@ -1,5 +1,6 @@
-import { BaseError } from 'errors/_base.error';
 import { StatusCode } from 'constants/status-code';
+
+import { BaseError } from './_base.error';
 
 export class RateLimitError extends BaseError {
   statusCode = StatusCode.TooManyRequests;

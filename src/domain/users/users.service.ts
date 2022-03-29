@@ -1,6 +1,5 @@
 import { Payload } from 'domain/users/users.types';
-import { RequestValidationError } from 'errors/request-validation.error';
-import { UnauthorizedError } from 'errors/unauthorized.error';
+import { RequestValidationError, UnauthorizedError } from 'errors';
 import { Jwt } from 'common/jwt';
 import { User } from 'domain/users/users.model';
 import { Password } from 'common/password';

@@ -1,6 +1,6 @@
 import { Express, Request, Response, NextFunction } from 'express';
 
-import { BaseError } from 'errors/_base.error';
+import { BaseError } from 'errors';
 import { StatusCode } from 'constants/status-code';
 import { ErrorResponse } from 'responses/error.response';
 

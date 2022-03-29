@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { BaseRoute } from 'routes/_base.route';
 import { controller } from 'domain/companies/companies.controller';
-import { AuthMiddleware } from 'middlewares/auth.middleware';
+import { AuthMiddleware } from 'middlewares';
 import { fileStorage } from 'common/file-storage';
 import { Validator } from 'common/validator';
 import { Validation } from 'domain/companies/companies.validation';

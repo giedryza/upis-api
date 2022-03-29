@@ -1,7 +1,8 @@
 import { ValidationError } from 'express-validator';
 
-import { BaseError } from 'errors/_base.error';
 import { StatusCode } from 'constants/status-code';
+
+import { BaseError } from './_base.error';
 
 export class RequestValidationError extends BaseError {
   statusCode = StatusCode.BadRequest;

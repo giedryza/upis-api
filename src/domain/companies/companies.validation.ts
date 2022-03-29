@@ -1,6 +1,6 @@
 import { checkSchema } from 'express-validator';
 
-import { NotFoundError } from 'errors/not-found.error';
+import { NotFoundError } from 'errors';
 import { Company } from 'domain/companies/companies.model';
 
 export class Validation {

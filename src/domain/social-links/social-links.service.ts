@@ -1,7 +1,6 @@
 import { Payload } from 'domain/social-links/social-links.types';
 import { SocialLink } from 'domain/social-links/social-links.model';
-import { NotFoundError } from 'errors/not-found.error';
-import { BadRequestError } from 'errors/bad-request.error';
+import { NotFoundError, BadRequestError } from 'errors';
 import { Utils } from 'common/utils';
 import { Query } from 'common/query';
 

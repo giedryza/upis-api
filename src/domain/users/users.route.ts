@@ -4,7 +4,7 @@ import { BaseRoute } from 'routes/_base.route';
 import { controller } from 'domain/users/users.controller';
 import { Validator } from 'common/validator';
 import { Validation } from 'domain/users/users.validation';
-import { AuthMiddleware } from 'middlewares/auth.middleware';
+import { AuthMiddleware } from 'middlewares';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
