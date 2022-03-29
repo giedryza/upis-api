@@ -1,8 +1,9 @@
 import { Response } from 'express';
 
-import { BaseResponse } from 'responses/_base.response';
 import { ApiError } from 'errors';
 import { StatusCode } from 'constants/status-code';
+
+import { BaseResponse } from './_base.response';
 
 export class ErrorResponse extends BaseResponse<ApiError[]> {
   protected apiResponse = {

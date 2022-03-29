@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 
-import { SuccessResponse } from 'responses/success.response';
-import { CreatedResponse } from 'responses/created.response';
-import { NoContentResponse } from 'responses/no-content.response';
+import { SuccessResponse, CreatedResponse, NoContentResponse } from 'responses';
 import { Body } from 'domain/users/users.types';
 import { Service } from 'domain/users/users.service';
 
