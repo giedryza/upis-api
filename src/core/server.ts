@@ -1,4 +1,6 @@
-import { app, db, environment } from 'core';
+import { app } from 'core/app';
+import { db } from 'core/db';
+import { environment } from 'core/environment';
 
 class Server {
   private port = process.env.PORT;

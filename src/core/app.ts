@@ -1,7 +1,8 @@
 import express from 'express';
 import 'express-async-errors';
 
-import { Middlewares, Api } from 'core';
+import { Middlewares } from 'core/middlewares';
+import { Api } from 'core/api';
 
 class App {
   expressApp = express();
