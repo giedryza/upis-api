@@ -9,8 +9,9 @@ export interface Meta {
 }
 
 interface ApiResponse<T> {
-  meta?: Meta;
   data: T;
+  meta?: Meta;
+  isAppError?: boolean;
 }
 
 export abstract class BaseResponse<T> {

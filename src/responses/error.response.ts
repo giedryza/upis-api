@@ -8,6 +8,7 @@ import { BaseResponse } from './_base.response';
 export class ErrorResponse extends BaseResponse<ApiError[]> {
   protected apiResponse = {
     data: this.data,
+    isAppError: true,
   };
 
   constructor(
