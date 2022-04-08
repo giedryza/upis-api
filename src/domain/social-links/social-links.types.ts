@@ -1,5 +1,7 @@
 import { Request } from 'express';
-import { Document, PaginateModel, Types } from 'mongoose';
+import { Document, PaginateModel } from 'mongoose';
+
+import { EntityId } from 'types/common';
 
 export enum SocialLinkType {
   Facebook = 'facebook',
@@ -12,13 +14,13 @@ export enum SocialLinkType {
 export interface SocialLinkConstructor {
   type: SocialLinkType;
   url: string;
-  host: Types.ObjectId;
+  host: EntityId;
 }
 
 export interface SocialLinkRecord {
   type: SocialLinkType;
   url: string;
-  host: Types.ObjectId;
+  host: EntityId;
 }
 
 export interface SocialLinkDocument extends SocialLinkRecord, Document {}

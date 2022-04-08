@@ -1,7 +1,7 @@
 import { Request } from 'express';
-import { Document, Types, PaginateModel } from 'mongoose';
+import { Document, PaginateModel } from 'mongoose';
 
-import { WithTimestamp } from 'types/model';
+import { EntityId, WithTimestamp } from 'types/common';
 import { UserDocument } from 'domain/users/users.types';
 
 export interface CompanyConstructor {
@@ -20,7 +20,7 @@ export interface CompanyRecord extends WithTimestamp {
   description?: string;
   website?: string;
   address?: string;
-  user: Types.ObjectId | UserDocument;
+  user: EntityId | UserDocument;
   location?: {
     coordinates: number[];
   };

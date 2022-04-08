@@ -1,7 +1,7 @@
-import { Types } from 'mongoose';
 import { checkSchema } from 'express-validator';
 
 import { NotFoundError } from 'errors';
+import { EntityId } from 'types/common';
 import { SocialLinkType } from 'domain/social-links/social-links.types';
 import { Company } from 'domain/companies/companies.model';
 import { SocialLink } from 'domain/social-links/social-links.model';
@@ -120,10 +120,7 @@ export class Validation {
     },
   });
 
-  private static isCompanyOwner = async (
-    id: Types.ObjectId,
-    userId: string
-  ) => {
+  private static isCompanyOwner = async (id: EntityId, userId: string) => {
     const filter = { _id: id, user: userId };
 
     const company = await Company.findOne(filter).lean();

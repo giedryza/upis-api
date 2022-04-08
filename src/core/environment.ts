@@ -1,4 +1,4 @@
-import { Env } from 'types/env';
+import { Env } from 'types/global/env';
 
 class Environment {
   private requiredVariables: (keyof Env)[] = [

@@ -1,6 +1,6 @@
 import { Document, PaginateModel } from 'mongoose';
 
-import { WithTimestamp } from 'types/model';
+import { WithTimestamp } from 'types/common';
 
 export enum Role {
   User = 'user',

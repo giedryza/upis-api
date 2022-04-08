@@ -3,7 +3,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 import { Password } from 'common/password';
 import { UnauthorizedError } from 'errors';
-import { ModelName } from 'types/model';
+import { ModelName } from 'types/common';
 import {
   UserDocument,
   UserModel,

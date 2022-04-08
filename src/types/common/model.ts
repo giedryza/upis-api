@@ -1,9 +1,9 @@
 import { Types, Document } from 'mongoose';
 
-type ID = Types.ObjectId;
+export type EntityId = Types.ObjectId;
 
 export type Populated<M, K extends keyof M> = Omit<M, K> & {
-  [P in K]: Exclude<M[P], ID[] | ID>;
+  [P in K]: Exclude<M[P], EntityId[] | EntityId>;
 };
 
 export type Selected<M, K extends keyof M> = Pick<M, K> & Document;
