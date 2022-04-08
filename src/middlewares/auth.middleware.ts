@@ -3,6 +3,8 @@ import { Request, Response, NextFunction } from 'express';
 import { Jwt } from 'common/jwt';
 import { UnauthorizedError } from 'errors';
 import { Role } from 'domain/users/users.types';
+import { Company } from 'domain/companies/companies.model';
+import { SocialLink } from 'domain/social-links/social-links.model';
 
 export class AuthMiddleware {
   static protect = async (req: Request, _res: Response, next: NextFunction) => {
@@ -39,6 +41,60 @@ export class AuthMiddleware {
 
       if (!roles.includes(user.role)) {
         throw new UnauthorizedError();
+      }
+
+      next();
+    };
+
+  static isOwner =
+    (model: 'company' | 'social-link') =>
+    async (req: Request, _res: Response, next: NextFunction) => {
+      const { user, params } = req;
+      const { id } = params;
+
+      if (!user || !id || !id) {
+        throw new UnauthorizedError();
+      }
+
+      switch (model) {
+        case 'company': {
+          const company = await Company.findOne({
+            _id: id,
+            user: user._id,
+          }).lean();
+
+          if (!company) {
+            throw new UnauthorizedError();
+          }
+
+          break;
+        }
+
+        case 'social-link': {
+          const socialLink = await SocialLink.findById(id).lean();
+
+          if (!socialLink) {
+            throw new UnauthorizedError();
+          }
+
+          if (socialLink.host.toString() === user._id) {
+            break;
+          }
+
+          const company = await Company.findOne({
+            _id: socialLink.host,
+            user: user._id,
+          }).lean();
+
+          if (!company) {
+            throw new UnauthorizedError();
+          }
+
+          break;
+        }
+
+        default:
+          break;
       }
 
       next();

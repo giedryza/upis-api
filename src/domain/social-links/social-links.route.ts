@@ -33,12 +33,14 @@ class Route extends BaseRoute {
       .get(Validation.getOneById, Validator.catch, controller.getOneById)
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('social-link'),
         Validation.update,
         Validator.catch,
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('social-link'),
         Validation.destroy,
         Validator.catch,
         controller.destroy

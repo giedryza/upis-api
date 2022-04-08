@@ -35,12 +35,14 @@ class Route extends BaseRoute {
       .route('/:id')
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('company'),
         Validation.update,
         Validator.catch,
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('company'),
         Validation.destroy,
         Validator.catch,
         controller.destroy
@@ -50,6 +52,7 @@ class Route extends BaseRoute {
       .route('/:id/logo')
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('company'),
         Validation.addLogo,
         Validator.catch,
         fileStorage
