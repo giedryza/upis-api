@@ -1,10 +1,7 @@
 import { checkSchema } from 'express-validator';
 
 import { NotFoundError } from 'errors';
-import { EntityId } from 'types/common';
 import { SocialLinkType } from 'domain/social-links/social-links.types';
-import { Company } from 'domain/companies/companies.model';
-import { SocialLink } from 'domain/social-links/social-links.model';
 
 export class Validation {
   static getAll = checkSchema({
@@ -58,11 +55,6 @@ export class Validation {
           throw new NotFoundError('Record not found.');
         },
       },
-      custom: {
-        options: async (value, { req }) => {
-          await Validation.isCompanyOwner(value, req.user._id);
-        },
-      },
     },
   });
 
@@ -72,11 +64,6 @@ export class Validation {
       isMongoId: {
         errorMessage: () => {
           throw new NotFoundError('Record not found.');
-        },
-      },
-      custom: {
-        options: async (value, { req }) => {
-          await Validation.isSocialLinkOwner(value, req.user._id);
         },
       },
     },
@@ -112,31 +99,6 @@ export class Validation {
           throw new NotFoundError('Record not found.');
         },
       },
-      custom: {
-        options: async (value, { req }) => {
-          await Validation.isSocialLinkOwner(value, req.user._id);
-        },
-      },
     },
   });
-
-  private static isCompanyOwner = async (id: EntityId, userId: string) => {
-    const filter = { _id: id, user: userId };
-
-    const company = await Company.findOne(filter).lean();
-
-    if (!company) {
-      throw new NotFoundError('Record not found.');
-    }
-  };
-
-  private static isSocialLinkOwner = async (id: string, userId: string) => {
-    const socialLink = await SocialLink.findById(id).lean();
-
-    if (!socialLink) {
-      throw new NotFoundError('Record not found.');
-    }
-
-    await Validation.isCompanyOwner(socialLink.host, userId);
-  };
 }

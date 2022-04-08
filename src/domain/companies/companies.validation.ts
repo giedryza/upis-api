@@ -1,7 +1,6 @@
 import { checkSchema } from 'express-validator';
 
 import { NotFoundError } from 'errors';
-import { Company } from 'domain/companies/companies.model';
 
 export class Validation {
   static create = checkSchema({
@@ -142,21 +141,6 @@ export class Validation {
           throw new NotFoundError('Record not found.');
         },
       },
-      custom: {
-        options: async (value, { req }) => {
-          await Validation.isOwner(value, req.user._id);
-        },
-      },
     },
   });
-
-  private static isOwner = async (id: string, userId: string) => {
-    const filter = { _id: id, user: userId };
-
-    const company = await Company.findOne(filter).lean();
-
-    if (!company) {
-      throw new NotFoundError('Record not found.');
-    }
-  };
 }
