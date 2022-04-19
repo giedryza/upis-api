@@ -1,3 +1,5 @@
+import gracefulShutdown from 'http-graceful-shutdown';
+
 import { app } from 'core/app';
 import { db } from 'core/db';
 import { environment } from 'core/environment';
@@ -5,11 +7,10 @@ import { environment } from 'core/environment';
 class Server {
   private port = process.env.PORT;
 
-  private listen = () => {
+  private listen = () =>
     app.listen(this.port, () => {
       console.info(`server started on port ${this.port}`);
     });
-  };
 
   start = async () => {
     try {
@@ -17,7 +18,9 @@ class Server {
 
       await db.connect();
 
-      this.listen();
+      const server = this.listen();
+
+      gracefulShutdown(server);
     } catch (error) {
       console.error(error);
     }
