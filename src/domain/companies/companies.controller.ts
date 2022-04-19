@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { Helpers } from 'common/helpers';
+import { AppRequest } from 'types/common';
 import {
   ListResponse,
   SuccessResponse,
@@ -27,7 +28,7 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  create = async (req: Request<{}, {}, Body.create>, res: Response) => {
+  create = async (req: AppRequest<{}, Body.create>, res: Response) => {
     const body = Helpers.getBody<Body.create>(req);
     const { _id } = req.user!;
 
