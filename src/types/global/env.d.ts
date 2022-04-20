@@ -10,10 +10,12 @@ export interface Env {
   DB_PASSWORD: string;
   JWT_SECRET: string;
   JWT_EXPIRES_IN_DAYS: string;
+  TOKEN_EXPIRES_IN_HOURS: string;
   AWS_ACCESS_KEY_ID: string;
   AWS_SECRET_KEY: string;
   AWS_BUCKET: string;
   AWS_REGION: string;
+  CLIENT_REDIRECT_ROUTE: string;
 }
 
 declare global {

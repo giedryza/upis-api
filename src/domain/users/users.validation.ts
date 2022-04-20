@@ -97,4 +97,18 @@ export class Validation {
       },
     },
   });
+
+  static forgotPassword = checkSchema({
+    email: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter email.',
+      },
+      isEmail: {
+        errorMessage: 'Wrong email. Enter valid email.',
+      },
+    },
+  });
 }

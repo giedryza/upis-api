@@ -3,6 +3,8 @@ import { RequestValidationError, UnauthorizedError } from 'errors';
 import { Jwt } from 'common/jwt';
 import { User } from 'domain/users/users.model';
 import { Password } from 'common/password';
+import { Token } from 'domain/token/token.model';
+import { emailService } from 'common/email.service';
 
 export class Service {
   static signup = async ({ email, password }: Payload.signup) => {
@@ -101,5 +103,46 @@ export class Service {
 
     user.set('password', newPassword);
     await user.save();
+  };
+
+  static forgotPassword = async ({ email }: Payload.forgotPassword) => {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new RequestValidationError([
+        { param: 'email', msg: 'Incorrect email. Try again.' },
+      ]);
+    }
+
+    const token = await Token.findOne({ user: user._id });
+
+    if (token) {
+      await token.deleteOne();
+    }
+
+    const resetToken = Password.randomString();
+    const hashed = await Password.hash(resetToken);
+
+    await new Token({
+      user: user._id,
+      token: hashed,
+    }).save();
+
+    const { href } = new URL(
+      `${process.env.CLIENT_REDIRECT_ROUTE}?location=reset-password&token=${resetToken}&email=${user.email}`,
+      process.env.HOST_CLIENT
+    );
+
+    await emailService.send({
+      to: [user.email],
+      subject: 'Password Reset',
+      text: href,
+    });
+
+    return {
+      data: {
+        email: user.email,
+      },
+    };
   };
 }

@@ -11,10 +11,12 @@ class Environment {
     'DB_PASSWORD',
     'JWT_SECRET',
     'JWT_EXPIRES_IN_DAYS',
+    'TOKEN_EXPIRES_IN_HOURS',
     'AWS_ACCESS_KEY_ID',
     'AWS_SECRET_KEY',
     'AWS_BUCKET',
     'AWS_REGION',
+    'CLIENT_REDIRECT_ROUTE',
   ];
 
   verify = (): Promise<void> =>

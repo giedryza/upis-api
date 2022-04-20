@@ -11,12 +11,6 @@ export enum SocialLinkType {
   Twitter = 'twitter',
 }
 
-export interface SocialLinkConstructor {
-  type: SocialLinkType;
-  url: string;
-  host: EntityId;
-}
-
 export interface SocialLinkRecord {
   type: SocialLinkType;
   url: string;
@@ -25,9 +19,7 @@ export interface SocialLinkRecord {
 
 export interface SocialLinkDocument extends SocialLinkRecord, Document {}
 
-export interface SocialLinkModel extends PaginateModel<SocialLinkDocument> {
-  construct: (payload: SocialLinkConstructor) => SocialLinkDocument;
-}
+export interface SocialLinkModel extends PaginateModel<SocialLinkDocument> {}
 
 export declare namespace Body {
   interface create {

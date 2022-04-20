@@ -5,7 +5,7 @@ import { BadRequestError } from 'errors';
 export class Password {
   static hash = async (password: string): Promise<string> =>
     new Promise((resolve, reject) => {
-      const salt = randomBytes(16).toString('hex');
+      const salt = Password.randomString();
 
       scrypt(password, salt, 64, (err, buffer) => {
         if (err) {
@@ -33,4 +33,6 @@ export class Password {
         resolve(key === buffer.toString('hex'));
       });
     });
+
+  static randomString = () => randomBytes(32).toString('hex');
 }
