@@ -1,3 +1,4 @@
+import { APP } from 'config';
 import { Payload } from 'domain/users/users.types';
 import {
   BadRequestError,
@@ -136,7 +137,7 @@ export class Service {
     );
 
     const params = {
-      location: 'reset-password',
+      location: APP.client.locations.resetPassword,
       token: resetToken,
       userId: user._id,
     };
