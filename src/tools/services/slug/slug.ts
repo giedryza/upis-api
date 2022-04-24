@@ -1,6 +1,6 @@
 import slugify from 'slugify';
 
-export class Slug {
+export class SlugService {
   static get = (name: string): Promise<string | null> =>
     new Promise((resolve) => {
       const options = {

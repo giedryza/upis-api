@@ -4,11 +4,9 @@ import {
   RequestValidationError,
   UnauthorizedError,
 } from 'errors';
-import { Jwt } from 'common/jwt';
+import { JwtService, PasswordService, emailService } from 'tools/services';
 import { User } from 'domain/users/users.model';
-import { Password } from 'common/password';
 import { Token } from 'domain/token/token.model';
-import { emailService } from 'common/email.service';
 
 export class Service {
   static signup = async ({ email, password }: Payload.signup) => {
@@ -29,7 +27,7 @@ export class Service {
       role: user.role,
     };
 
-    const token = Jwt.token(baseUser);
+    const token = JwtService.token(baseUser);
 
     return {
       data: {
@@ -48,7 +46,7 @@ export class Service {
       ]);
     }
 
-    const match = await Password.compare(user.password, password);
+    const match = await PasswordService.compare(user.password, password);
 
     if (!match) {
       throw new RequestValidationError([
@@ -65,7 +63,7 @@ export class Service {
       role: user.role,
     };
 
-    const token = Jwt.token(baseUser);
+    const token = JwtService.token(baseUser);
 
     return {
       data: {
@@ -94,7 +92,7 @@ export class Service {
       throw new UnauthorizedError();
     }
 
-    const match = await Password.compare(user.password, currentPassword);
+    const match = await PasswordService.compare(user.password, currentPassword);
 
     if (!match) {
       throw new RequestValidationError([
@@ -124,8 +122,8 @@ export class Service {
       await token.deleteOne();
     }
 
-    const resetToken = Password.randomString();
-    const hashed = await Password.hash(resetToken);
+    const resetToken = PasswordService.randomString();
+    const hashed = await PasswordService.hash(resetToken);
 
     await new Token({
       user: user._id,
@@ -173,8 +171,8 @@ export class Service {
 
     const [user, match, hashed] = await Promise.all([
       User.findById(userId),
-      Password.compare(resetToken.token, token),
-      Password.hash(password),
+      PasswordService.compare(resetToken.token, token),
+      PasswordService.hash(password),
     ]);
 
     if (!user || !match || !hashed) {

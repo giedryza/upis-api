@@ -1,8 +1,8 @@
 import { Request } from 'express';
 
-import { Utils } from 'common/utils';
+import { Utils } from 'tools/utils';
 
-export class Query {
+export class QueryService {
   private reservedParams = ['sort', 'select', 'page', 'limit'];
 
   private defaults = {

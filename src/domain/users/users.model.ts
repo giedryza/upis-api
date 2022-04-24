@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
-import { Password } from 'common/password';
+import { PasswordService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
 import { ModelName } from 'types/common';
 import {
@@ -43,7 +43,7 @@ schema.plugin(mongoosePaginate);
 
 schema.pre('save', async function (next) {
   if (this.isModified('password')) {
-    const hashed = await Password.hash(this.get('password'));
+    const hashed = await PasswordService.hash(this.get('password'));
 
     if (!hashed) throw new UnauthorizedError();
 

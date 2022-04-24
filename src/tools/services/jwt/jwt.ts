@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 import { User } from 'domain/users/users.types';
 
-export class Jwt {
+export class JwtService {
   private static secret = process.env.JWT_SECRET;
 
   private static strategy = 'Bearer';
@@ -10,13 +10,13 @@ export class Jwt {
   static expiresIn = +process.env.JWT_EXPIRES_IN_DAYS * 24 * 60 * 60;
 
   static token = (payload: User) =>
-    jwt.sign(payload, Jwt.secret, {
-      expiresIn: Jwt.expiresIn,
+    jwt.sign(payload, JwtService.secret, {
+      expiresIn: JwtService.expiresIn,
     });
 
   static verify = (token: string): Promise<User | null> =>
     new Promise((resolve) => {
-      jwt.verify(token, Jwt.secret, (err, decoded) => {
+      jwt.verify(token, JwtService.secret, (err, decoded) => {
         if (err) {
           resolve(null);
         }
@@ -32,7 +32,7 @@ export class Jwt {
         return;
       }
 
-      if (!authorization.startsWith(Jwt.strategy)) {
+      if (!authorization.startsWith(JwtService.strategy)) {
         resolve({ token: null });
         return;
       }

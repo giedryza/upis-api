@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { Helpers } from 'common/helpers';
+import { ValidatorService } from 'tools/services';
 import { AppRequest } from 'types/common';
 import { Body } from 'domain/social-links/social-links.types';
 import { Service } from 'domain/social-links/social-links.service';
@@ -29,7 +29,7 @@ class Controller {
   };
 
   create = async (req: AppRequest<{}, Body.create>, res: Response) => {
-    const body = Helpers.getBody<Body.create>(req);
+    const body = ValidatorService.getBody<Body.create>(req);
 
     const { data } = await Service.create({
       body,
@@ -40,7 +40,7 @@ class Controller {
 
   update = async (req: Request, res: Response) => {
     const { id = '' } = req.params;
-    const body = Helpers.getBody<Body.update>(req);
+    const body = ValidatorService.getBody<Body.update>(req);
 
     const { data } = await Service.update({
       id,
