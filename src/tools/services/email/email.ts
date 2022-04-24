@@ -1,5 +1,6 @@
 import { createTransport, SendMailOptions } from 'nodemailer';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
+
+import { APP } from 'config';
 
 interface SendOptions {
   to: string[];
@@ -8,7 +9,7 @@ interface SendOptions {
 }
 
 class EmailService {
-  private get connection(): SMTPTransport.Options {
+  private get connection() {
     if (process.env.NODE_ENV === 'production') {
       return {
         service: 'SendGrid',
@@ -33,7 +34,7 @@ class EmailService {
 
   send = ({ to, subject, text }: SendOptions) => {
     const mailOptions: SendMailOptions = {
-      from: 'Upis <giedrius.bla@gmail.com>',
+      from: `${APP.name} <${APP.email.info}>`,
       to,
       subject,
       html: `<p>${text}</p>`,
