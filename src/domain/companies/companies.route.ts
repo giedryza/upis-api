@@ -3,8 +3,7 @@ import { Router } from 'express';
 import { BaseRoute } from 'routes/_base.route';
 import { controller } from 'domain/companies/companies.controller';
 import { AuthMiddleware } from 'middlewares';
-import { fileStorage } from 'common/file-storage';
-import { Validator } from 'common/validator';
+import { filesService, ValidatorService } from 'tools/services';
 import { Validation } from 'domain/companies/companies.validation';
 
 class Route extends BaseRoute {
@@ -25,7 +24,7 @@ class Route extends BaseRoute {
       .post(
         AuthMiddleware.protect,
         Validation.create,
-        Validator.catch,
+        ValidatorService.catch,
         controller.create
       );
 
@@ -37,14 +36,14 @@ class Route extends BaseRoute {
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('company'),
         Validation.update,
-        Validator.catch,
+        ValidatorService.catch,
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('company'),
         Validation.destroy,
-        Validator.catch,
+        ValidatorService.catch,
         controller.destroy
       );
 
@@ -54,8 +53,8 @@ class Route extends BaseRoute {
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('company'),
         Validation.addLogo,
-        Validator.catch,
-        fileStorage
+        ValidatorService.catch,
+        filesService
           .upload(['image/jpeg', 'image/jpg', 'image/png'])
           .single('logo'),
         controller.addLogo

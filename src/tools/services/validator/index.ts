@@ -1,0 +1,1 @@
+export { ValidatorService } from './validator';

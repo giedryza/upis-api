@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { BaseRoute } from 'routes/_base.route';
 import { AuthMiddleware } from 'middlewares';
-import { Validator } from 'common/validator';
+import { ValidatorService } from 'tools/services';
 import { controller } from 'domain/social-links/social-links.controller';
 import { Validation } from 'domain/social-links/social-links.validation';
 
@@ -20,29 +20,29 @@ class Route extends BaseRoute {
   protected init = () => {
     this.router
       .route('/')
-      .get(Validation.getAll, Validator.catch, controller.getAll)
+      .get(Validation.getAll, ValidatorService.catch, controller.getAll)
       .post(
         AuthMiddleware.protect,
         Validation.create,
-        Validator.catch,
+        ValidatorService.catch,
         controller.create
       );
 
     this.router
       .route('/:id')
-      .get(Validation.getOneById, Validator.catch, controller.getOneById)
+      .get(Validation.getOneById, ValidatorService.catch, controller.getOneById)
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('social-link'),
         Validation.update,
-        Validator.catch,
+        ValidatorService.catch,
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('social-link'),
         Validation.destroy,
-        Validator.catch,
+        ValidatorService.catch,
         controller.destroy
       );
   };

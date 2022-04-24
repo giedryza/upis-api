@@ -1,0 +1,1 @@
+export { SlugService } from './slug';

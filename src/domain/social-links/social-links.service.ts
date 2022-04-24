@@ -1,12 +1,12 @@
 import { Payload } from 'domain/social-links/social-links.types';
 import { SocialLink } from 'domain/social-links/social-links.model';
 import { NotFoundError, BadRequestError } from 'errors';
-import { Utils } from 'common/utils';
-import { Query } from 'common/query';
+import { Utils } from 'tools/utils';
+import { QueryService } from 'tools/services';
 
 export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
-    const { filter, sort, select, page, limit } = new Query(query);
+    const { filter, sort, select, page, limit } = new QueryService(query);
     const options = {
       page,
       limit,

@@ -2,10 +2,10 @@ import { scrypt, randomBytes } from 'crypto';
 
 import { BadRequestError } from 'errors';
 
-export class Password {
+export class PasswordService {
   static hash = async (password: string): Promise<string | null> =>
     new Promise((resolve) => {
-      const salt = Password.randomString();
+      const salt = PasswordService.randomString();
 
       scrypt(password, salt, 64, (err, buffer) => {
         if (err) {

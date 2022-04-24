@@ -2,14 +2,12 @@ import { Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { RESERVED_SLUGS } from 'domain/companies/companies.constants';
 import { BadRequestError, NotFoundError } from 'errors';
-import { fileStorage } from 'common/file-storage';
-import { Utils } from 'common/utils';
-import { Query } from 'common/query';
-import { Slug } from 'common/slug';
+import { filesService, QueryService, SlugService } from 'tools/services';
+import { Utils } from 'tools/utils';
 
 export class Service {
   static getAll = async ({ query }: Payload.getAll) => {
-    const { filter, sort, select, page, limit } = new Query(query);
+    const { filter, sort, select, page, limit } = new QueryService(query);
     const options = {
       page,
       limit,
@@ -47,7 +45,7 @@ export class Service {
       ...body,
     });
 
-    const slug = await Slug.get(company.name);
+    const slug = await SlugService.get(company.name);
 
     if (!slug || RESERVED_SLUGS.includes(slug)) {
       throw new BadRequestError('Invalid company name. Try another.');
@@ -131,7 +129,7 @@ export class Service {
 
   static deleteLogo = ({ logo }: Payload.cleanup) => {
     if (logo) {
-      fileStorage.delete(logo);
+      filesService.delete(logo);
     }
   };
 }

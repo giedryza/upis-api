@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 
-import { Jwt } from 'common/jwt';
+import { JwtService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
 import { Role } from 'domain/users/users.types';
 import { Company } from 'domain/companies/companies.model';
@@ -14,13 +14,13 @@ export class AuthMiddleware {
       throw new UnauthorizedError();
     }
 
-    const { token } = await Jwt.parse(authorization);
+    const { token } = await JwtService.parse(authorization);
 
     if (!token) {
       throw new UnauthorizedError();
     }
 
-    const user = await Jwt.verify(token);
+    const user = await JwtService.verify(token);
 
     if (!user) {
       throw new UnauthorizedError();

@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { BaseRoute } from 'routes/_base.route';
 import { controller } from 'domain/users/users.controller';
-import { Validator } from 'common/validator';
+import { ValidatorService } from 'tools/services';
 import { Validation } from 'domain/users/users.validation';
 import { AuthMiddleware } from 'middlewares';
 
@@ -20,31 +20,31 @@ class Route extends BaseRoute {
   protected init = () => {
     this.router
       .route('/signup')
-      .post(Validation.signup, Validator.catch, controller.signup);
+      .post(Validation.signup, ValidatorService.catch, controller.signup);
     this.router
       .route('/signin')
-      .post(Validation.signin, Validator.catch, controller.signin);
+      .post(Validation.signin, ValidatorService.catch, controller.signin);
     this.router.route('/me').get(AuthMiddleware.protect, controller.me);
     this.router
       .route('/update-password')
       .patch(
         AuthMiddleware.protect,
         Validation.updatePassword,
-        Validator.catch,
+        ValidatorService.catch,
         controller.updatePassword
       );
     this.router
       .route('/forgot-password')
       .post(
         Validation.forgotPassword,
-        Validator.catch,
+        ValidatorService.catch,
         controller.forgotPassword
       );
     this.router
       .route('/reset-password')
       .post(
         Validation.resetPassword,
-        Validator.catch,
+        ValidatorService.catch,
         controller.resetPassword
       );
   };

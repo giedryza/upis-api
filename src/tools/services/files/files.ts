@@ -7,7 +7,7 @@ import aws from 'aws-sdk';
 
 import { BadRequestError } from 'errors';
 
-class FileStorage {
+class FilesService {
   private awsCredentials = {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_KEY,
@@ -79,4 +79,4 @@ class FileStorage {
   };
 }
 
-export const fileStorage = new FileStorage();
+export const filesService = new FilesService();

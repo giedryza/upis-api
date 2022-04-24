@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { validationResult } from 'express-validator';
+import { validationResult, matchedData } from 'express-validator';
 
 import { RequestValidationError } from 'errors';
 
-export class Validator {
+export class ValidatorService {
   static catch = (req: Request, _res: Response, next: NextFunction) => {
     const errors = validationResult(req);
 
@@ -13,4 +13,10 @@ export class Validator {
 
     next();
   };
+
+  static getBody = <T extends object>(req: Request): T =>
+    matchedData(req, {
+      locations: ['body'],
+      includeOptionals: false,
+    }) as T;
 }
