@@ -1,5 +1,9 @@
 import { Payload } from 'domain/users/users.types';
-import { RequestValidationError, UnauthorizedError } from 'errors';
+import {
+  BadRequestError,
+  RequestValidationError,
+  UnauthorizedError,
+} from 'errors';
 import { Jwt } from 'common/jwt';
 import { User } from 'domain/users/users.model';
 import { Password } from 'common/password';
@@ -128,16 +132,60 @@ export class Service {
       token: hashed,
     }).save();
 
-    const { href } = new URL(
-      `${process.env.CLIENT_REDIRECT_ROUTE}?location=reset-password&token=${resetToken}&email=${user.email}`,
+    const url = new URL(
+      process.env.CLIENT_REDIRECT_ROUTE,
       process.env.HOST_CLIENT
     );
+
+    const params = {
+      location: 'reset-password',
+      token: resetToken,
+      userId: user._id,
+    };
+
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
 
     await emailService.send({
       to: [user.email],
       subject: 'Password Reset',
-      text: href,
+      text: `<a href="${url.href}" target="_blank">reset password</a>`,
     });
+
+    return {
+      data: {
+        email: user.email,
+      },
+    };
+  };
+
+  static resetPassword = async ({
+    userId,
+    token,
+    password,
+  }: Payload.resetPassword) => {
+    const resetToken = await Token.findOneAndDelete({ user: userId });
+
+    if (!resetToken) {
+      throw new BadRequestError('Unable to reset password. Try again.');
+    }
+
+    const [user, match, hashed] = await Promise.all([
+      User.findById(userId),
+      Password.compare(resetToken.token, token),
+      Password.hash(password),
+    ]);
+
+    if (!user || !match || !hashed) {
+      throw new BadRequestError('Unable to reset password. Try again.');
+    }
+
+    await User.updateOne(
+      { _id: userId },
+      { $set: { password: hashed } },
+      { new: true }
+    );
 
     return {
       data: {

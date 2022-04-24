@@ -43,12 +43,11 @@ schema.plugin(mongoosePaginate);
 
 schema.pre('save', async function (next) {
   if (this.isModified('password')) {
-    try {
-      const hashed = await Password.hash(this.get('password'));
-      this.set('password', hashed);
-    } catch (err: unknown) {
-      throw new UnauthorizedError();
-    }
+    const hashed = await Password.hash(this.get('password'));
+
+    if (!hashed) throw new UnauthorizedError();
+
+    this.set('password', hashed);
   }
 
   next();

@@ -111,4 +111,32 @@ export class Validation {
       },
     },
   });
+
+  static resetPassword = checkSchema({
+    userId: {
+      in: ['body'],
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Unable to reset password. Try again.',
+      },
+      isMongoId: {
+        errorMessage: 'Unable to reset password. Try again.',
+      },
+    },
+    token: {
+      in: ['body'],
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Unable to reset password. Try again.',
+      },
+    },
+    password: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Unable to reset password. Try again.',
+      },
+    },
+  });
 }

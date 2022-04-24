@@ -42,6 +42,11 @@ export declare namespace Body {
   interface forgotPassword {
     email: string;
   }
+  interface resetPassword {
+    userId: string;
+    token: string;
+    password: string;
+  }
 }
 
 export declare namespace Payload {
@@ -63,5 +68,10 @@ export declare namespace Payload {
   }
   interface forgotPassword {
     email: string;
+  }
+  interface resetPassword {
+    userId: string;
+    token: string;
+    password: string;
   }
 }

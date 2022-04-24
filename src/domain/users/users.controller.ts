@@ -58,9 +58,15 @@ class Controller {
   };
 
   resetPassword = async (
-    req: AppRequest<{}, Body.forgotPassword>,
+    req: AppRequest<{}, Body.resetPassword>,
     res: Response
-  ) => {};
+  ) => {
+    const { userId, token, password } = req.body;
+
+    const { data } = await Service.resetPassword({ userId, token, password });
+
+    return new SuccessResponse(res, data).send();
+  };
 }
 
 export const controller = new Controller();

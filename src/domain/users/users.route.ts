@@ -40,7 +40,13 @@ class Route extends BaseRoute {
         Validator.catch,
         controller.forgotPassword
       );
-    this.router.route('/reset-password').post(controller.resetPassword);
+    this.router
+      .route('/reset-password')
+      .post(
+        Validation.resetPassword,
+        Validator.catch,
+        controller.resetPassword
+      );
   };
 }
 
