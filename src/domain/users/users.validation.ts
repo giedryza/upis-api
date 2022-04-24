@@ -97,4 +97,46 @@ export class Validation {
       },
     },
   });
+
+  static forgotPassword = checkSchema({
+    email: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter email.',
+      },
+      isEmail: {
+        errorMessage: 'Wrong email. Enter valid email.',
+      },
+    },
+  });
+
+  static resetPassword = checkSchema({
+    userId: {
+      in: ['body'],
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Unable to reset password. Try again.',
+      },
+      isMongoId: {
+        errorMessage: 'Unable to reset password. Try again.',
+      },
+    },
+    token: {
+      in: ['body'],
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Unable to reset password. Try again.',
+      },
+    },
+    password: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Unable to reset password. Try again.',
+      },
+    },
+  });
 }

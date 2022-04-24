@@ -3,13 +3,13 @@ import { scrypt, randomBytes } from 'crypto';
 import { BadRequestError } from 'errors';
 
 export class Password {
-  static hash = async (password: string): Promise<string> =>
-    new Promise((resolve, reject) => {
-      const salt = randomBytes(16).toString('hex');
+  static hash = async (password: string): Promise<string | null> =>
+    new Promise((resolve) => {
+      const salt = Password.randomString();
 
       scrypt(password, salt, 64, (err, buffer) => {
         if (err) {
-          reject(err);
+          resolve(null);
         }
 
         resolve(`${buffer.toString('hex')}:${salt}`);
@@ -33,4 +33,6 @@ export class Password {
         resolve(key === buffer.toString('hex'));
       });
     });
+
+  static randomString = () => randomBytes(32).toString('hex');
 }

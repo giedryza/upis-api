@@ -4,14 +4,6 @@ import { Document, PaginateModel } from 'mongoose';
 import { EntityId, WithTimestamp } from 'types/common';
 import { UserDocument } from 'domain/users/users.types';
 
-export interface CompanyConstructor {
-  user: string;
-  name: string;
-  phone: string;
-  email: string;
-  description?: string;
-}
-
 export interface CompanyRecord extends WithTimestamp {
   name: string;
   phone: string;
@@ -33,9 +25,7 @@ export interface CompanyRecord extends WithTimestamp {
 
 export interface CompanyDocument extends CompanyRecord, Document {}
 
-export interface CompanyModel extends PaginateModel<CompanyDocument> {
-  construct: (payload: CompanyConstructor) => CompanyDocument;
-}
+export interface CompanyModel extends PaginateModel<CompanyDocument> {}
 
 export declare namespace Body {
   interface create {

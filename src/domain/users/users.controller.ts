@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 
 import { SuccessResponse, CreatedResponse, NoContentResponse } from 'responses';
+import { AppRequest } from 'types/common';
 import { Body } from 'domain/users/users.types';
 import { Service } from 'domain/users/users.service';
 
@@ -43,6 +44,28 @@ class Controller {
     });
 
     return new NoContentResponse(res).send();
+  };
+
+  forgotPassword = async (
+    req: AppRequest<{}, Body.forgotPassword>,
+    res: Response
+  ) => {
+    const { email } = req.body;
+
+    const { data } = await Service.forgotPassword({ email });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  resetPassword = async (
+    req: AppRequest<{}, Body.resetPassword>,
+    res: Response
+  ) => {
+    const { userId, token, password } = req.body;
+
+    const { data } = await Service.resetPassword({ userId, token, password });
+
+    return new SuccessResponse(res, data).send();
   };
 }
 

@@ -14,11 +14,6 @@ export interface User {
   role: Role;
 }
 
-export interface UserConstructor {
-  email: string;
-  password: string;
-}
-
 export interface UserRecord extends WithTimestamp {
   email: string;
   password: string;
@@ -27,9 +22,7 @@ export interface UserRecord extends WithTimestamp {
 
 export interface UserDocument extends UserRecord, Document {}
 
-export interface UserModel extends PaginateModel<UserDocument> {
-  construct(payload: UserConstructor): UserDocument;
-}
+export interface UserModel extends PaginateModel<UserDocument> {}
 
 export declare namespace Body {
   interface signup {
@@ -45,6 +38,14 @@ export declare namespace Body {
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
+  }
+  interface forgotPassword {
+    email: string;
+  }
+  interface resetPassword {
+    userId: string;
+    token: string;
+    password: string;
   }
 }
 
@@ -64,5 +65,13 @@ export declare namespace Payload {
     userId: string;
     currentPassword: string;
     newPassword: string;
+  }
+  interface forgotPassword {
+    email: string;
+  }
+  interface resetPassword {
+    userId: string;
+    token: string;
+    password: string;
   }
 }

@@ -1,8 +1,14 @@
 import { Payload } from 'domain/users/users.types';
-import { RequestValidationError, UnauthorizedError } from 'errors';
+import {
+  BadRequestError,
+  RequestValidationError,
+  UnauthorizedError,
+} from 'errors';
 import { Jwt } from 'common/jwt';
 import { User } from 'domain/users/users.model';
 import { Password } from 'common/password';
+import { Token } from 'domain/token/token.model';
+import { emailService } from 'common/email.service';
 
 export class Service {
   static signup = async ({ email, password }: Payload.signup) => {
@@ -101,5 +107,90 @@ export class Service {
 
     user.set('password', newPassword);
     await user.save();
+  };
+
+  static forgotPassword = async ({ email }: Payload.forgotPassword) => {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new RequestValidationError([
+        { param: 'email', msg: 'Incorrect email. Try again.' },
+      ]);
+    }
+
+    const token = await Token.findOne({ user: user._id });
+
+    if (token) {
+      await token.deleteOne();
+    }
+
+    const resetToken = Password.randomString();
+    const hashed = await Password.hash(resetToken);
+
+    await new Token({
+      user: user._id,
+      token: hashed,
+    }).save();
+
+    const url = new URL(
+      process.env.CLIENT_REDIRECT_ROUTE,
+      process.env.HOST_CLIENT
+    );
+
+    const params = {
+      location: 'reset-password',
+      token: resetToken,
+      userId: user._id,
+    };
+
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+
+    await emailService.send({
+      to: [user.email],
+      subject: 'Password Reset',
+      text: `<a href="${url.href}" target="_blank">reset password</a>`,
+    });
+
+    return {
+      data: {
+        email: user.email,
+      },
+    };
+  };
+
+  static resetPassword = async ({
+    userId,
+    token,
+    password,
+  }: Payload.resetPassword) => {
+    const resetToken = await Token.findOneAndDelete({ user: userId });
+
+    if (!resetToken) {
+      throw new BadRequestError('Unable to reset password. Try again.');
+    }
+
+    const [user, match, hashed] = await Promise.all([
+      User.findById(userId),
+      Password.compare(resetToken.token, token),
+      Password.hash(password),
+    ]);
+
+    if (!user || !match || !hashed) {
+      throw new BadRequestError('Unable to reset password. Try again.');
+    }
+
+    await User.updateOne(
+      { _id: userId },
+      { $set: { password: hashed } },
+      { new: true }
+    );
+
+    return {
+      data: {
+        email: user.email,
+      },
+    };
   };
 }
