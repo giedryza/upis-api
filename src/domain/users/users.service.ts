@@ -147,7 +147,10 @@ export class Service {
       url.searchParams.append(key, value);
     });
 
-    await new ResetPasswordEmail({ url: url.href }).send([user.email]);
+    await new ResetPasswordEmail({
+      email: user.email,
+      url: url.href,
+    }).send([user.email]);
 
     return {
       data: {
