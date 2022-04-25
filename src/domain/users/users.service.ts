@@ -5,7 +5,8 @@ import {
   RequestValidationError,
   UnauthorizedError,
 } from 'errors';
-import { JwtService, PasswordService, emailService } from 'tools/services';
+import { JwtService, PasswordService } from 'tools/services';
+import { ResetPasswordEmail } from 'emails';
 import { User } from 'domain/users/users.model';
 import { Token } from 'domain/token/token.model';
 
@@ -146,11 +147,7 @@ export class Service {
       url.searchParams.append(key, value);
     });
 
-    await emailService.send({
-      to: [user.email],
-      subject: 'Password Reset',
-      text: `<a href="${url.href}" target="_blank">reset password</a>`,
-    });
+    await new ResetPasswordEmail({ url: url.href }).send([user.email]);
 
     return {
       data: {
