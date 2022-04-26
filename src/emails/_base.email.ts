@@ -46,7 +46,10 @@ export abstract class BaseEmail {
   }
 
   private get html() {
-    const mjml = this.template(this.context);
+    const mjml = this.template({
+      ...this.context,
+      logoUrl512: APP.files.logo[512],
+    });
     const { html } = mjml2html(mjml, { validationLevel: 'strict' });
 
     return html;
