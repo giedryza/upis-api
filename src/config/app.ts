@@ -6,7 +6,7 @@ export const APP = {
   },
   client: {
     locations: {
-      resetPassword: 'reset-password',
+      passwordReset: 'password-reset',
     },
   },
   files: {

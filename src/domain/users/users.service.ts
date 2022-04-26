@@ -138,7 +138,7 @@ export class Service {
     );
 
     const params = {
-      location: APP.client.locations.resetPassword,
+      location: APP.client.locations.passwordReset,
       token: resetToken,
       userId: user._id,
     };
