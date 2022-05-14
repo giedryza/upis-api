@@ -1,13 +1,15 @@
 import { connect, ConnectOptions } from 'mongoose';
 
+import { APP } from 'config';
+
 class Db {
-  private name = process.env.NODE_ENV;
+  private name = APP.root.env;
 
-  private username = process.env.DB_USERNAME;
+  private username = APP.db.username;
 
-  private password = process.env.DB_PASSWORD;
+  private password = APP.db.password;
 
-  private connectionString = process.env.DB_CONNECTION_STRING;
+  private connectionString = APP.db.connectionString;
 
   private options: ConnectOptions = {};
 

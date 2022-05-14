@@ -1,7 +1,5 @@
-import { Env } from 'types/global/env';
-
 class Environment {
-  private requiredVariables: (keyof Env)[] = [
+  readonly variables = [
     'NODE_ENV',
     'PORT',
     'HOST_CLIENT',
@@ -22,12 +20,12 @@ class Environment {
     'AWS_SECRET_KEY',
     'AWS_BUCKET',
     'AWS_REGION',
-    'CLIENT_REDIRECT_ROUTE',
-  ];
+    'CLIENT_ROUTE',
+  ] as const;
 
   verify = (): Promise<void> =>
     new Promise((resolve, reject) => {
-      this.requiredVariables.forEach((variable) => {
+      this.variables.forEach((variable) => {
         if (!process.env[variable]) {
           reject(new Error(`Missing Environment Variable: ${variable}`));
         }
