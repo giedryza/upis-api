@@ -18,7 +18,7 @@
     "update": "npx npm-check-updates",
     "lint": "npm run lint:code && npm run lint:code-style && npm run lint:filenames && npm run compile",
     "lint:fix": "npm run lint:code:fix && npm run lint:code-style:fix",
-    "lint:code": "npx eslint \"src/**\"",
+    "lint:code": "npx eslint src --ext .ts,.tsx",
     "lint:code:fix": "npm run lint:code -- --fix",
     "lint:filenames": "npx @ls-lint/ls-lint",
     "lint:code-style": "npx prettier --check \"src/**\"",
