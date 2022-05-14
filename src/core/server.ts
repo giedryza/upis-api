@@ -1,11 +1,12 @@
 import gracefulShutdown from 'http-graceful-shutdown';
 
+import { APP } from 'config';
 import { app } from 'core/app';
 import { db } from 'core/db';
 import { environment } from 'core/environment';
 
 class Server {
-  private port = process.env.PORT;
+  private port = APP.root.port;
 
   private listen = () =>
     app.listen(this.port, () => {

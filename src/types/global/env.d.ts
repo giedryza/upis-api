@@ -1,7 +1,7 @@
 export type NodeEnv = 'production' | 'development';
 
 export interface Env {
-  NODE_ENV: NodeEnv;
+  NODE_ENV: string;
   PORT: string;
   HOST_CLIENT: string;
   HOST_API: string;
@@ -21,7 +21,7 @@ export interface Env {
   AWS_SECRET_KEY: string;
   AWS_BUCKET: string;
   AWS_REGION: string;
-  CLIENT_REDIRECT_ROUTE: string;
+  CLIENT_ROUTE: string;
 }
 
 declare global {

@@ -15,22 +15,22 @@ export abstract class BaseEmail {
   constructor(protected context: Record<string, string | number>) {}
 
   private get connection() {
-    if (process.env.NODE_ENV === 'production') {
+    if (APP.root.env === 'production') {
       return {
         service: 'SendGrid',
         auth: {
-          user: process.env.SENDGRID_USERNAME,
-          pass: process.env.SENDGRID_PASSWORD,
+          user: APP.sendgrid.username,
+          pass: APP.sendgrid.password,
         },
       };
     }
 
     return {
-      host: process.env.MAILTRAP_HOST,
-      port: +process.env.MAILTRAP_PORT,
+      host: APP.mailtrap.host,
+      port: APP.mailtrap.port,
       auth: {
-        user: process.env.MAILTRAP_USERNAME,
-        pass: process.env.MAILTRAP_PASSWORD,
+        user: APP.mailtrap.username,
+        pass: APP.mailtrap.password,
       },
     };
   }
@@ -40,15 +40,14 @@ export abstract class BaseEmail {
   private get template() {
     const filepath = join(__dirname, `templates/${this.name}.mjml`);
     const content = readFileSync(filepath);
-    const template = compile(content.toString());
 
-    return template;
+    return compile(content.toString());
   }
 
   private get html() {
     const mjml = this.template({
       ...this.context,
-      logoUrl512: APP.files.logo[512],
+      logoUrl512: APP.assets.logo[512],
     });
     const { html } = mjml2html(mjml, { validationLevel: 'strict' });
 

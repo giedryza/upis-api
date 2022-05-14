@@ -132,10 +132,7 @@ export class Service {
       token: hashed,
     }).save();
 
-    const url = new URL(
-      process.env.CLIENT_REDIRECT_ROUTE,
-      process.env.HOST_CLIENT
-    );
+    const url = new URL(APP.client.route, APP.client.host);
 
     const params = {
       location: APP.client.locations.passwordReset,

@@ -5,14 +5,15 @@ import multer, { FileFilterCallback } from 'multer';
 import multerS3 from 'multer-s3';
 import aws from 'aws-sdk';
 
+import { APP } from 'config';
 import { BadRequestError } from 'errors';
 
 class FilesService {
   private awsCredentials = {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_KEY,
-    region: process.env.AWS_REGION,
-    bucket: process.env.AWS_BUCKET,
+    accessKeyId: APP.aws.accessKeyId,
+    secretAccessKey: APP.aws.secretKey,
+    region: APP.aws.region,
+    bucket: APP.aws.bucket,
   };
 
   private limits = {
@@ -21,7 +22,7 @@ class FilesService {
     cacheAge: 60 * 60 * 24 * 365,
   };
 
-  private folder = process.env.NODE_ENV;
+  private folder = APP.root.env;
 
   private s3 = new aws.S3({
     accessKeyId: this.awsCredentials.accessKeyId,

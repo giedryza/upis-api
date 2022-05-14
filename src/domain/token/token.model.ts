@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
 
+import { APP } from 'config';
 import { ModelName } from 'types/common';
 
 import { TokenRecord, TokenDocument, TokenModel } from './token.types';
@@ -17,7 +18,7 @@ const schema = new Schema<TokenDocument, TokenModel, TokenRecord>({
   expireAt: {
     type: Date,
     default: new Date(
-      Date.now() + 1000 * 60 * 60 * +process.env.TOKEN_EXPIRES_IN_HOURS
+      Date.now() + 1000 * 60 * 60 * APP.token.tokenExpiresInHours
     ),
   },
 });

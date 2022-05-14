@@ -1,13 +1,14 @@
 import jwt from 'jsonwebtoken';
 
+import { APP } from 'config';
 import { User } from 'domain/users/users.types';
 
 export class JwtService {
-  private static secret = process.env.JWT_SECRET;
+  private static secret = APP.token.jwtSecret;
 
   private static strategy = 'Bearer';
 
-  static expiresIn = +process.env.JWT_EXPIRES_IN_DAYS * 24 * 60 * 60;
+  static expiresIn = APP.token.jwtExpiresInDays * 24 * 60 * 60;
 
   static token = (payload: User) =>
     jwt.sign(payload, JwtService.secret, {

@@ -22,7 +22,7 @@ class Environment {
     'AWS_SECRET_KEY',
     'AWS_BUCKET',
     'AWS_REGION',
-    'CLIENT_REDIRECT_ROUTE',
+    'CLIENT_ROUTE',
   ];
 
   verify = (): Promise<void> =>

@@ -3,6 +3,7 @@ import cors, { CorsOptions } from 'cors';
 import helmet from 'helmet';
 import { rateLimit, Options } from 'express-rate-limit';
 
+import { APP } from 'config';
 import { RateLimitError } from 'errors';
 
 export class CommonMiddleware {
@@ -14,7 +15,7 @@ export class CommonMiddleware {
 
   useCors = () => {
     const options: CorsOptions = {
-      origin: process.env.HOST_CLIENT,
+      origin: APP.client.host,
       credentials: true,
     };
 
