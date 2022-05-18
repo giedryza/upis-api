@@ -1,3 +1,5 @@
+import { isValidObjectId } from 'mongoose';
+
 import { Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { RESERVED_SLUGS } from 'domain/companies/companies.constants';
@@ -23,17 +25,21 @@ export class Service {
     return { data: docs, meta: { total, page, limit } };
   };
 
-  static getOneBySlug = async ({ slug }: Payload.getOneBySlug) => {
-    if (!slug) {
-      throw new NotFoundError('Record not found.');
+  static getOne = async ({ id }: Payload.getOne) => {
+    if (!id) {
+      throw new BadRequestError('Missing property: {id}.');
     }
 
-    const company = await Company.findOne({ slug })
+    if (!isValidObjectId(id)) {
+      return { data: null };
+    }
+
+    const company = await Company.findById(id)
       .populate(['user', 'socialLinks'])
       .lean();
 
     if (!company) {
-      throw new NotFoundError('Record not found.');
+      return { data: null };
     }
 
     return { data: company };

@@ -28,10 +28,9 @@ class Route extends BaseRoute {
         controller.create
       );
 
-    this.router.route('/:slug').get(controller.getOneBySlug);
-
     this.router
       .route('/:id')
+      .get(controller.getOne)
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('company'),
