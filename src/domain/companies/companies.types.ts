@@ -51,8 +51,8 @@ export declare namespace Payload {
     query: Request['query'];
   }
 
-  interface getOneBySlug {
-    slug: string;
+  interface getOne {
+    id: string;
   }
 
   interface create {

@@ -20,10 +20,10 @@ class Controller {
     return new ListResponse(res, data, meta).send();
   };
 
-  getOneBySlug = async (req: Request, res: Response) => {
-    const { slug = '' } = req.params;
+  getOne = async (req: Request, res: Response) => {
+    const { id = '' } = req.params;
 
-    const { data } = await Service.getOneBySlug({ slug });
+    const { data } = await Service.getOne({ id });
 
     return new SuccessResponse(res, data).send();
   };
