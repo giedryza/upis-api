@@ -11,6 +11,7 @@ import {
   AmenityDocument,
   amenities,
   units,
+  difficulty,
 } from './tours.types';
 
 const schema = new Schema<TourDocument>(
@@ -51,8 +52,7 @@ const schema = new Schema<TourDocument>(
     },
     difficulty: {
       type: Number,
-      min: 1,
-      max: 5,
+      enum: difficulty,
     },
     price: {
       type: new Schema<PriceDocument>({
