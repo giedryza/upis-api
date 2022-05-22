@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import { Document, PaginateModel } from 'mongoose';
 
-import { EntityId, WithTimestamp } from 'types/common';
+import { AppFile, EntityId, WithTimestamp } from 'types/common';
 import { UserDocument } from 'domain/users/users.types';
 
 export interface CompanyRecord extends WithTimestamp {
@@ -16,11 +16,7 @@ export interface CompanyRecord extends WithTimestamp {
   location?: {
     coordinates: number[];
   };
-  logo: {
-    location: string;
-    key?: string;
-    contentType?: string;
-  };
+  logo: AppFile;
 }
 
 export interface CompanyDocument extends CompanyRecord, Document {}
