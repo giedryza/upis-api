@@ -17,7 +17,7 @@ export const regions = [
   'zemaitija',
 ] as const;
 
-export const amenities = [
+export const amenityVariants = [
   'transport',
   'child-seat',
   'life-vest',
@@ -39,7 +39,7 @@ export const difficulty = [1, 2, 3, 4, 5] as const;
 
 export type Region = typeof regions[number];
 
-export type Amenity = typeof amenities[number];
+export type AmenityVariant = typeof amenityVariants[number];
 
 export type Boat = typeof boats[number];
 
@@ -48,7 +48,7 @@ export type Unit = typeof units[number];
 export type Difficulty = typeof difficulty[number];
 
 export interface AmenityRecord {
-  kind: Amenity;
+  variant: AmenityVariant;
   price: number;
   currency: Currency;
   unit: Unit;

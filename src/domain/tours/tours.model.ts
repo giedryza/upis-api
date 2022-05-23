@@ -9,7 +9,7 @@ import {
   regions,
   boats,
   AmenityDocument,
-  amenities,
+  amenityVariants,
   units,
   difficulty,
 } from './tours.types';
@@ -72,9 +72,9 @@ const schema = new Schema<TourDocument>(
     amenities: {
       type: [
         new Schema<AmenityDocument>({
-          kind: {
+          variant: {
             type: String,
-            enum: amenities,
+            enum: amenityVariants,
             required: true,
           },
           price: {
