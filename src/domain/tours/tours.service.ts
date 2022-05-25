@@ -14,7 +14,7 @@ export class Service {
 
     const tour = new Tour({
       name: body.name,
-      slug: slug || '',
+      slug,
       company: body.company,
     });
 

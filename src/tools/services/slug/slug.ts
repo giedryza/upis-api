@@ -1,17 +1,17 @@
 import slugify from 'slugify';
 
 export class SlugService {
-  static get = (name: string): Promise<string | null> =>
+  static get = (name: string): Promise<string> =>
     new Promise((resolve) => {
-      const options = {
+      const slug = slugify(name, {
+        replacement: '-',
         lower: true,
         strict: true,
-      };
-
-      const slug = slugify(name, options);
+        trim: true,
+      });
 
       if (!slug) {
-        resolve(null);
+        resolve('');
       }
 
       resolve(slug);
