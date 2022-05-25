@@ -4,6 +4,7 @@ import { BaseRoute } from 'routes/_base.route';
 import { usersRoute } from 'domain/users/users.route';
 import { companiesRoute } from 'domain/companies/companies.route';
 import { socialLinksRoute } from 'domain/social-links/social-links.route';
+import { toursRoute } from 'domain/tours/tours.route';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
@@ -20,6 +21,7 @@ class Route extends BaseRoute {
     this.users();
     this.companies();
     this.socialLinks();
+    this.tours();
   };
 
   private users = () => {
@@ -32,6 +34,10 @@ class Route extends BaseRoute {
 
   private socialLinks = () => {
     this.router.use(socialLinksRoute.path, socialLinksRoute.router);
+  };
+
+  private tours = () => {
+    this.router.use(toursRoute.path, toursRoute.router);
   };
 }
 
