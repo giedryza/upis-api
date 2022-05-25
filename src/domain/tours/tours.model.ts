@@ -20,25 +20,29 @@ const schema = new Schema<TourDocument>(
       type: String,
       required: true,
     },
+    slug: {
+      type: String,
+      default: '',
+    },
     description: {
       type: String,
       default: '',
     },
     departure: {
       type: String,
-      required: true,
+      default: '',
     },
     arrival: {
       type: String,
-      required: true,
+      default: '',
     },
     distance: {
       type: Number,
-      required: true,
+      default: null,
     },
     duration: {
       type: Number,
-      required: true,
+      default: null,
     },
     days: {
       type: Number,
@@ -53,6 +57,7 @@ const schema = new Schema<TourDocument>(
     difficulty: {
       type: Number,
       enum: difficulty,
+      default: null,
     },
     price: {
       type: new Schema<PriceDocument>({
@@ -67,7 +72,7 @@ const schema = new Schema<TourDocument>(
           default: 'EUR',
         },
       }),
-      required: true,
+      default: null,
     },
     amenities: {
       type: [
@@ -98,8 +103,6 @@ const schema = new Schema<TourDocument>(
           },
         }),
       ],
-      // TODO
-      // default: () => [],
       default: [],
     },
     photos: {

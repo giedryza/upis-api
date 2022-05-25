@@ -59,16 +59,17 @@ export interface AmenityDocument extends AmenityRecord, Types.Subdocument {}
 
 export interface TourRecord extends WithTimestamp {
   name: string;
+  slug: string;
   description: string;
   departure: string;
   arrival: string;
-  distance: number;
-  duration: number;
+  distance: number | null;
+  duration: number | null;
   days: number;
   rivers: string[];
   regions: Region[];
-  difficulty: Difficulty;
-  price: PriceRecord;
+  difficulty: Difficulty | null;
+  price: PriceRecord | null;
   photos: AppFile[];
   company: EntityId;
   amenities: AmenityRecord[];
