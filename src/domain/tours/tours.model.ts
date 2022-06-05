@@ -28,6 +28,10 @@ const schema = new Schema<TourDocument>(
       type: String,
       default: '',
     },
+    website: {
+      type: String,
+      default: '',
+    },
     departure: {
       type: String,
       default: '',
