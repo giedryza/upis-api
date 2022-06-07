@@ -1,10 +1,17 @@
+import { Request } from 'express';
+
 import { Tour } from 'domain/tours/tours.model';
 import { TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
-import { SlugService } from 'tools/services';
+import { QueryService, SlugService } from 'tools/services';
+import { PaginatedList } from 'types/common';
 
 interface GetOne {
   id?: string;
+}
+
+interface GetAll {
+  query: Request['query'];
 }
 
 interface Create {
@@ -44,6 +51,28 @@ export class Service {
     if (!tour) return { data: null };
 
     return { data: tour };
+  };
+
+  static getAll = async ({
+    query,
+  }: GetAll): Promise<PaginatedList<TourRecord>> => {
+    const { filter, sort, select, page, limit } = new QueryService(query);
+    const options = {
+      page,
+      limit,
+      sort,
+      select,
+      populate: ['company'],
+      lean: true,
+      leanWithId: false,
+    };
+
+    const { docs, totalDocs: total } = await Tour.paginate(filter, options);
+
+    return {
+      data: docs,
+      meta: { total, page, limit },
+    };
   };
 
   static create = async ({ body }: Create): Promise<{ data: TourRecord }> => {

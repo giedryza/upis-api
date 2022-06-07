@@ -1,8 +1,13 @@
 import { Response } from 'express';
 
-import { CreatedResponse, NoContentResponse, SuccessResponse } from 'responses';
-import { ValidatorService } from 'tools/services';
 import { AppRequest } from 'types/common';
+import {
+  CreatedResponse,
+  ListResponse,
+  NoContentResponse,
+  SuccessResponse,
+} from 'responses';
+import { ValidatorService } from 'tools/services';
 
 import { Service } from './tours.service';
 
@@ -24,6 +29,14 @@ interface Update {
 }
 
 class Controller {
+  getAll = async (req: AppRequest, res: Response) => {
+    const { query } = req;
+
+    const { data, meta } = await Service.getAll({ query });
+
+    return new ListResponse(res, data, meta).send();
+  };
+
   getOne = async (req: AppRequest, res: Response) => {
     const { params } = ValidatorService.getData<{ id?: string }>(req);
 
