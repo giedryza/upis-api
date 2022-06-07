@@ -100,7 +100,7 @@ export class Service {
     const company = await Company.findOneAndDelete(filter).lean();
 
     if (!company) {
-      throw new BadRequestError('Failed to update the record.');
+      throw new BadRequestError('Failed to delete the record.');
     }
 
     Service.deleteLogo({ logo: company.logo.key });
