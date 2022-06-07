@@ -33,10 +33,12 @@ class Controller {
   };
 
   update = async (req: AppRequest, res: Response) => {
-    const body = ValidatorService.getBody<Partial<Update>>(req);
-    const { id } = ValidatorService.getParams<{ id: string }>(req);
+    const { params, body } = ValidatorService.getData<
+      { id: string },
+      Partial<Update>
+    >(req);
 
-    const { data } = await Service.update({ id, body });
+    const { data } = await Service.update({ id: params.id, body });
 
     return new SuccessResponse(res, data).send();
   };
