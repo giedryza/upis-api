@@ -3,6 +3,13 @@ import { checkSchema } from 'express-validator';
 import { BadRequestError } from 'errors';
 
 export class Validation {
+  static getOne = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: true,
+    },
+  });
+
   static create = checkSchema({
     name: {
       in: ['body'],

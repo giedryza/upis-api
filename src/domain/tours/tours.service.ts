@@ -3,6 +3,10 @@ import { TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { SlugService } from 'tools/services';
 
+interface GetOne {
+  id?: string;
+}
+
 interface Create {
   body: {
     name: string;
@@ -30,6 +34,18 @@ interface Destroy {
 }
 
 export class Service {
+  static getOne = async ({
+    id,
+  }: GetOne): Promise<{ data: TourRecord | null }> => {
+    if (!id) return { data: null };
+
+    const tour = await Tour.findById(id).populate(['company']).lean();
+
+    if (!tour) return { data: null };
+
+    return { data: tour };
+  };
+
   static create = async ({ body }: Create): Promise<{ data: TourRecord }> => {
     const slug = await SlugService.get(body.name);
 
@@ -41,7 +57,9 @@ export class Service {
 
     await tour.save();
 
-    return { data: tour };
+    return {
+      data: tour,
+    };
   };
 
   static update = async ({

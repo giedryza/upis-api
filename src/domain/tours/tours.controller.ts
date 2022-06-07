@@ -24,6 +24,14 @@ interface Update {
 }
 
 class Controller {
+  getOne = async (req: AppRequest, res: Response) => {
+    const { params } = ValidatorService.getData<{ id?: string }>(req);
+
+    const { data } = await Service.getOne({ id: params.id });
+
+    return new SuccessResponse(res, data).send();
+  };
+
   create = async (req: AppRequest, res: Response) => {
     const body = ValidatorService.getBody<Create>(req);
 
