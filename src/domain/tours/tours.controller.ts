@@ -1,6 +1,6 @@
 import { Response } from 'express';
 
-import { CreatedResponse, SuccessResponse } from 'responses';
+import { CreatedResponse, NoContentResponse, SuccessResponse } from 'responses';
 import { ValidatorService } from 'tools/services';
 import { AppRequest } from 'types/common';
 
@@ -41,6 +41,14 @@ class Controller {
     const { data } = await Service.update({ id: params.id, body });
 
     return new SuccessResponse(res, data).send();
+  };
+
+  destroy = async (req: AppRequest, res: Response) => {
+    const { params } = ValidatorService.getData<{ id: string }>(req);
+
+    await Service.destroy({ id: params.id });
+
+    return new NoContentResponse(res).send();
   };
 }
 

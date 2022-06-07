@@ -35,6 +35,12 @@ class Route extends BaseRoute {
         Validation.update,
         ValidatorService.catch,
         controller.update
+      )
+      .delete(
+        AuthMiddleware.protect,
+        Validation.destroy,
+        ValidatorService.catch,
+        controller.destroy
       );
   };
 }

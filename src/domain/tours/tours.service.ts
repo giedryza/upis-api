@@ -25,6 +25,10 @@ interface Update {
   };
 }
 
+interface Destroy {
+  id: string;
+}
+
 export class Service {
   static create = async ({ body }: Create): Promise<{ data: TourRecord }> => {
     const slug = await SlugService.get(body.name);
@@ -44,7 +48,16 @@ export class Service {
     id,
     body,
   }: Update): Promise<{ data: TourRecord }> => {
-    const tour = await Tour.findByIdAndUpdate(id, body, { new: true })
+    const slug = await SlugService.get(body.name ?? '');
+
+    const tour = await Tour.findByIdAndUpdate(
+      id,
+      {
+        ...body,
+        ...(slug && { slug }),
+      },
+      { new: true }
+    )
       .populate(['company'])
       .lean();
 
@@ -55,5 +68,13 @@ export class Service {
     return {
       data: tour,
     };
+  };
+
+  static destroy = async ({ id }: Destroy): Promise<void> => {
+    const tour = await Tour.findByIdAndDelete(id).lean();
+
+    if (!tour) {
+      throw new BadRequestError('Failed to delete the record.');
+    }
   };
 }

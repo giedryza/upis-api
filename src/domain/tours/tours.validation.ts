@@ -113,4 +113,15 @@ export class Validation {
       },
     },
   });
+
+  static destroy = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new BadRequestError('Choose valid tour.');
+        },
+      },
+    },
+  });
 }
