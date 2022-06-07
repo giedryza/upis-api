@@ -29,7 +29,7 @@ class Controller {
   };
 
   create = async (req: AppRequest<{}, Body.create>, res: Response) => {
-    const body = ValidatorService.getBody<Body.create>(req);
+    const { body } = ValidatorService.getData<{}, Body.create>(req);
 
     const { data } = await Service.create({
       body,
@@ -39,11 +39,13 @@ class Controller {
   };
 
   update = async (req: Request, res: Response) => {
-    const { id = '' } = req.params;
-    const body = ValidatorService.getBody<Body.update>(req);
+    const { params, body } = ValidatorService.getData<
+      { id: string },
+      Body.update
+    >(req);
 
     const { data } = await Service.update({
-      id,
+      id: params.id,
       body,
     });
 

@@ -21,11 +21,28 @@ class Route extends BaseRoute {
   protected init = () => {
     this.router
       .route('/')
+      .get(controller.getAll)
       .post(
         AuthMiddleware.protect,
         Validation.create,
         ValidatorService.catch,
         controller.create
+      );
+
+    this.router
+      .route('/:id')
+      .get(Validation.getOne, controller.getOne)
+      .patch(
+        AuthMiddleware.protect,
+        Validation.update,
+        ValidatorService.catch,
+        controller.update
+      )
+      .delete(
+        AuthMiddleware.protect,
+        Validation.destroy,
+        ValidatorService.catch,
+        controller.destroy
       );
   };
 }
