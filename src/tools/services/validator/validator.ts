@@ -19,4 +19,10 @@ export class ValidatorService {
       locations: ['body'],
       includeOptionals: false,
     }) as T;
+
+  static getParams = <T extends object>(req: Request): T =>
+    matchedData(req, {
+      locations: ['params'],
+      includeOptionals: false,
+    }) as T;
 }

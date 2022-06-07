@@ -1,6 +1,6 @@
 import { Response } from 'express';
 
-import { CreatedResponse } from 'responses';
+import { CreatedResponse, SuccessResponse } from 'responses';
 import { ValidatorService } from 'tools/services';
 import { AppRequest } from 'types/common';
 
@@ -11,6 +11,18 @@ interface Create {
   company: string;
 }
 
+interface Update {
+  name: string;
+  description: string;
+  website: string;
+  departure: string;
+  arrival: string;
+  distance: number;
+  duration: number;
+  days: number;
+  difficulty: number;
+}
+
 class Controller {
   create = async (req: AppRequest, res: Response) => {
     const body = ValidatorService.getBody<Create>(req);
@@ -18,6 +30,15 @@ class Controller {
     const { data } = await Service.create({ body });
 
     return new CreatedResponse(res, data).send();
+  };
+
+  update = async (req: AppRequest, res: Response) => {
+    const body = ValidatorService.getBody<Partial<Update>>(req);
+    const { id } = ValidatorService.getParams<{ id: string }>(req);
+
+    const { data } = await Service.update({ id, body });
+
+    return new SuccessResponse(res, data).send();
   };
 }
 

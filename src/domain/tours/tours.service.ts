@@ -1,4 +1,6 @@
 import { Tour } from 'domain/tours/tours.model';
+import { TourRecord } from 'domain/tours/tours.types';
+import { BadRequestError } from 'errors';
 import { SlugService } from 'tools/services';
 
 interface Create {
@@ -8,8 +10,23 @@ interface Create {
   };
 }
 
+interface Update {
+  id: string;
+  body: {
+    name?: string;
+    description?: string;
+    website?: string;
+    departure?: string;
+    arrival?: string;
+    distance?: number;
+    duration?: number;
+    days?: number;
+    difficulty?: number;
+  };
+}
+
 export class Service {
-  static create = async ({ body }: Create) => {
+  static create = async ({ body }: Create): Promise<{ data: TourRecord }> => {
     const slug = await SlugService.get(body.name);
 
     const tour = new Tour({
@@ -21,5 +38,22 @@ export class Service {
     await tour.save();
 
     return { data: tour };
+  };
+
+  static update = async ({
+    id,
+    body,
+  }: Update): Promise<{ data: TourRecord }> => {
+    const tour = await Tour.findByIdAndUpdate(id, body, { new: true })
+      .populate(['company'])
+      .lean();
+
+    if (!tour) {
+      throw new BadRequestError('Failed to update the record.');
+    }
+
+    return {
+      data: tour,
+    };
   };
 }

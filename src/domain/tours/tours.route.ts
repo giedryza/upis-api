@@ -27,6 +27,15 @@ class Route extends BaseRoute {
         ValidatorService.catch,
         controller.create
       );
+
+    this.router
+      .route('/:id')
+      .patch(
+        AuthMiddleware.protect,
+        Validation.update,
+        ValidatorService.catch,
+        controller.update
+      );
   };
 }
 
