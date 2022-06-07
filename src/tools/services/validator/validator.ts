@@ -31,10 +31,4 @@ export class ValidatorService {
       includeOptionals: false,
     }) as Body,
   });
-
-  static getBody = <T extends object>(req: Request): T =>
-    matchedData(req, {
-      locations: ['body'],
-      includeOptionals: false,
-    }) as T;
 }

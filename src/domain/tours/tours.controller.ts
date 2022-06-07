@@ -46,7 +46,7 @@ class Controller {
   };
 
   create = async (req: AppRequest, res: Response) => {
-    const body = ValidatorService.getBody<Create>(req);
+    const { body } = ValidatorService.getData<{}, Create>(req);
 
     const { data } = await Service.create({ body });
 
