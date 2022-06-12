@@ -46,9 +46,10 @@ class Controller {
   };
 
   create = async (req: AppRequest, res: Response) => {
+    const { _id: userId } = req.user!;
     const { body } = ValidatorService.getData<{}, Create>(req);
 
-    const { data } = await Service.create({ body });
+    const { data } = await Service.create({ userId, body });
 
     return new CreatedResponse(res, data).send();
   };

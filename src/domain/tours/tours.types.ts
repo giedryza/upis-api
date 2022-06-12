@@ -72,6 +72,7 @@ export interface TourRecord extends WithTimestamp {
   price: PriceRecord | null;
   photos: AppFile[];
   company: EntityId;
+  user: EntityId;
   website: string;
   amenities: AmenityRecord[];
   boats: Boat[];
