@@ -15,6 +15,7 @@ interface GetAll {
 }
 
 interface Create {
+  userId: string;
   body: {
     name: string;
     company: string;
@@ -75,13 +76,17 @@ export class Service {
     };
   };
 
-  static create = async ({ body }: Create): Promise<{ data: TourRecord }> => {
+  static create = async ({
+    userId,
+    body,
+  }: Create): Promise<{ data: TourRecord }> => {
     const slug = await SlugService.get(body.name);
 
     const tour = new Tour({
       name: body.name,
       slug,
       company: body.company,
+      user: userId,
     });
 
     await tour.save();

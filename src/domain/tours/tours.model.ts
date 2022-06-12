@@ -130,6 +130,11 @@ const schema = new Schema<TourDocument>(
       ref: ModelName.Company,
       required: true,
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: ModelName.User,
+      required: true,
+    },
     boats: {
       type: [{ type: String, enum: boats }],
     },
