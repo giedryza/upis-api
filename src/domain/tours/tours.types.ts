@@ -61,22 +61,22 @@ export interface TourRecord extends WithTimestamp {
   name: string;
   slug: string;
   description: string;
+  website: string;
   departure: string;
   arrival: string;
   distance: number | null;
   duration: number | null;
   days: number;
-  rivers: string[];
-  regions: Region[];
   difficulty: Difficulty | null;
   price: PriceRecord | null;
+  rivers: string[];
+  regions: Region[];
   photos: AppFile[];
-  company: EntityId;
-  user: EntityId;
-  website: string;
   amenities: AmenityRecord[];
   boats: Boat[];
   languages: Language[];
+  company: EntityId;
+  user: EntityId;
 }
 
 export interface TourDocument extends TourRecord, Document {}
