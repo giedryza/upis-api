@@ -35,8 +35,6 @@ export const boats = ['single-kayak', 'double-kayak', 'triple-kayak'] as const;
 
 export const units = ['tour', 'day', 'h', 'km'] as const;
 
-export const difficulty = [1, 2, 3, 4, 5] as const;
-
 export type Region = typeof regions[number];
 
 export type AmenityVariant = typeof amenityVariants[number];
@@ -44,8 +42,6 @@ export type AmenityVariant = typeof amenityVariants[number];
 export type Boat = typeof boats[number];
 
 export type Unit = typeof units[number];
-
-export type Difficulty = typeof difficulty[number];
 
 export interface AmenityRecord {
   variant: AmenityVariant;
@@ -67,7 +63,7 @@ export interface TourRecord extends WithTimestamp {
   distance: number | null;
   duration: number | null;
   days: number;
-  difficulty: Difficulty | null;
+  difficulty: number | null;
   price: PriceRecord | null;
   rivers: string[];
   regions: Region[];

@@ -114,9 +114,6 @@ export class Validation {
       optional: true,
       isNumeric: {
         errorMessage: 'Enter tour difficulty.',
-        options: {
-          no_symbols: true,
-        },
       },
     },
   });
