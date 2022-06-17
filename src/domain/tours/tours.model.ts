@@ -51,15 +51,15 @@ const schema = new Schema<TourDocument>(
       type: Number,
       default: 1,
     },
+    difficulty: {
+      type: Number,
+      default: 2.5,
+    },
     rivers: {
       type: [String],
     },
     regions: {
       type: [{ type: String, enum: regions }],
-    },
-    difficulty: {
-      type: Number,
-      default: null,
     },
     price: {
       type: new Schema<PriceDocument>({
