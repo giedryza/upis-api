@@ -112,8 +112,12 @@ export class Validation {
     difficulty: {
       in: ['body'],
       optional: true,
-      isNumeric: {
-        errorMessage: 'Enter tour difficulty.',
+      isFloat: {
+        errorMessage: 'Enter tour difficulty between 0 and 5.',
+        options: {
+          min: 0,
+          max: 5,
+        },
       },
     },
   });
