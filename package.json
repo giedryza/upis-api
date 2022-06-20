@@ -16,13 +16,13 @@
     "clean": "rimraf ./build",
     "browserslist": "npx browserslist",
     "update": "npx npm-check-updates",
-    "lint": "npm run lint:code && npm run lint:code-style && npm run lint:filenames && npm run compile",
-    "lint:fix": "npm run lint:code:fix && npm run lint:code-style:fix",
+    "lint": "npm run lint:code && npm run lint:format && npm run lint:filenames && npm run compile",
+    "lint:fix": "npm run lint:code:fix && npm run lint:format:fix",
     "lint:code": "npx eslint src --ext .ts,.tsx",
     "lint:code:fix": "npm run lint:code -- --fix",
     "lint:filenames": "npx @ls-lint/ls-lint",
-    "lint:code-style": "npx prettier --check \"src/**\"",
-    "lint:code-style:fix": "npx prettier --write \"src/**\""
+    "lint:format": "npx prettier --check \"src/**\"",
+    "lint:format:fix": "npx prettier --write \"src/**\""
   },
   "dependencies": {
     "aws-sdk": "^2.1116.0",
