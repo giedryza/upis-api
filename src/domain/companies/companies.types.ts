@@ -23,15 +23,14 @@ export interface CompanyDocument extends CompanyRecord, Document {}
 
 export interface CompanyModel extends PaginateModel<CompanyDocument> {}
 
-export declare namespace Body {
-  interface create {
+export interface Body {
+  create: {
     name: string;
     phone: string;
     email: string;
     description?: string;
-  }
-
-  interface update {
+  };
+  update: {
     name: string | undefined;
     phone: string | undefined;
     email: string | undefined;
@@ -39,41 +38,35 @@ export declare namespace Body {
     website: string | undefined;
     address: string | undefined;
     location: { coordinates: number[] } | undefined;
-  }
+  };
 }
 
-export declare namespace Payload {
-  interface getAll {
+export interface Payload {
+  getAll: {
     query: Request['query'];
-  }
-
-  interface getOne {
+  };
+  getOne: {
     id: string;
-  }
-
-  interface create {
+  };
+  create: {
     userId: string;
-    body: Body.create;
-  }
-
-  interface update {
+    body: Body['create'];
+  };
+  update: {
     id: string;
     userId: string;
-    body: Body.update;
-  }
-
-  interface destroy {
+    body: Body['update'];
+  };
+  destroy: {
     id: string;
     userId: string;
-  }
-
-  interface addLogo {
+  };
+  addLogo: {
     id: string;
     userId: string;
     file?: Request['file'];
-  }
-
-  interface cleanup {
+  };
+  cleanup: {
     logo?: string;
-  }
+  };
 }

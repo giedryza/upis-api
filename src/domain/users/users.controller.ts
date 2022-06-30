@@ -6,7 +6,7 @@ import { Body } from 'domain/users/users.types';
 import { Service } from 'domain/users/users.service';
 
 class Controller {
-  signup = async (req: Request<{}, {}, Body.signup>, res: Response) => {
+  signup = async (req: Request<{}, {}, Body['signup']>, res: Response) => {
     const { email, password } = req.body;
 
     const { data } = await Service.signup({ email, password });
@@ -14,7 +14,7 @@ class Controller {
     return new CreatedResponse(res, data).send();
   };
 
-  signin = async (req: Request<{}, {}, Body.signin>, res: Response) => {
+  signin = async (req: Request<{}, {}, Body['signin']>, res: Response) => {
     const { email, password } = req.body;
 
     const { data } = await Service.signin({ email, password });
@@ -31,7 +31,7 @@ class Controller {
   };
 
   updatePassword = async (
-    req: Request<{}, {}, Body.updatePassword>,
+    req: Request<{}, {}, Body['updatePassword']>,
     res: Response
   ) => {
     const { currentPassword, newPassword } = req.body;
@@ -47,7 +47,7 @@ class Controller {
   };
 
   forgotPassword = async (
-    req: AppRequest<{}, Body.forgotPassword>,
+    req: AppRequest<{}, Body['forgotPassword']>,
     res: Response
   ) => {
     const { email } = req.body;
@@ -58,7 +58,7 @@ class Controller {
   };
 
   resetPassword = async (
-    req: AppRequest<{}, Body.resetPassword>,
+    req: AppRequest<{}, Body['resetPassword']>,
     res: Response
   ) => {
     const { userId, token, password } = req.body;

@@ -8,7 +8,7 @@ import { filesService, QueryService, SlugService } from 'tools/services';
 import { Utils } from 'tools/utils';
 
 export class Service {
-  static getAll = async ({ query }: Payload.getAll) => {
+  static getAll = async ({ query }: Payload['getAll']) => {
     const { filter, sort, select, page, limit } = new QueryService(query);
     const options = {
       page,
@@ -25,7 +25,7 @@ export class Service {
     return { data: docs, meta: { total, page, limit } };
   };
 
-  static getOne = async ({ id }: Payload.getOne) => {
+  static getOne = async ({ id }: Payload['getOne']) => {
     if (!id) {
       throw new BadRequestError('Missing property: {id}.');
     }
@@ -45,7 +45,7 @@ export class Service {
     return { data: company };
   };
 
-  static create = async ({ userId, body }: Payload.create) => {
+  static create = async ({ userId, body }: Payload['create']) => {
     const company = new Company({
       user: userId,
       ...body,
@@ -70,7 +70,7 @@ export class Service {
     return { data: company };
   };
 
-  static update = async ({ id, userId, body }: Payload.update) => {
+  static update = async ({ id, userId, body }: Payload['update']) => {
     if (!id) {
       throw new NotFoundError('Record not found.');
     }
@@ -90,7 +90,7 @@ export class Service {
     return { data: company };
   };
 
-  static destroy = async ({ id, userId }: Payload.destroy) => {
+  static destroy = async ({ id, userId }: Payload['destroy']) => {
     if (!id) {
       throw new NotFoundError('Record not found.');
     }
@@ -106,7 +106,7 @@ export class Service {
     Service.deleteLogo({ logo: company.logo.key });
   };
 
-  static addLogo = async ({ id, userId, file }: Payload.addLogo) => {
+  static addLogo = async ({ id, userId, file }: Payload['addLogo']) => {
     if (!id || !file) {
       throw new BadRequestError('File upload failed. Try again.');
     }
@@ -133,7 +133,7 @@ export class Service {
     return { data: { ...company, ...update } };
   };
 
-  static deleteLogo = ({ logo }: Payload.cleanup) => {
+  static deleteLogo = ({ logo }: Payload['cleanup']) => {
     if (logo) {
       filesService.delete(logo);
     }

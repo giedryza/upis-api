@@ -28,8 +28,8 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  create = async (req: AppRequest<{}, Body.create>, res: Response) => {
-    const { body } = ValidatorService.getData<{}, Body.create>(req);
+  create = async (req: AppRequest<{}, Body['create']>, res: Response) => {
+    const { body } = ValidatorService.getData<{}, Body['create']>(req);
     const { _id } = req.user!;
 
     const { data } = await Service.create({
@@ -44,7 +44,7 @@ class Controller {
     const { _id: userId } = req.user!;
     const { params, body } = ValidatorService.getData<
       { id: string },
-      Body.update
+      Body['update']
     >(req);
 
     const { data } = await Service.update({

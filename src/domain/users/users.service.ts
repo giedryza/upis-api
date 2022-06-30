@@ -11,7 +11,7 @@ import { User } from 'domain/users/users.model';
 import { Token } from 'domain/token/token.model';
 
 export class Service {
-  static signup = async ({ email, password }: Payload.signup) => {
+  static signup = async ({ email, password }: Payload['signup']) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -39,7 +39,7 @@ export class Service {
     };
   };
 
-  static signin = async ({ email, password }: Payload.signin) => {
+  static signin = async ({ email, password }: Payload['signin']) => {
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
@@ -75,7 +75,7 @@ export class Service {
     };
   };
 
-  static me = async ({ user }: Payload.me) => {
+  static me = async ({ user }: Payload['me']) => {
     const data = user ?? null;
 
     return {
@@ -87,7 +87,7 @@ export class Service {
     userId,
     currentPassword,
     newPassword,
-  }: Payload.updatePassword) => {
+  }: Payload['updatePassword']) => {
     const user = await User.findById(userId).select('+password');
 
     if (!user) {
@@ -109,7 +109,7 @@ export class Service {
     await user.save();
   };
 
-  static forgotPassword = async ({ email }: Payload.forgotPassword) => {
+  static forgotPassword = async ({ email }: Payload['forgotPassword']) => {
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -160,7 +160,7 @@ export class Service {
     userId,
     token,
     password,
-  }: Payload.resetPassword) => {
+  }: Payload['resetPassword']) => {
     const resetToken = await Token.findOneAndDelete({ user: userId });
 
     if (!resetToken) {
