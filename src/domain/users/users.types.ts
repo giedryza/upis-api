@@ -24,54 +24,54 @@ export interface UserDocument extends UserRecord, Document {}
 
 export interface UserModel extends PaginateModel<UserDocument> {}
 
-export declare namespace Body {
-  interface signup {
+export interface Body {
+  signup: {
     email: string;
     password: string;
     confirmPassword: string;
-  }
-  interface signin {
+  };
+  signin: {
     email: string;
     password: string;
-  }
-  interface updatePassword {
+  };
+  updatePassword: {
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
-  }
-  interface forgotPassword {
+  };
+  forgotPassword: {
     email: string;
-  }
-  interface resetPassword {
+  };
+  resetPassword: {
     userId: string;
     token: string;
     password: string;
-  }
+  };
 }
 
-export declare namespace Payload {
-  interface signup {
+export interface Payload {
+  signup: {
     email: string;
     password: string;
-  }
-  interface signin {
+  };
+  signin: {
     email: string;
     password: string;
-  }
-  interface me {
+  };
+  me: {
     user?: User;
-  }
-  interface updatePassword {
+  };
+  updatePassword: {
     userId: string;
     currentPassword: string;
     newPassword: string;
-  }
-  interface forgotPassword {
+  };
+  forgotPassword: {
     email: string;
-  }
-  interface resetPassword {
+  };
+  resetPassword: {
     userId: string;
     token: string;
     password: string;
-  }
+  };
 }

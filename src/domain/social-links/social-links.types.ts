@@ -21,38 +21,33 @@ export interface SocialLinkDocument extends SocialLinkRecord, Document {}
 
 export interface SocialLinkModel extends PaginateModel<SocialLinkDocument> {}
 
-export declare namespace Body {
-  interface create {
+export interface Body {
+  create: {
     type: SocialLinkType;
     url: string;
     host: string;
-  }
-
-  interface update {
+  };
+  update: {
     type: SocialLinkType | undefined;
     url: string | undefined;
-  }
+  };
 }
 
-export declare namespace Payload {
-  interface getAll {
+export interface Payload {
+  getAll: {
     query: Request['query'];
-  }
-
-  interface getOneById {
+  };
+  getOneById: {
     id: string;
-  }
-
-  interface create {
-    body: Body.create;
-  }
-
-  interface update {
+  };
+  create: {
+    body: Body['create'];
+  };
+  update: {
     id: string;
-    body: Body.update;
-  }
-
-  interface destroy {
+    body: Body['update'];
+  };
+  destroy: {
     id: string;
-  }
+  };
 }

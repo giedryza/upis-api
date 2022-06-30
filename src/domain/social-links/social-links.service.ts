@@ -5,7 +5,7 @@ import { Utils } from 'tools/utils';
 import { QueryService } from 'tools/services';
 
 export class Service {
-  static getAll = async ({ query }: Payload.getAll) => {
+  static getAll = async ({ query }: Payload['getAll']) => {
     const { filter, sort, select, page, limit } = new QueryService(query);
     const options = {
       page,
@@ -24,7 +24,7 @@ export class Service {
     return { data: docs, meta: { total, page, limit } };
   };
 
-  static getOneById = async ({ id }: Payload.getOneById) => {
+  static getOneById = async ({ id }: Payload['getOneById']) => {
     if (!id) {
       throw new NotFoundError('Record not found.');
     }
@@ -38,7 +38,7 @@ export class Service {
     return { data: socialLink };
   };
 
-  static create = async ({ body }: Payload.create) => {
+  static create = async ({ body }: Payload['create']) => {
     const socialLink = new SocialLink(body);
 
     await socialLink.save();
@@ -46,7 +46,7 @@ export class Service {
     return { data: socialLink };
   };
 
-  static update = async ({ id, body }: Payload.update) => {
+  static update = async ({ id, body }: Payload['update']) => {
     if (!id) {
       throw new NotFoundError('Record not found.');
     }
@@ -68,7 +68,7 @@ export class Service {
     return { data: socialLink };
   };
 
-  static destroy = async ({ id }: Payload.destroy) => {
+  static destroy = async ({ id }: Payload['destroy']) => {
     if (!id) {
       throw new NotFoundError('Record not found.');
     }
