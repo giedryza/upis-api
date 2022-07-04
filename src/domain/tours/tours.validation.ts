@@ -82,20 +82,20 @@ export class Validation {
     distance: {
       in: ['body'],
       optional: true,
-      isNumeric: {
+      isFloat: {
         errorMessage: 'Enter tour distance.',
         options: {
-          no_symbols: true,
+          min: 0.01,
         },
       },
     },
     duration: {
       in: ['body'],
       optional: true,
-      isNumeric: {
+      isFloat: {
         errorMessage: 'Enter tour duration.',
         options: {
-          no_symbols: true,
+          min: 0.01,
         },
       },
     },
