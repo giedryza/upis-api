@@ -44,6 +44,15 @@ class Route extends BaseRoute {
         ValidatorService.catch,
         controller.destroy
       );
+
+    this.router
+      .route('/:id/price')
+      .patch(
+        AuthMiddleware.protect,
+        Validation.updatePrice,
+        ValidatorService.catch,
+        controller.updatePrice
+      );
   };
 }
 
