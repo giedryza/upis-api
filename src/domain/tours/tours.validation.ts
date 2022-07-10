@@ -1,6 +1,7 @@
 import { checkSchema } from 'express-validator';
 
 import { BadRequestError } from 'errors';
+import { currencies } from 'types/common';
 
 export class Validation {
   static getOne = checkSchema({
@@ -43,7 +44,7 @@ export class Validation {
       in: ['params'],
       isMongoId: {
         errorMessage: () => {
-          throw new BadRequestError('Choose valid tour.');
+          throw new BadRequestError('Tour does not exist.');
         },
       },
     },
@@ -102,12 +103,14 @@ export class Validation {
     days: {
       in: ['body'],
       optional: true,
-      isNumeric: {
+      isInt: {
         errorMessage: 'Enter tour duration in days.',
         options: {
-          no_symbols: true,
+          min: 1,
+          allow_leading_zeroes: false,
         },
       },
+      toInt: true,
     },
     difficulty: {
       in: ['body'],
@@ -127,8 +130,44 @@ export class Validation {
       in: ['params'],
       isMongoId: {
         errorMessage: () => {
-          throw new BadRequestError('Choose valid tour.');
+          throw new BadRequestError('Tour does not exist.');
         },
+      },
+    },
+  });
+
+  static updatePrice = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new BadRequestError('Tour does not exist.');
+        },
+      },
+    },
+    amount: {
+      in: ['body'],
+      optional: true,
+      isInt: {
+        errorMessage: 'Enter amount.',
+        options: {
+          min: 1,
+          allow_leading_zeroes: false,
+        },
+      },
+      toInt: true,
+    },
+    currency: {
+      in: ['body'],
+      optional: true,
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Choose available currency.',
+      },
+      isIn: {
+        errorMessage: 'Choose available currency.',
+        options: currencies,
       },
     },
   });

@@ -4,7 +4,7 @@ import { Tour } from 'domain/tours/tours.model';
 import { TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { QueryService, SlugService } from 'tools/services';
-import { PaginatedList } from 'types/common';
+import { Currency, PaginatedList } from 'types/common';
 
 interface GetOne {
   id?: string;
@@ -39,6 +39,14 @@ interface Update {
 
 interface Destroy {
   id: string;
+}
+
+interface UpdatePrice {
+  id: string;
+  body: {
+    amount?: number;
+    currency?: Currency;
+  };
 }
 
 export class Service {
@@ -114,7 +122,7 @@ export class Service {
       .lean();
 
     if (!tour) {
-      throw new BadRequestError('Failed to update the record.');
+      throw new BadRequestError('Tour does not exist.');
     }
 
     return {
@@ -126,7 +134,36 @@ export class Service {
     const tour = await Tour.findByIdAndDelete(id).lean();
 
     if (!tour) {
-      throw new BadRequestError('Failed to delete the record.');
+      throw new BadRequestError('Tour does not exist.');
     }
+  };
+
+  static updatePrice = async ({
+    id,
+    body: { amount, currency },
+  }: UpdatePrice): Promise<{ data: TourRecord }> => {
+    const tour = await Tour.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          price:
+            amount && currency
+              ? {
+                  amount,
+                  currency,
+                }
+              : null,
+        },
+      },
+      { new: true }
+    );
+
+    if (!tour) {
+      throw new BadRequestError('Tour does not exist.');
+    }
+
+    return {
+      data: tour,
+    };
   };
 }

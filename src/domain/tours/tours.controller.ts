@@ -1,6 +1,6 @@
 import { Response } from 'express';
 
-import { AppRequest } from 'types/common';
+import { AppRequest, Currency } from 'types/common';
 import {
   CreatedResponse,
   ListResponse,
@@ -26,6 +26,11 @@ interface Update {
   duration: number;
   days: number;
   difficulty: number;
+}
+
+interface UpdatePrice {
+  amount?: number;
+  currency?: Currency;
 }
 
 class Controller {
@@ -71,6 +76,17 @@ class Controller {
     await Service.destroy({ id: params.id });
 
     return new NoContentResponse(res).send();
+  };
+
+  updatePrice = async (req: AppRequest, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      { id: string },
+      UpdatePrice
+    >(req);
+
+    const { data } = await Service.updatePrice({ id: params.id, body });
+
+    return new SuccessResponse(res, data).send();
   };
 }
 
