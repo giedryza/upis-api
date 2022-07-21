@@ -53,6 +53,15 @@ class Route extends BaseRoute {
         ValidatorService.catch,
         controller.updatePrice
       );
+
+    this.router
+      .route('/:id/regions')
+      .patch(
+        AuthMiddleware.protect,
+        Validation.updateRegions,
+        ValidatorService.catch,
+        controller.updateRegions
+      );
   };
 }
 

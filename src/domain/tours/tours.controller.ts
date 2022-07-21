@@ -8,6 +8,7 @@ import {
   SuccessResponse,
 } from 'responses';
 import { ValidatorService } from 'tools/services';
+import { Region } from 'domain/tours/tours.types';
 
 import { Service } from './tours.service';
 
@@ -31,6 +32,10 @@ interface Update {
 interface UpdatePrice {
   amount?: number;
   currency?: Currency;
+}
+
+interface UpdateRegions {
+  regions: Region[];
 }
 
 class Controller {
@@ -85,6 +90,17 @@ class Controller {
     >(req);
 
     const { data } = await Service.updatePrice({ id: params.id, body });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  updateRegions = async (req: AppRequest, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      { id: string },
+      UpdateRegions
+    >(req);
+
+    const { data } = await Service.updateRegions({ id: params.id, body });
 
     return new SuccessResponse(res, data).send();
   };
