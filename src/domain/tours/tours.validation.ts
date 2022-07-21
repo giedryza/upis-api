@@ -2,6 +2,7 @@ import { checkSchema } from 'express-validator';
 
 import { BadRequestError } from 'errors';
 import { currencies } from 'types/common';
+import { regions } from 'domain/tours/tours.types';
 
 export class Validation {
   static getOne = checkSchema({
@@ -168,6 +169,30 @@ export class Validation {
       isIn: {
         errorMessage: 'Choose available currency.',
         options: currencies,
+      },
+    },
+  });
+
+  static updateRegions = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new BadRequestError('Tour does not exist.');
+        },
+      },
+    },
+    regions: {
+      isArray: {
+        errorMessage: 'Choose regions.',
+      },
+    },
+    'regions.*': {
+      in: ['body'],
+      trim: true,
+      isIn: {
+        errorMessage: 'Choose valid regions.',
+        options: [regions],
       },
     },
   });

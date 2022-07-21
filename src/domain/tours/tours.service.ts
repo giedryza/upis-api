@@ -1,7 +1,7 @@
 import { Request } from 'express';
 
 import { Tour } from 'domain/tours/tours.model';
-import { TourRecord } from 'domain/tours/tours.types';
+import { Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { QueryService, SlugService } from 'tools/services';
 import { Currency, PaginatedList } from 'types/common';
@@ -46,6 +46,13 @@ interface UpdatePrice {
   body: {
     amount?: number;
     currency?: Currency;
+  };
+}
+
+interface UpdateRegions {
+  id: string;
+  body: {
+    regions: Region[];
   };
 }
 
@@ -116,7 +123,7 @@ export class Service {
         ...body,
         ...(slug && { slug }),
       },
-      { new: true }
+      { new: true, runValidators: true }
     )
       .populate(['company'])
       .lean();
@@ -155,7 +162,30 @@ export class Service {
               : null,
         },
       },
-      { new: true }
+      { new: true, runValidators: true }
+    );
+
+    if (!tour) {
+      throw new BadRequestError('Tour does not exist.');
+    }
+
+    return {
+      data: tour,
+    };
+  };
+
+  static updateRegions = async ({
+    id,
+    body: { regions },
+  }: UpdateRegions): Promise<{ data: TourRecord }> => {
+    const tour = await Tour.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          regions,
+        },
+      },
+      { new: true, runValidators: true }
     );
 
     if (!tour) {
