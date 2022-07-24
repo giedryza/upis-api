@@ -182,7 +182,7 @@ export class Service {
       { _id: id },
       {
         $set: {
-          regions,
+          ...(!!regions && { regions }),
         },
       },
       { new: true, runValidators: true }

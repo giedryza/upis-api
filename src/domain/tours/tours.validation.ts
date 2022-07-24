@@ -183,6 +183,7 @@ export class Validation {
       },
     },
     regions: {
+      optional: true,
       isArray: {
         errorMessage: 'Choose regions.',
       },
