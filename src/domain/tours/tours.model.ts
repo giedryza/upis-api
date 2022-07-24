@@ -56,7 +56,7 @@ const schema = new Schema<TourDocument>(
       default: 2.5,
     },
     rivers: {
-      type: [String],
+      type: [{ type: String }],
     },
     regions: {
       type: [{ type: String, enum: regions }],

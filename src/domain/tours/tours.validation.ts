@@ -173,7 +173,7 @@ export class Validation {
     },
   });
 
-  static updateRegions = checkSchema({
+  static updateGeography = checkSchema({
     id: {
       in: ['params'],
       isMongoId: {
@@ -195,6 +195,19 @@ export class Validation {
         errorMessage: 'Choose valid regions.',
         options: [regions],
       },
+    },
+    rivers: {
+      optional: true,
+      isArray: {
+        errorMessage: 'Choose rivers.',
+      },
+    },
+    'rivers.*': {
+      in: ['body'],
+      isString: {
+        errorMessage: 'Choose rivers.',
+      },
+      trim: true,
     },
   });
 }

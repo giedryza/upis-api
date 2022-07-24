@@ -49,10 +49,11 @@ interface UpdatePrice {
   };
 }
 
-interface UpdateRegions {
+interface UpdateGeography {
   id: string;
   body: {
     regions: Region[];
+    rivers: string[];
   };
 }
 
@@ -174,15 +175,16 @@ export class Service {
     };
   };
 
-  static updateRegions = async ({
+  static updateGeography = async ({
     id,
-    body: { regions },
-  }: UpdateRegions): Promise<{ data: TourRecord }> => {
+    body: { regions, rivers },
+  }: UpdateGeography): Promise<{ data: TourRecord }> => {
     const tour = await Tour.findOneAndUpdate(
       { _id: id },
       {
         $set: {
           ...(!!regions && { regions }),
+          ...(!!rivers && { rivers }),
         },
       },
       { new: true, runValidators: true }

@@ -34,8 +34,9 @@ interface UpdatePrice {
   currency?: Currency;
 }
 
-interface UpdateRegions {
+interface UpdateGeography {
   regions: Region[];
+  rivers: string[];
 }
 
 class Controller {
@@ -94,13 +95,13 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  updateRegions = async (req: AppRequest, res: Response) => {
+  updateGeography = async (req: AppRequest, res: Response) => {
     const { params, body } = ValidatorService.getData<
       { id: string },
-      UpdateRegions
+      UpdateGeography
     >(req);
 
-    const { data } = await Service.updateRegions({ id: params.id, body });
+    const { data } = await Service.updateGeography({ id: params.id, body });
 
     return new SuccessResponse(res, data).send();
   };
