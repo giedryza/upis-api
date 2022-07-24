@@ -55,12 +55,12 @@ class Route extends BaseRoute {
       );
 
     this.router
-      .route('/:id/regions')
+      .route('/:id/geography')
       .patch(
         AuthMiddleware.protect,
-        Validation.updateRegions,
+        Validation.updateGeography,
         ValidatorService.catch,
-        controller.updateRegions
+        controller.updateGeography
       );
   };
 }
