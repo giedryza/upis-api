@@ -7,6 +7,7 @@ import {
   TourDocument,
   TourModel,
   regions,
+  rivers,
   boats,
   AmenityDocument,
   amenityVariants,
@@ -56,7 +57,7 @@ const schema = new Schema<TourDocument>(
       default: 2.5,
     },
     rivers: {
-      type: [{ type: String }],
+      type: [{ type: String, enum: rivers }],
     },
     regions: {
       type: [{ type: String, enum: regions }],

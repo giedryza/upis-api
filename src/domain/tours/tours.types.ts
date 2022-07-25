@@ -17,6 +17,26 @@ export const regions = [
   'zemaitija',
 ] as const;
 
+export const rivers = [
+  'bartuva',
+  'dauguva',
+  'dubysa',
+  'jura',
+  'lielupe',
+  'merkys',
+  'musa',
+  'minija',
+  'nemunas',
+  'nemunelis',
+  'neris',
+  'nevezis',
+  'pajuris',
+  'sesupe',
+  'sventoji',
+  'venta',
+  'zeimena',
+] as const;
+
 export const amenityVariants = [
   'transport',
   'child-seat',
@@ -36,6 +56,8 @@ export const boats = ['single-kayak', 'double-kayak', 'triple-kayak'] as const;
 export const units = ['tour', 'day', 'h', 'km'] as const;
 
 export type Region = typeof regions[number];
+
+export type River = typeof rivers[number];
 
 export type AmenityVariant = typeof amenityVariants[number];
 

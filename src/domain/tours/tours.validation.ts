@@ -2,7 +2,7 @@ import { checkSchema } from 'express-validator';
 
 import { BadRequestError } from 'errors';
 import { currencies } from 'types/common';
-import { regions } from 'domain/tours/tours.types';
+import { regions, rivers } from 'domain/tours/tours.types';
 
 export class Validation {
   static getOne = checkSchema({
@@ -204,10 +204,11 @@ export class Validation {
     },
     'rivers.*': {
       in: ['body'],
-      isString: {
-        errorMessage: 'Choose rivers.',
-      },
       trim: true,
+      isIn: {
+        errorMessage: 'Choose valid rivers.',
+        options: [rivers],
+      },
     },
   });
 }
