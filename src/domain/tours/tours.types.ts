@@ -29,7 +29,7 @@ export const rivers = [
   'alantas',
   'almaja',
   'alna',
-  'alovė',
+  'alove',
   'alsia',
   'ancia',
   'anyksta',
