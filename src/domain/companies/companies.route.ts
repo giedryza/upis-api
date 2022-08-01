@@ -58,6 +58,34 @@ class Route extends BaseRoute {
           .single('logo'),
         controller.addLogo
       );
+
+    this.router
+      .route('/:id/amenities')
+      .post(
+        AuthMiddleware.protect,
+        AuthMiddleware.isOwner('company'),
+        Validation.addAmenity,
+        ValidatorService.catch,
+        controller.addAmenity
+      );
+
+    this.router
+      .route('/:id/amenities/:amenityId')
+      .get(Validation.getAmenity, controller.getAmenity)
+      .patch(
+        AuthMiddleware.protect,
+        AuthMiddleware.isOwner('company'),
+        Validation.updateAmenity,
+        ValidatorService.catch,
+        controller.updateAmenity
+      )
+      .delete(
+        AuthMiddleware.protect,
+        AuthMiddleware.isOwner('company'),
+        Validation.destroyAmenity,
+        ValidatorService.catch,
+        controller.destroyAmenity
+      );
   };
 }
 

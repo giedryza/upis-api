@@ -1,15 +1,81 @@
 import { Request, Response } from 'express';
 
 import { ValidatorService } from 'tools/services';
-import { AppRequest } from 'types/common';
+import { AppRequest, Currency } from 'types/common';
 import {
   ListResponse,
   SuccessResponse,
   CreatedResponse,
   NoContentResponse,
 } from 'responses';
-import { Body } from 'domain/companies/companies.types';
+import { AmenityVariant, Unit } from 'domain/companies/companies.types';
 import { Service } from 'domain/companies/companies.service';
+
+interface Create {
+  params: {};
+  body: {
+    name: string;
+    phone: string;
+    email: string;
+    description?: string;
+  };
+}
+
+interface Update {
+  params: {
+    id: string;
+  };
+  body: {
+    name: string | undefined;
+    phone: string | undefined;
+    email: string | undefined;
+    description: string | undefined;
+    website: string | undefined;
+    address: string | undefined;
+    location: { coordinates: number[] } | undefined;
+  };
+}
+
+interface GetAmenity {
+  params: {
+    id: string;
+    amenityId: string;
+  };
+}
+
+interface AddAmenity {
+  params: {
+    id: string;
+  };
+  body: {
+    variant: AmenityVariant;
+    amount: number;
+    currency: Currency;
+    unit: Unit;
+    info: string;
+  };
+}
+
+interface UpdateAmenity {
+  params: {
+    id: string;
+    amenityId: string;
+  };
+  body: {
+    variant: AmenityVariant;
+    amount: number;
+    currency: Currency;
+    unit: Unit;
+    info: string;
+  };
+}
+
+interface DestroyAmenity {
+  params: {
+    id: string;
+    amenityId: string;
+  };
+}
 
 class Controller {
   getAll = async (req: Request, res: Response) => {
@@ -28,8 +94,10 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  create = async (req: AppRequest<{}, Body['create']>, res: Response) => {
-    const { body } = ValidatorService.getData<{}, Body['create']>(req);
+  create = async (req: AppRequest<{}, Create['body']>, res: Response) => {
+    const { body } = ValidatorService.getData<Create['params'], Create['body']>(
+      req
+    );
     const { _id } = req.user!;
 
     const { data } = await Service.create({
@@ -43,8 +111,8 @@ class Controller {
   update = async (req: Request, res: Response) => {
     const { _id: userId } = req.user!;
     const { params, body } = ValidatorService.getData<
-      { id: string },
-      Body['update']
+      Update['params'],
+      Update['body']
     >(req);
 
     const { data } = await Service.update({
@@ -71,6 +139,54 @@ class Controller {
     const { file } = req;
 
     const { data } = await Service.addLogo({ id, userId, file });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  getAmenity = async (req: Request, res: Response) => {
+    const { params } = ValidatorService.getData<GetAmenity['params']>(req);
+
+    const { data } = await Service.getAmenity({
+      id: params.id,
+      amenityId: params.amenityId,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  addAmenity = async (req: Request, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      AddAmenity['params'],
+      AddAmenity['body']
+    >(req);
+
+    const { data } = await Service.addAmenity({ id: params.id, body });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  updateAmenity = async (req: Request, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      UpdateAmenity['params'],
+      UpdateAmenity['body']
+    >(req);
+
+    const { data } = await Service.updateAmenity({
+      id: params.id,
+      amenityId: params.amenityId,
+      body,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  destroyAmenity = async (req: Request, res: Response) => {
+    const { params } = ValidatorService.getData<DestroyAmenity['params']>(req);
+
+    const { data } = await Service.destroyAmenity({
+      id: params.id,
+      amenityId: params.amenityId,
+    });
 
     return new SuccessResponse(res, data).send();
   };

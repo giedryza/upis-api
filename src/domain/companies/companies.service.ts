@@ -1,11 +1,51 @@
 import { isValidObjectId } from 'mongoose';
 
-import { Payload } from 'domain/companies/companies.types';
+import {
+  AmenityVariant,
+  Payload,
+  Unit,
+  CompanyRecord,
+  AmenityRecord,
+} from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { RESERVED_SLUGS } from 'domain/companies/companies.constants';
 import { BadRequestError, NotFoundError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Utils } from 'tools/utils';
+import { Currency } from 'types/common';
+
+interface GetAmenity {
+  id: string;
+  amenityId: string;
+}
+
+interface AddAmenity {
+  id: string;
+  body: {
+    variant: AmenityVariant;
+    amount: number;
+    currency: Currency;
+    unit: Unit;
+    info: string;
+  };
+}
+
+interface UpdateAmenity {
+  id: string;
+  amenityId: string;
+  body: {
+    variant: AmenityVariant;
+    amount: number;
+    currency: Currency;
+    unit: Unit;
+    info: string;
+  };
+}
+
+interface DestroyAmenity {
+  id: string;
+  amenityId: string;
+}
 
 export class Service {
   static getAll = async ({ query }: Payload['getAll']) => {
@@ -137,5 +177,111 @@ export class Service {
     if (logo) {
       filesService.delete(logo);
     }
+  };
+
+  static getAmenity = async ({
+    id,
+    amenityId,
+  }: GetAmenity): Promise<{ data: AmenityRecord | null }> => {
+    const company = await Company.findOne(
+      { _id: id, 'amenities._id': amenityId },
+      {
+        'amenities.$': 1,
+      }
+    );
+
+    if (!company) {
+      return {
+        data: null,
+      };
+    }
+
+    return {
+      data: company.amenities[0] ?? null,
+    };
+  };
+
+  static addAmenity = async ({
+    id,
+    body,
+  }: AddAmenity): Promise<{ data: CompanyRecord }> => {
+    const company = await Company.findOneAndUpdate(
+      { _id: id },
+      {
+        $push: {
+          amenities: {
+            variant: body.variant,
+            unit: body.unit,
+            info: body.info,
+            price: {
+              amount: body.amount,
+              currency: body.currency,
+            },
+          },
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!company) {
+      throw new BadRequestError('Company does not exist.');
+    }
+
+    return {
+      data: company,
+    };
+  };
+
+  static updateAmenity = async ({
+    id,
+    amenityId,
+    body,
+  }: UpdateAmenity): Promise<{ data: CompanyRecord }> => {
+    const company = await Company.findOneAndUpdate(
+      { _id: id, 'amenities._id': amenityId },
+      {
+        $set: {
+          'amenities.$.variant': body.variant,
+          'amenities.$.unit': body.unit,
+          'amenities.$.info': body.info,
+          'amenities.$.price.amount': body.amount,
+          'amenities.$.price.currency': body.currency,
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!company) {
+      throw new BadRequestError('Company does not exist.');
+    }
+
+    return {
+      data: company,
+    };
+  };
+
+  static destroyAmenity = async ({
+    id,
+    amenityId,
+  }: DestroyAmenity): Promise<{ data: CompanyRecord }> => {
+    const company = await Company.findOneAndUpdate(
+      { _id: id },
+      {
+        $pull: {
+          amenities: {
+            _id: amenityId,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    if (!company) {
+      throw new BadRequestError('Company does not exist.');
+    }
+
+    return {
+      data: company,
+    };
   };
 }
