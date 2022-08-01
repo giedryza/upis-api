@@ -199,4 +199,66 @@ export class Validation {
       trim: true,
     },
   });
+
+  static updateAmenity = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new NotFoundError('Record not found.');
+        },
+      },
+    },
+    amenityId: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new NotFoundError('Record not found.');
+        },
+      },
+    },
+    variant: {
+      in: ['body'],
+      trim: true,
+      isIn: {
+        errorMessage: 'Choose valid amenity.',
+        options: [amenityVariants],
+      },
+    },
+    unit: {
+      in: ['body'],
+      trim: true,
+      isIn: {
+        errorMessage: 'Choose valid unit.',
+        options: [units],
+      },
+    },
+    amount: {
+      in: ['body'],
+      isInt: {
+        errorMessage: 'Enter amount.',
+        options: {
+          min: 1,
+          allow_leading_zeroes: false,
+        },
+      },
+      toInt: true,
+    },
+    currency: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Choose available currency.',
+      },
+      isIn: {
+        errorMessage: 'Choose available currency.',
+        options: currencies,
+      },
+    },
+    info: {
+      in: ['body'],
+      trim: true,
+    },
+  });
 }

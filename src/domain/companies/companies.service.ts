@@ -24,6 +24,18 @@ interface AddAmenity {
   };
 }
 
+interface UpdateAmenity {
+  id: string;
+  amenityId: string;
+  body: {
+    variant: AmenityVariant;
+    amount: number;
+    currency: Currency;
+    unit: Unit;
+    info: string;
+  };
+}
+
 export class Service {
   static getAll = async ({ query }: Payload['getAll']) => {
     const { filter, sort, select, page, limit } = new QueryService(query);
@@ -173,6 +185,34 @@ export class Service {
               currency: body.currency,
             },
           },
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!company) {
+      throw new BadRequestError('Company does not exist.');
+    }
+
+    return {
+      data: company,
+    };
+  };
+
+  static updateAmenity = async ({
+    id,
+    amenityId,
+    body,
+  }: UpdateAmenity): Promise<{ data: CompanyRecord }> => {
+    const company = await Company.findOneAndUpdate(
+      { _id: id, 'amenities._id': amenityId },
+      {
+        $set: {
+          'amenities.$.variant': body.variant,
+          'amenities.$.unit': body.unit,
+          'amenities.$.info': body.info,
+          'amenities.$.price.amount': body.amount,
+          'amenities.$.price.currency': body.currency,
         },
       },
       { new: true, runValidators: true }

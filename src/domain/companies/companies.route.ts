@@ -68,6 +68,16 @@ class Route extends BaseRoute {
         ValidatorService.catch,
         controller.addAmenity
       );
+
+    this.router
+      .route('/:id/amenities/:amenityId')
+      .patch(
+        AuthMiddleware.protect,
+        AuthMiddleware.isOwner('company'),
+        Validation.updateAmenity,
+        ValidatorService.catch,
+        controller.updateAmenity
+      );
   };
 }
 
