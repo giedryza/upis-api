@@ -1,11 +1,28 @@
 import { isValidObjectId } from 'mongoose';
 
-import { Payload } from 'domain/companies/companies.types';
+import {
+  AmenityVariant,
+  Payload,
+  Unit,
+  CompanyRecord,
+} from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { RESERVED_SLUGS } from 'domain/companies/companies.constants';
 import { BadRequestError, NotFoundError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Utils } from 'tools/utils';
+import { Currency } from 'types/common';
+
+interface AddAmenity {
+  id: string;
+  body: {
+    variant: AmenityVariant;
+    amount: number;
+    currency: Currency;
+    unit: Unit;
+    info: string;
+  };
+}
 
 export class Service {
   static getAll = async ({ query }: Payload['getAll']) => {
@@ -137,5 +154,36 @@ export class Service {
     if (logo) {
       filesService.delete(logo);
     }
+  };
+
+  static addAmenity = async ({
+    id,
+    body,
+  }: AddAmenity): Promise<{ data: CompanyRecord }> => {
+    const company = await Company.findOneAndUpdate(
+      { _id: id },
+      {
+        $push: {
+          amenities: {
+            variant: body.variant,
+            unit: body.unit,
+            info: body.info,
+            price: {
+              amount: body.amount,
+              currency: body.currency,
+            },
+          },
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!company) {
+      throw new BadRequestError('Company does not exist.');
+    }
+
+    return {
+      data: company,
+    };
   };
 }

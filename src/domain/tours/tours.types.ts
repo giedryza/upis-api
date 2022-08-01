@@ -283,7 +283,7 @@ export interface TourRecord extends WithTimestamp {
   rivers: string[];
   regions: Region[];
   photos: AppFile[];
-  amenities: AmenityRecord[];
+  amenities: AmenityDocument[];
   boats: Boat[];
   languages: Language[];
   company: EntityId;

@@ -1,15 +1,23 @@
 import { Request, Response } from 'express';
 
 import { ValidatorService } from 'tools/services';
-import { AppRequest } from 'types/common';
+import { AppRequest, Currency } from 'types/common';
 import {
   ListResponse,
   SuccessResponse,
   CreatedResponse,
   NoContentResponse,
 } from 'responses';
-import { Body } from 'domain/companies/companies.types';
+import { AmenityVariant, Body, Unit } from 'domain/companies/companies.types';
 import { Service } from 'domain/companies/companies.service';
+
+interface AddAmenity {
+  variant: AmenityVariant;
+  amount: number;
+  currency: Currency;
+  unit: Unit;
+  info: string;
+}
 
 class Controller {
   getAll = async (req: Request, res: Response) => {
@@ -71,6 +79,17 @@ class Controller {
     const { file } = req;
 
     const { data } = await Service.addLogo({ id, userId, file });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  addAmenity = async (req: Request, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      { id: string },
+      AddAmenity
+    >(req);
+
+    const { data } = await Service.addAmenity({ id: params.id, body });
 
     return new SuccessResponse(res, data).send();
   };
