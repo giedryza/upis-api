@@ -71,6 +71,7 @@ class Route extends BaseRoute {
 
     this.router
       .route('/:id/amenities/:amenityId')
+      .get(Validation.getAmenity, controller.getAmenity)
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('company'),

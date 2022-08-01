@@ -36,6 +36,13 @@ interface Update {
   };
 }
 
+interface GetAmenity {
+  params: {
+    id: string;
+    amenityId: string;
+  };
+}
+
 interface AddAmenity {
   params: {
     id: string;
@@ -132,6 +139,17 @@ class Controller {
     const { file } = req;
 
     const { data } = await Service.addLogo({ id, userId, file });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  getAmenity = async (req: Request, res: Response) => {
+    const { params } = ValidatorService.getData<GetAmenity['params']>(req);
+
+    const { data } = await Service.getAmenity({
+      id: params.id,
+      amenityId: params.amenityId,
+    });
 
     return new SuccessResponse(res, data).send();
   };

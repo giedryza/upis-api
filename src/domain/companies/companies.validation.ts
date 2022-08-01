@@ -146,6 +146,17 @@ export class Validation {
     },
   });
 
+  static getAmenity = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: true,
+    },
+    amenityId: {
+      in: ['params'],
+      isMongoId: true,
+    },
+  });
+
   static addAmenity = checkSchema({
     id: {
       in: ['params'],

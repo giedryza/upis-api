@@ -5,6 +5,7 @@ import {
   Payload,
   Unit,
   CompanyRecord,
+  AmenityRecord,
 } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
 import { RESERVED_SLUGS } from 'domain/companies/companies.constants';
@@ -12,6 +13,11 @@ import { BadRequestError, NotFoundError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Utils } from 'tools/utils';
 import { Currency } from 'types/common';
+
+interface GetAmenity {
+  id: string;
+  amenityId: string;
+}
 
 interface AddAmenity {
   id: string;
@@ -171,6 +177,28 @@ export class Service {
     if (logo) {
       filesService.delete(logo);
     }
+  };
+
+  static getAmenity = async ({
+    id,
+    amenityId,
+  }: GetAmenity): Promise<{ data: AmenityRecord | null }> => {
+    const company = await Company.findOne(
+      { _id: id, 'amenities._id': amenityId },
+      {
+        'amenities.$': 1,
+      }
+    );
+
+    if (!company) {
+      return {
+        data: null,
+      };
+    }
+
+    return {
+      data: company.amenities[0] ?? null,
+    };
   };
 
   static addAmenity = async ({
