@@ -77,6 +77,13 @@ class Route extends BaseRoute {
         Validation.updateAmenity,
         ValidatorService.catch,
         controller.updateAmenity
+      )
+      .delete(
+        AuthMiddleware.protect,
+        AuthMiddleware.isOwner('company'),
+        Validation.destroyAmenity,
+        ValidatorService.catch,
+        controller.destroyAmenity
       );
   };
 }

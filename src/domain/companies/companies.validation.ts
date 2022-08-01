@@ -261,4 +261,23 @@ export class Validation {
       trim: true,
     },
   });
+
+  static destroyAmenity = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new NotFoundError('Record not found.');
+        },
+      },
+    },
+    amenityId: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new NotFoundError('Record not found.');
+        },
+      },
+    },
+  });
 }

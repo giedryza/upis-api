@@ -36,6 +36,11 @@ interface UpdateAmenity {
   };
 }
 
+interface DestroyAmenity {
+  id: string;
+  amenityId: string;
+}
+
 export class Service {
   static getAll = async ({ query }: Payload['getAll']) => {
     const { filter, sort, select, page, limit } = new QueryService(query);
@@ -216,6 +221,31 @@ export class Service {
         },
       },
       { new: true, runValidators: true }
+    );
+
+    if (!company) {
+      throw new BadRequestError('Company does not exist.');
+    }
+
+    return {
+      data: company,
+    };
+  };
+
+  static destroyAmenity = async ({
+    id,
+    amenityId,
+  }: DestroyAmenity): Promise<{ data: CompanyRecord }> => {
+    const company = await Company.findOneAndUpdate(
+      { _id: id },
+      {
+        $pull: {
+          amenities: {
+            _id: amenityId,
+          },
+        },
+      },
+      { new: true }
     );
 
     if (!company) {

@@ -63,6 +63,13 @@ interface UpdateAmenity {
   };
 }
 
+interface DestroyAmenity {
+  params: {
+    id: string;
+    amenityId: string;
+  };
+}
+
 class Controller {
   getAll = async (req: Request, res: Response) => {
     const { query } = req;
@@ -150,6 +157,17 @@ class Controller {
       id: params.id,
       amenityId: params.amenityId,
       body,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  destroyAmenity = async (req: Request, res: Response) => {
+    const { params } = ValidatorService.getData<DestroyAmenity['params']>(req);
+
+    const { data } = await Service.destroyAmenity({
+      id: params.id,
+      amenityId: params.amenityId,
     });
 
     return new SuccessResponse(res, data).send();
