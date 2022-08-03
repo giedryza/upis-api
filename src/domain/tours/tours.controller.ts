@@ -39,6 +39,15 @@ interface UpdateGeography {
   rivers: string[];
 }
 
+interface UpdateAmenities {
+  params: {
+    id: string;
+  };
+  body: {
+    amenities: string[];
+  };
+}
+
 class Controller {
   getAll = async (req: AppRequest, res: Response) => {
     const { query } = req;
@@ -102,6 +111,20 @@ class Controller {
     >(req);
 
     const { data } = await Service.updateGeography({ id: params.id, body });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  updateAmenities = async (req: AppRequest, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      UpdateAmenities['params'],
+      UpdateAmenities['body']
+    >(req);
+
+    const { data } = await Service.updateAmenities({
+      id: params.id,
+      amenities: body.amenities,
+    });
 
     return new SuccessResponse(res, data).send();
   };

@@ -1,16 +1,16 @@
 import { Router } from 'express';
 
-import { AuthMiddleware } from 'middlewares';
 import { BaseRoute } from 'routes/_base.route';
+import { AuthMiddleware } from 'middlewares';
 import { ValidatorService } from 'tools/services';
 
-import { controller } from './tours.controller';
-import { Validation } from './tours.validation';
+import { Validation } from './amenities.validation';
+import { controller } from './amenities.controller';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
 
-  path = '/tours';
+  path = '/amenities';
 
   constructor() {
     super();
@@ -21,7 +21,6 @@ class Route extends BaseRoute {
   protected init = () => {
     this.router
       .route('/')
-      .get(controller.getAll)
       .post(
         AuthMiddleware.protect,
         Validation.create,
@@ -44,34 +43,7 @@ class Route extends BaseRoute {
         ValidatorService.catch,
         controller.destroy
       );
-
-    this.router
-      .route('/:id/price')
-      .patch(
-        AuthMiddleware.protect,
-        Validation.updatePrice,
-        ValidatorService.catch,
-        controller.updatePrice
-      );
-
-    this.router
-      .route('/:id/geography')
-      .patch(
-        AuthMiddleware.protect,
-        Validation.updateGeography,
-        ValidatorService.catch,
-        controller.updateGeography
-      );
-
-    this.router
-      .route('/:id/amenities')
-      .patch(
-        AuthMiddleware.protect,
-        Validation.updateAmenities,
-        ValidatorService.catch,
-        controller.updateAmenities
-      );
   };
 }
 
-export const toursRoute = new Route();
+export const amenitiesRoute = new Route();

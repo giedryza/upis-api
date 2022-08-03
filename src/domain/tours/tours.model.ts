@@ -3,16 +3,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 import { ModelName, languages, currencies, PriceDocument } from 'types/common';
 
-import {
-  TourDocument,
-  TourModel,
-  regions,
-  rivers,
-  boats,
-  AmenityDocument,
-  amenityVariants,
-  units,
-} from './tours.types';
+import { TourDocument, TourModel, regions, rivers, boats } from './tours.types';
 
 const schema = new Schema<TourDocument>(
   {
@@ -79,32 +70,11 @@ const schema = new Schema<TourDocument>(
     },
     amenities: {
       type: [
-        new Schema<AmenityDocument>({
-          variant: {
-            type: String,
-            enum: amenityVariants,
-            required: true,
-          },
-          price: {
-            type: Number,
-            min: 0,
-            default: 0,
-          },
-          currency: {
-            type: String,
-            enum: currencies,
-            default: 'EUR',
-          },
-          unit: {
-            type: String,
-            enum: units,
-            default: 'tour',
-          },
-          info: {
-            type: String,
-            default: '',
-          },
-        }),
+        {
+          type: Schema.Types.ObjectId,
+          ref: ModelName.Amenity,
+          required: true,
+        },
       ],
       default: [],
     },
