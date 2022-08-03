@@ -62,6 +62,15 @@ class Route extends BaseRoute {
         ValidatorService.catch,
         controller.updateGeography
       );
+
+    this.router
+      .route('/:id/amenities')
+      .patch(
+        AuthMiddleware.protect,
+        Validation.updateAmenities,
+        ValidatorService.catch,
+        controller.updateAmenities
+      );
   };
 }
 

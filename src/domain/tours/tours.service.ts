@@ -57,13 +57,20 @@ interface UpdateGeography {
   };
 }
 
+interface UpdateAmenities {
+  id: string;
+  amenities: string[];
+}
+
 export class Service {
   static getOne = async ({
     id,
   }: GetOne): Promise<{ data: TourRecord | null }> => {
     if (!id) return { data: null };
 
-    const tour = await Tour.findById(id).populate(['company']).lean();
+    const tour = await Tour.findById(id)
+      .populate(['company', 'amenities'])
+      .lean();
 
     if (!tour) return { data: null };
 
@@ -188,6 +195,29 @@ export class Service {
         },
       },
       { new: true, runValidators: true }
+    );
+
+    if (!tour) {
+      throw new BadRequestError('Tour does not exist.');
+    }
+
+    return {
+      data: tour,
+    };
+  };
+
+  static updateAmenities = async ({
+    id,
+    amenities,
+  }: UpdateAmenities): Promise<{ data: TourRecord }> => {
+    const tour = await Tour.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          amenities,
+        },
+      },
+      { new: true }
     );
 
     if (!tour) {

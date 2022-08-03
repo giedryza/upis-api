@@ -1,6 +1,6 @@
 import { checkSchema } from 'express-validator';
 
-import { BadRequestError } from 'errors';
+import { BadRequestError, NotFoundError } from 'errors';
 import { currencies } from 'types/common';
 import { regions, rivers } from 'domain/tours/tours.types';
 
@@ -208,6 +208,31 @@ export class Validation {
       isIn: {
         errorMessage: 'Choose valid rivers.',
         options: [rivers],
+      },
+    },
+  });
+
+  static updateAmenities = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new NotFoundError('Record not found.');
+        },
+      },
+    },
+    amenities: {
+      in: ['body'],
+      isArray: {
+        errorMessage: 'Choose amenities.',
+      },
+    },
+    'amenities.*': {
+      in: ['body'],
+      isMongoId: {
+        errorMessage: () => {
+          throw new BadRequestError('Choose valid amenity.');
+        },
       },
     },
   });
