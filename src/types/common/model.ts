@@ -16,6 +16,7 @@ export interface WithTimestamp {
 export enum ModelName {
   Company = 'Company',
   SocialLink = 'SocialLink',
+  Amenity = 'Amenity',
   Token = 'Token',
   Tour = 'Tour',
   User = 'User',
