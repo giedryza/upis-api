@@ -1,37 +1,9 @@
 import { Request } from 'express';
-import { Document, PaginateModel, Types } from 'mongoose';
+import { Document, PaginateModel } from 'mongoose';
 
-import { AppFile, EntityId, PriceRecord, WithTimestamp } from 'types/common';
+import { AppFile, EntityId, WithTimestamp } from 'types/common';
 import { UserDocument } from 'domain/users/users.types';
-
-export const amenityVariants = [
-  'transport',
-  'child-seat',
-  'life-vest',
-  'phone-case',
-  'dry-bag',
-  'tent',
-  'sleeping-bag',
-  'grill',
-  'guide',
-  'camera',
-  'pet-friendly',
-] as const;
-
-export const units = ['tour', 'day', 'h', 'km'] as const;
-
-export type AmenityVariant = typeof amenityVariants[number];
-
-export type Unit = typeof units[number];
-
-export interface AmenityRecord {
-  variant: AmenityVariant;
-  price: PriceRecord | null;
-  unit: Unit;
-  info: string;
-}
-
-export interface AmenityDocument extends AmenityRecord, Types.Subdocument {}
+import { AmenityDocument } from 'domain/amenities/amenities.types';
 
 export interface CompanyRecord extends WithTimestamp {
   name: string;
@@ -46,7 +18,7 @@ export interface CompanyRecord extends WithTimestamp {
     coordinates: number[];
   };
   logo: AppFile;
-  amenities: AmenityDocument[];
+  amenities: (EntityId | AmenityDocument)[];
 }
 
 export interface CompanyDocument extends CompanyRecord, Document {}
