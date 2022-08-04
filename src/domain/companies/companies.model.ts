@@ -1,7 +1,8 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Query } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 import { ModelName } from 'types/common';
+import { Tour } from 'domain/tours/tours.model';
 import {
   CompanyDocument,
   CompanyModel,
@@ -91,6 +92,17 @@ schema.virtual('socialLinks', {
   foreignField: 'host',
   localField: '_id',
 });
+
+schema.post<Query<CompanyDocument | null, CompanyDocument>>(
+  'findOneAndDelete',
+  async (doc, next) => {
+    if (!doc) return next();
+
+    await Tour.deleteMany({ company: doc._id });
+
+    next();
+  }
+);
 
 export const Company = model<CompanyDocument, CompanyModel>(
   ModelName.Company,
