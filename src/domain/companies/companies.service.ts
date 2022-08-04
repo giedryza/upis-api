@@ -2,7 +2,6 @@ import { isValidObjectId } from 'mongoose';
 
 import { Payload } from 'domain/companies/companies.types';
 import { Company } from 'domain/companies/companies.model';
-import { RESERVED_SLUGS } from 'domain/companies/companies.constants';
 import { BadRequestError, NotFoundError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Utils } from 'tools/utils';
@@ -46,24 +45,13 @@ export class Service {
   };
 
   static create = async ({ userId, body }: Payload['create']) => {
+    const slug = await SlugService.get(body.name);
+
     const company = new Company({
       user: userId,
+      slug,
       ...body,
     });
-
-    const slug = await SlugService.get(company.name);
-
-    if (!slug || RESERVED_SLUGS.includes(slug)) {
-      throw new BadRequestError('Invalid company name. Try another.');
-    }
-
-    const taken = await Company.findOne({ slug }).lean();
-
-    if (taken) {
-      throw new BadRequestError('Company name is taken. Try another.');
-    }
-
-    company.set('slug', slug);
 
     await company.save();
 
@@ -75,13 +63,17 @@ export class Service {
       throw new NotFoundError('Record not found.');
     }
 
+    const slug = await SlugService.get(body.name ?? '');
+
     const filter = { _id: id, user: userId };
     const update = Utils.stripUndefined(body);
-    const options = { new: true };
+    const options = { new: true, runValidators: true };
 
-    const company = await Company.findOneAndUpdate(filter, update, options)
-      .populate(['user', 'socialLinks', 'amenities'])
-      .lean();
+    const company = await Company.findOneAndUpdate(
+      filter,
+      { ...update, ...(slug && { slug }) },
+      options
+    ).lean();
 
     if (!company) {
       throw new BadRequestError('Failed to update the record.');
@@ -120,9 +112,7 @@ export class Service {
       },
     };
 
-    const company = await Company.findOneAndUpdate(filter, update)
-      .populate(['user', 'socialLinks', 'amenities'])
-      .lean();
+    const company = await Company.findOneAndUpdate(filter, update).lean();
 
     if (!company) {
       throw new BadRequestError('Failed to update the record.');
