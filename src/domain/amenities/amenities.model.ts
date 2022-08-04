@@ -2,6 +2,8 @@ import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 import { currencies, ModelName, PriceDocument } from 'types/common';
+import { Company } from 'domain/companies/companies.model';
+import { Tour } from 'domain/tours/tours.model';
 
 import {
   variants,
@@ -53,6 +55,20 @@ export const schema = new Schema<AmenityDocument, AmenityModel, AmenityRecord>(
 );
 
 schema.plugin(mongoosePaginate);
+
+schema.post('findOneAndDelete', async (doc, next) => {
+  if (!doc) return next();
+
+  await Promise.all([
+    Company.updateMany(
+      { amenities: doc._id },
+      { $pull: { amenities: doc._id } }
+    ),
+    Tour.updateMany({ amenities: doc._id }, { $pull: { amenities: doc._id } }),
+  ]);
+
+  next();
+});
 
 export const Amenity = model<AmenityDocument, AmenityModel>(
   ModelName.Amenity,

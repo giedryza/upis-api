@@ -29,7 +29,6 @@ interface Update {
 
 interface Destroy {
   id: string;
-  companyId: string;
 }
 
 export class Service {
@@ -116,27 +115,11 @@ export class Service {
     };
   };
 
-  static destroy = async ({ id, companyId }: Destroy): Promise<void> => {
+  static destroy = async ({ id }: Destroy): Promise<void> => {
     const amenity = await Amenity.findByIdAndDelete(id).lean();
 
     if (!amenity) {
       throw new BadRequestError('Amenity does not exist.');
-    }
-
-    const company = await Company.findOneAndUpdate(
-      { _id: companyId },
-      {
-        $pull: {
-          amenities: {
-            _id: id,
-          },
-        },
-      },
-      { new: true }
-    ).lean();
-
-    if (!company) {
-      throw new BadRequestError('Company does not exist.');
     }
   };
 }

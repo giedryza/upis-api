@@ -130,13 +130,5 @@ export class Validation {
         },
       },
     },
-    companyId: {
-      in: ['body'],
-      isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
-        },
-      },
-    },
   });
 }
