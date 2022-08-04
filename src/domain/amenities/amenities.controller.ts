@@ -42,9 +42,6 @@ interface Destroy {
   params: {
     id: string;
   };
-  body: {
-    companyId: string;
-  };
 }
 
 class Controller {
@@ -83,14 +80,10 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { params, body } = ValidatorService.getData<
-      Destroy['params'],
-      Destroy['body']
-    >(req);
+    const { params } = ValidatorService.getData<Destroy['params']>(req);
 
     await Service.destroy({
       id: params.id,
-      companyId: body.companyId,
     });
 
     return new NoContentResponse(res).send();

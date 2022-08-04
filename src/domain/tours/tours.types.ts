@@ -1,13 +1,14 @@
-import { Document, PaginateModel, Types } from 'mongoose';
+import { Document, PaginateModel } from 'mongoose';
 
 import {
   AppFile,
-  Currency,
   EntityId,
   Language,
   PriceRecord,
   WithTimestamp,
 } from 'types/common';
+import { AmenityDocument } from 'domain/amenities/amenities.types';
+import { CompanyDocument } from 'domain/companies/companies.types';
 
 export const regions = [
   'aukstaitija',
@@ -230,43 +231,13 @@ export const rivers = [
   'zvelsa',
 ] as const;
 
-export const amenityVariants = [
-  'transport',
-  'child-seat',
-  'life-vest',
-  'phone-case',
-  'dry-bag',
-  'tent',
-  'sleeping-bag',
-  'grill',
-  'guide',
-  'camera',
-  'pet-friendly',
-] as const;
-
 export const boats = ['single-kayak', 'double-kayak', 'triple-kayak'] as const;
-
-export const units = ['tour', 'day', 'h', 'km'] as const;
 
 export type Region = typeof regions[number];
 
 export type River = typeof rivers[number];
 
-export type AmenityVariant = typeof amenityVariants[number];
-
 export type Boat = typeof boats[number];
-
-export type Unit = typeof units[number];
-
-export interface AmenityRecord {
-  variant: AmenityVariant;
-  price: number;
-  currency: Currency;
-  unit: Unit;
-  info: string;
-}
-
-export interface AmenityDocument extends AmenityRecord, Types.Subdocument {}
 
 export interface TourRecord extends WithTimestamp {
   name: string;
@@ -280,13 +251,13 @@ export interface TourRecord extends WithTimestamp {
   days: number;
   difficulty: number;
   price: PriceRecord | null;
-  rivers: string[];
+  rivers: River[];
   regions: Region[];
   photos: AppFile[];
-  amenities: AmenityDocument[];
+  amenities: (EntityId | AmenityDocument)[];
   boats: Boat[];
   languages: Language[];
-  company: EntityId;
+  company: EntityId | CompanyDocument;
   user: EntityId;
 }
 

@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { LeanDocument } from 'mongoose';
 
 import { Tour } from 'domain/tours/tours.model';
 import { Region, TourRecord } from 'domain/tours/tours.types';
@@ -65,7 +66,7 @@ interface UpdateAmenities {
 export class Service {
   static getOne = async ({
     id,
-  }: GetOne): Promise<{ data: TourRecord | null }> => {
+  }: GetOne): Promise<{ data: LeanDocument<TourRecord> | null }> => {
     if (!id) return { data: null };
 
     const tour = await Tour.findById(id)
@@ -122,7 +123,7 @@ export class Service {
   static update = async ({
     id,
     body,
-  }: Update): Promise<{ data: TourRecord }> => {
+  }: Update): Promise<{ data: LeanDocument<TourRecord> }> => {
     const slug = await SlugService.get(body.name ?? '');
 
     const tour = await Tour.findByIdAndUpdate(
