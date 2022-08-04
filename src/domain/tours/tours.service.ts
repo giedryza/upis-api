@@ -87,7 +87,7 @@ export class Service {
       limit,
       sort,
       select,
-      populate: ['company'],
+      populate: ['company', 'amenities'],
       lean: true,
       leanWithId: false,
     };
@@ -133,9 +133,7 @@ export class Service {
         ...(slug && { slug }),
       },
       { new: true, runValidators: true }
-    )
-      .populate(['company'])
-      .lean();
+    ).lean();
 
     if (!tour) {
       throw new BadRequestError('Tour does not exist.');
