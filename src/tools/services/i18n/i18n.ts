@@ -1,7 +1,9 @@
 import path from 'path';
 import { I18n, ConfigurationOptions } from 'i18n';
 
-export const i18n = {} as typeof i18node;
+export const i18n = {} as {
+  t: typeof i18node.__;
+};
 
 const options: ConfigurationOptions = {
   locales: ['en', 'lt'],
@@ -10,6 +12,9 @@ const options: ConfigurationOptions = {
   objectNotation: true,
   updateFiles: false,
   register: i18n,
+  api: {
+    __: 't',
+  },
 };
 
 export const i18node = new I18n(options);
