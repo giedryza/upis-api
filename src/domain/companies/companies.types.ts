@@ -3,7 +3,6 @@ import { Document, PaginateModel } from 'mongoose';
 
 import { AppFile, EntityId, WithTimestamp } from 'types/common';
 import { UserDocument } from 'domain/users/users.types';
-import { AmenityDocument } from 'domain/amenities/amenities.types';
 
 export interface CompanyRecord extends WithTimestamp {
   name: string;
@@ -18,7 +17,7 @@ export interface CompanyRecord extends WithTimestamp {
     coordinates: number[];
   };
   logo: AppFile;
-  amenities: (EntityId | AmenityDocument)[];
+  amenities: EntityId[];
 }
 
 export interface CompanyDocument extends CompanyRecord, Document {}

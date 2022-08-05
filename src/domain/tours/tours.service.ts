@@ -6,6 +6,7 @@ import { Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { QueryService, SlugService } from 'tools/services';
 import { Currency, PaginatedList } from 'types/common';
+import { Company } from 'domain/companies/companies.model';
 
 interface GetOne {
   id?: string;
@@ -209,19 +210,25 @@ export class Service {
     id,
     amenities,
   }: UpdateAmenities): Promise<{ data: TourRecord }> => {
-    const tour = await Tour.findOneAndUpdate(
-      { _id: id },
-      {
-        $set: {
-          amenities,
-        },
-      },
-      { new: true }
-    );
+    const tour = await Tour.findById(id);
 
     if (!tour) {
       throw new BadRequestError('Tour does not exist.');
     }
+
+    const company = await Company.findOne({
+      _id: tour.company,
+      amenities: { $all: amenities },
+    });
+
+    if (!company) {
+      throw new BadRequestError(
+        'Company does not contain one or more amenities you are trying to add to the tour.'
+      );
+    }
+
+    tour.set('amenities', amenities);
+    await tour.save();
 
     return {
       data: tour,
