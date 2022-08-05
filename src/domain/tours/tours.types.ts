@@ -231,7 +231,12 @@ export const rivers = [
   'zvelsa',
 ] as const;
 
-export const boats = ['single-kayak', 'double-kayak', 'triple-kayak'] as const;
+export const boats = [
+  'single-kayak',
+  'double-kayak',
+  'triple-kayak',
+  'raft',
+] as const;
 
 export type Region = typeof regions[number];
 
