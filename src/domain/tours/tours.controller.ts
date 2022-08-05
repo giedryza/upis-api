@@ -12,31 +12,61 @@ import { Region } from 'domain/tours/tours.types';
 
 import { Service } from './tours.service';
 
+interface GetOne {
+  params: {
+    id: string;
+  };
+}
+
 interface Create {
-  name: string;
-  company: string;
+  params: {};
+  body: {
+    name: string;
+    company: string;
+  };
 }
 
 interface Update {
-  name: string;
-  description: string;
-  website: string;
-  departure: string;
-  arrival: string;
-  distance: number;
-  duration: number;
-  days: number;
-  difficulty: number;
+  params: {
+    id: string;
+  };
+  body: {
+    name: string;
+    description: string;
+    website: string;
+    departure: string;
+    arrival: string;
+    distance: number;
+    duration: number;
+    days: number;
+    difficulty: number;
+  };
+}
+
+interface Destroy {
+  params: {
+    id: string;
+  };
 }
 
 interface UpdatePrice {
-  amount?: number;
-  currency?: Currency;
+  params: {
+    id: string;
+  };
+  body: {
+    amount?: number;
+    currency?: Currency;
+  };
 }
 
 interface UpdateGeography {
-  regions: Region[];
-  rivers: string[];
+  params: {
+    id: string;
+  };
+  body: {
+    regions: Region[];
+    rivers: string[];
+  };
 }
 
 interface UpdateAmenities {
@@ -58,7 +88,7 @@ class Controller {
   };
 
   getOne = async (req: AppRequest, res: Response) => {
-    const { params } = ValidatorService.getData<{ id?: string }>(req);
+    const { params } = ValidatorService.getData<GetOne['params']>(req);
 
     const { data } = await Service.getOne({ id: params.id });
 
@@ -67,7 +97,9 @@ class Controller {
 
   create = async (req: AppRequest, res: Response) => {
     const { _id: userId } = req.user!;
-    const { body } = ValidatorService.getData<{}, Create>(req);
+    const { body } = ValidatorService.getData<Create['params'], Create['body']>(
+      req
+    );
 
     const { data } = await Service.create({ userId, body });
 
@@ -76,8 +108,8 @@ class Controller {
 
   update = async (req: AppRequest, res: Response) => {
     const { params, body } = ValidatorService.getData<
-      { id: string },
-      Partial<Update>
+      Update['params'],
+      Partial<Update['body']>
     >(req);
 
     const { data } = await Service.update({ id: params.id, body });
@@ -86,7 +118,7 @@ class Controller {
   };
 
   destroy = async (req: AppRequest, res: Response) => {
-    const { params } = ValidatorService.getData<{ id: string }>(req);
+    const { params } = ValidatorService.getData<Destroy['params']>(req);
 
     await Service.destroy({ id: params.id });
 
@@ -95,8 +127,8 @@ class Controller {
 
   updatePrice = async (req: AppRequest, res: Response) => {
     const { params, body } = ValidatorService.getData<
-      { id: string },
-      UpdatePrice
+      UpdatePrice['params'],
+      UpdatePrice['body']
     >(req);
 
     const { data } = await Service.updatePrice({ id: params.id, body });
@@ -106,8 +138,8 @@ class Controller {
 
   updateGeography = async (req: AppRequest, res: Response) => {
     const { params, body } = ValidatorService.getData<
-      { id: string },
-      UpdateGeography
+      UpdateGeography['params'],
+      UpdateGeography['body']
     >(req);
 
     const { data } = await Service.updateGeography({ id: params.id, body });
