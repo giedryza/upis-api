@@ -2,10 +2,11 @@ import { json, Express } from 'express';
 import cors, { CorsOptions } from 'cors';
 import helmet from 'helmet';
 import { rateLimit, Options } from 'express-rate-limit';
+import { handle } from 'i18next-http-middleware';
 
 import { APP } from 'config';
 import { RateLimitError } from 'errors';
-import { i18node } from 'tools/services';
+import { i18n } from 'tools/services';
 
 export class CommonMiddleware {
   constructor(private app: Express) {}
@@ -44,6 +45,6 @@ export class CommonMiddleware {
   };
 
   useI18n = () => {
-    this.app.use(i18node.init);
+    this.app.use(handle(i18n));
   };
 }

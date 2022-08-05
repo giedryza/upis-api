@@ -1,20 +1,27 @@
 import path from 'path';
-import { I18n, ConfigurationOptions } from 'i18n';
+import i18next from 'i18next';
+import Backend from 'i18next-fs-backend';
+import { LanguageDetector } from 'i18next-http-middleware';
 
-export const i18n = {} as {
-  t: typeof i18node.__;
-};
+i18next
+  .use(Backend)
+  .use(LanguageDetector)
+  .init({
+    backend: {
+      loadPath: path.join(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        'translations',
+        '{{lng}}.json'
+      ),
+    },
+    detection: {
+      order: ['header'],
+    },
+    supportedLngs: ['en', 'lt'],
+    fallbackLng: 'en',
+  });
 
-const options: ConfigurationOptions = {
-  locales: ['en', 'lt'],
-  defaultLocale: 'en',
-  directory: path.join(__dirname, '..', '..', '..', 'translations'),
-  objectNotation: true,
-  updateFiles: false,
-  register: i18n,
-  api: {
-    __: 't',
-  },
-};
-
-export const i18node = new I18n(options);
+export default i18next;
