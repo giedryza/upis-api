@@ -1,0 +1,43 @@
+{
+  "tours": {
+    "errors": {
+      "id": {
+        "invalid": "Tour does not exist."
+      },
+      "name": {
+        "invalid": "Enter tour name.",
+        "max": "Use {{ maxLength }} characters or less for name."
+      },
+      "distance": {
+        "invalid": "Enter tour distance."
+      },
+      "duration": {
+        "invalid": "Enter tour duration."
+      },
+      "days": {
+        "invalid": "Enter tour duration in days."
+      },
+      "difficulty": {
+        "invalid": "Enter tour difficulty between {{ min }} and {{ max }}."
+      },
+      "amount": {
+        "invalid": "Enter price."
+      },
+      "currency": {
+        "invalid": "Choose available currency."
+      },
+      "regions": {
+        "invalid": "Choose regions."
+      },
+      "rivers": {
+        "invalid": "Choose rivers."
+      },
+      "amenities": {
+        "invalid": "Choose amenities."
+      },
+      "company": {
+        "invalid": "Company does not exist."
+      }
+    }
+  }
+}

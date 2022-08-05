@@ -1,3 +1,8 @@
+export enum Locale {
+  Lt = 'lt',
+  En = 'en',
+}
+
 export const languages = [
   'aa',
   'ab',

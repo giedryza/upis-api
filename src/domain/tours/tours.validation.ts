@@ -1,4 +1,4 @@
-import { checkSchema } from 'express-validator';
+import { checkSchema, Meta } from 'express-validator';
 
 import { BadRequestError, NotFoundError } from 'errors';
 import { currencies } from 'types/common';
@@ -18,23 +18,20 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter tour name.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.name.invalid'),
       },
       isLength: {
         options: { max: 200 },
-        errorMessage: 'Use 200 characters or less for name.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.name.max', { maxLength: 200 }),
       },
     },
     company: {
       in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: 'Choose company.',
-      },
       isMongoId: {
-        errorMessage: () => {
-          throw new BadRequestError('Choose valid company.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new BadRequestError(req.t('tours.errors.company.invalid'));
         },
       },
     },
@@ -44,8 +41,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new BadRequestError('Tour does not exist.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('tours.errors.id.invalid'));
         },
       },
     },
@@ -54,10 +51,12 @@ export class Validation {
       optional: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter tour name.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.name.invalid'),
       },
       isString: {
-        errorMessage: 'Enter tour name.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.name.invalid'),
       },
       trim: true,
     },
@@ -85,7 +84,8 @@ export class Validation {
       in: ['body'],
       optional: true,
       isFloat: {
-        errorMessage: 'Enter tour distance.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.distance.invalid'),
         options: {
           min: 0.01,
         },
@@ -95,7 +95,8 @@ export class Validation {
       in: ['body'],
       optional: true,
       isFloat: {
-        errorMessage: 'Enter tour duration.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.duration.invalid'),
         options: {
           min: 0.01,
         },
@@ -105,7 +106,8 @@ export class Validation {
       in: ['body'],
       optional: true,
       isInt: {
-        errorMessage: 'Enter tour duration in days.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.days.invalid'),
         options: {
           min: 1,
           allow_leading_zeroes: false,
@@ -117,7 +119,8 @@ export class Validation {
       in: ['body'],
       optional: true,
       isFloat: {
-        errorMessage: 'Enter tour difficulty between 0 and 5.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.difficulty.invalid', { min: 0, max: 5 }),
         options: {
           min: 0,
           max: 5,
@@ -130,8 +133,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new BadRequestError('Tour does not exist.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('tours.errors.id.invalid'));
         },
       },
     },
@@ -141,8 +144,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new BadRequestError('Tour does not exist.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('tours.errors.id.invalid'));
         },
       },
     },
@@ -150,7 +153,8 @@ export class Validation {
       in: ['body'],
       optional: true,
       isInt: {
-        errorMessage: 'Enter amount.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.amount.invalid'),
         options: {
           min: 1,
           allow_leading_zeroes: false,
@@ -164,10 +168,12 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Choose available currency.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.currency.invalid'),
       },
       isIn: {
-        errorMessage: 'Choose available currency.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.currency.invalid'),
         options: currencies,
       },
     },
@@ -177,37 +183,41 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new BadRequestError('Tour does not exist.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('tours.errors.id.invalid'));
         },
       },
     },
     regions: {
       optional: true,
       isArray: {
-        errorMessage: 'Choose regions.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.regions.invalid'),
       },
     },
     'regions.*': {
       in: ['body'],
       trim: true,
       isIn: {
-        errorMessage: 'Choose valid regions.',
         options: [regions],
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.regions.invalid'),
       },
     },
     rivers: {
       optional: true,
       isArray: {
-        errorMessage: 'Choose rivers.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.rivers.invalid'),
       },
     },
     'rivers.*': {
       in: ['body'],
       trim: true,
       isIn: {
-        errorMessage: 'Choose valid rivers.',
         options: [rivers],
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.rivers.invalid'),
       },
     },
   });
@@ -216,22 +226,23 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('tours.errors.id.invalid'));
         },
       },
     },
     amenities: {
       in: ['body'],
       isArray: {
-        errorMessage: 'Choose amenities.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.amenities.invalid'),
       },
     },
     'amenities.*': {
       in: ['body'],
       isMongoId: {
-        errorMessage: () => {
-          throw new BadRequestError('Choose valid amenity.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new BadRequestError(req.t('tours.errors.amenities.invalid'));
         },
       },
     },
