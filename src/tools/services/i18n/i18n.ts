@@ -3,6 +3,8 @@ import i18next from 'i18next';
 import Backend from 'i18next-fs-backend';
 import { LanguageDetector } from 'i18next-http-middleware';
 
+import { APP } from 'config';
+
 i18next
   .use(Backend)
   .use(LanguageDetector)
@@ -20,8 +22,8 @@ i18next
     detection: {
       order: ['header'],
     },
-    supportedLngs: ['en', 'lt'],
-    fallbackLng: 'en',
+    supportedLngs: APP.locales.supportedLanguages,
+    fallbackLng: APP.locales.defaultLanguage,
   });
 
 export default i18next;

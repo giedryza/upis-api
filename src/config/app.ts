@@ -1,3 +1,4 @@
+import { Locale } from 'types/common';
 import { NodeEnv } from 'types/global/env';
 
 export const APP = {
@@ -27,6 +28,10 @@ export const APP = {
     connectionString: process.env.DB_CONNECTION_STRING,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
+  },
+  locales: {
+    defaultLanguage: Locale.Lt,
+    supportedLanguages: [Locale.Lt, Locale.En],
   },
   sendgrid: {
     username: process.env.SENDGRID_USERNAME,
