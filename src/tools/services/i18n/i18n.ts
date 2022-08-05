@@ -1,17 +1,15 @@
 import path from 'path';
-import { I18n } from 'i18n';
+import { I18n, ConfigurationOptions } from 'i18n';
 
-export const t = {} as T;
+export const i18n = {} as typeof i18node;
 
-export const i18n = new I18n({
+const options: ConfigurationOptions = {
   locales: ['en', 'lt'],
   defaultLocale: 'en',
   directory: path.join(__dirname, '..', '..', '..', 'translations'),
   objectNotation: true,
   updateFiles: false,
-  register: t,
-});
+  register: i18n,
+};
 
-interface T {
-  __: typeof i18n.__;
-}
+export const i18node = new I18n(options);

@@ -5,6 +5,7 @@ import { rateLimit, Options } from 'express-rate-limit';
 
 import { APP } from 'config';
 import { RateLimitError } from 'errors';
+import { i18node } from 'tools/services';
 
 export class CommonMiddleware {
   constructor(private app: Express) {}
@@ -40,5 +41,9 @@ export class CommonMiddleware {
     };
 
     this.app.use(rateLimit(options));
+  };
+
+  useI18n = () => {
+    this.app.use(i18node.init);
   };
 }
