@@ -1,5 +1,42 @@
 {
-  "hello": {
-    "title": "Labas"
+  "tours": {
+    "errors": {
+      "id": {
+        "invalid": "Nurodytas maršrutas neegzistuoja."
+      },
+      "name": {
+        "empty": "Nurodykite maršruto pavadinimą."
+      },
+      "distance": {
+        "invalid": "Įveskite maršruto distanciją."
+      },
+      "duration": {
+        "invalid": "Įveskite maršruto trukmę."
+      },
+      "days": {
+        "invalid": "Įveskite maršruto trukmę dienomis."
+      },
+      "difficulty": {
+        "invalid": "Pasirinkite sudėtingumą tarp {{ min }} ir {{ max }}."
+      },
+      "amount": {
+        "invalid": "Įveskite kainą."
+      },
+      "currency": {
+        "invalid": "Pasirinkite valiutą."
+      },
+      "regions": {
+        "invalid": "Pasirinkite regionus."
+      },
+      "rivers": {
+        "invalid": "Pasirinkite upes."
+      },
+      "amenities": {
+        "invalid": "Pasirinkite patogumus."
+      },
+      "company": {
+        "invalid": "Nurodyta įmonė neegzistuoja."
+      }
+    }
   }
 }
