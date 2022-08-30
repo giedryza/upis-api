@@ -33,9 +33,9 @@ export class Validation {
     amount: {
       in: ['body'],
       isInt: {
-        errorMessage: 'Enter amount.',
+        errorMessage: 'Enter price.',
         options: {
-          min: 1,
+          min: 0,
           allow_leading_zeroes: false,
         },
       },
