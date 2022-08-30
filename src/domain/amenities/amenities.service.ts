@@ -95,10 +95,7 @@ export class Service {
         variant,
         unit,
         info,
-        price: {
-          amount,
-          currency,
-        },
+        price: amount ? { amount, currency } : null,
       },
       { new: true, runValidators: true }
     ).lean();
