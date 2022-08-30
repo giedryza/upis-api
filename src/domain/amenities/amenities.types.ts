@@ -16,7 +16,7 @@ export const variants = [
   'pet-friendly',
 ] as const;
 
-export const units = ['tour', 'day', 'h', 'km'] as const;
+export const units = ['tour', 'person', 'day', 'h', 'km'] as const;
 
 export type Variant = typeof variants[number];
 
