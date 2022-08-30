@@ -97,7 +97,7 @@ export class Validation {
       isInt: {
         errorMessage: 'Enter amount.',
         options: {
-          min: 1,
+          min: 0,
           allow_leading_zeroes: false,
         },
       },
