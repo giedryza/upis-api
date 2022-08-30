@@ -58,10 +58,7 @@ export class Service {
       variant,
       unit,
       info,
-      price: {
-        amount,
-        currency,
-      },
+      price: amount ? { amount, currency } : null,
     });
 
     const { _id } = await amenity.save();
