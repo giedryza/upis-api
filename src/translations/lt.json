@@ -5,7 +5,8 @@
         "invalid": "Nurodytas maršrutas neegzistuoja."
       },
       "name": {
-        "empty": "Nurodykite maršruto pavadinimą."
+        "invalid": "Nurodykite maršruto pavadinimą.",
+        "max": "Naudokite {{ maxLength }} arba mažiau simbolių maršruto pavadinime."
       },
       "distance": {
         "invalid": "Įveskite maršruto distanciją."
