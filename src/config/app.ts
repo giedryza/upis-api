@@ -21,7 +21,7 @@ export const APP = {
   },
   root: {
     env: process.env.NODE_ENV as NodeEnv,
-    port: +process.env.PORT,
+    port: Number(process.env.PORT),
     host: process.env.HOST_API,
   },
   db: {
@@ -39,14 +39,14 @@ export const APP = {
   },
   mailtrap: {
     host: process.env.MAILTRAP_HOST,
-    port: +process.env.MAILTRAP_PORT,
+    port: Number(process.env.MAILTRAP_PORT),
     username: process.env.MAILTRAP_USERNAME,
     password: process.env.MAILTRAP_PASSWORD,
   },
   token: {
     jwtSecret: process.env.JWT_SECRET,
-    jwtExpiresInDays: +process.env.JWT_EXPIRES_IN_DAYS,
-    tokenExpiresInHours: +process.env.TOKEN_EXPIRES_IN_HOURS,
+    jwtExpiresInDays: Number(process.env.JWT_EXPIRES_IN_DAYS),
+    tokenExpiresInHours: Number(process.env.TOKEN_EXPIRES_IN_HOURS),
   },
   aws: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,

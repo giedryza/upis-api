@@ -37,7 +37,9 @@ export class QueryService {
     return Utils.isObject(sort)
       ? Object.entries(sort).reduce(
           (acc, [key, value]) =>
-            ['-1', '1'].includes(value) ? { ...acc, [key]: +value } : acc,
+            ['-1', '1'].includes(value)
+              ? { ...acc, [key]: Number(value) }
+              : acc,
           {}
         )
       : this.defaults.sort;

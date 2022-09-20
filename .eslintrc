@@ -60,6 +60,15 @@
     "class-methods-use-this": "off",
     "consistent-return": "off",
     "func-names": ["error", "never"],
+    "no-implicit-coercion": [
+      "error",
+      {
+        "boolean": false,
+        "number": true,
+        "string": true,
+        "disallowTemplateShorthand": true
+      }
+    ],
     "no-param-reassign": "off",
     "no-underscore-dangle": "off"
   }

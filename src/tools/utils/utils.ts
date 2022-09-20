@@ -27,7 +27,7 @@ export class Utils {
   static toPositive = (value: any, fallback: number) => {
     if (!Utils.isNumeric(value)) return fallback;
 
-    const number = +value;
+    const number = Number(value);
 
     if (number < 1) return fallback;
 
