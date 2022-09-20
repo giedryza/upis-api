@@ -221,7 +221,7 @@ export class Service {
 
     const company = await Company.findOne({
       _id: tour.company,
-      ...(amenities.length && { amenities: { $all: amenities } }),
+      ...(!!amenities.length && { amenities: { $all: amenities } }),
     });
 
     if (!company) {
