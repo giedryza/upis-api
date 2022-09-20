@@ -71,7 +71,10 @@ export class Service {
     if (!id) return { data: null };
 
     const tour = await Tour.findById(id)
-      .populate(['company', 'amenities'])
+      .populate([
+        { path: 'company', populate: 'amenities' },
+        { path: 'amenities' },
+      ])
       .lean();
 
     if (!tour) return { data: null };
@@ -218,7 +221,7 @@ export class Service {
 
     const company = await Company.findOne({
       _id: tour.company,
-      amenities: { $all: amenities },
+      ...(amenities.length && { amenities: { $all: amenities } }),
     });
 
     if (!company) {
