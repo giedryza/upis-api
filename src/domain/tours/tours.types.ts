@@ -1,12 +1,6 @@
 import { Document, PaginateModel } from 'mongoose';
 
-import {
-  AppFile,
-  EntityId,
-  Language,
-  PriceRecord,
-  WithTimestamp,
-} from 'types/common';
+import { AppFile, EntityId, PriceRecord, WithTimestamp } from 'types/common';
 import { AmenityDocument } from 'domain/amenities/amenities.types';
 import { CompanyDocument } from 'domain/companies/companies.types';
 
@@ -261,7 +255,6 @@ export interface TourRecord extends WithTimestamp {
   photos: AppFile[];
   amenities: (EntityId | AmenityDocument)[];
   boats: Boat[];
-  languages: Language[];
   company: EntityId | CompanyDocument;
   user: EntityId;
 }

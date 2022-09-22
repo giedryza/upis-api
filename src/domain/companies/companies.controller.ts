@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import { ValidatorService } from 'tools/services';
-import { AppRequest } from 'types/common';
+import { AppRequest, Language } from 'types/common';
 import {
   ListResponse,
   SuccessResponse,
@@ -25,13 +25,14 @@ interface Update {
     id: string;
   };
   body: {
-    name: string | undefined;
-    phone: string | undefined;
-    email: string | undefined;
-    description: string | undefined;
-    website: string | undefined;
-    address: string | undefined;
-    location: { coordinates: number[] } | undefined;
+    name?: string;
+    phone?: string;
+    email?: string;
+    description?: string;
+    website?: string;
+    address?: string;
+    location?: { coordinates: number[] };
+    languages?: Language[];
   };
 }
 

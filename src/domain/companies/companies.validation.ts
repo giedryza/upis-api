@@ -1,6 +1,7 @@
 import { checkSchema } from 'express-validator';
 
 import { NotFoundError } from 'errors';
+import { languages } from 'types/common';
 
 export class Validation {
   static create = checkSchema({
@@ -118,6 +119,20 @@ export class Validation {
           max: 180,
         },
         errorMessage: 'Provide location coordinates.',
+      },
+    },
+    languages: {
+      optional: true,
+      isArray: {
+        errorMessage: 'Select languages.',
+      },
+    },
+    'languages.*': {
+      in: ['body'],
+      trim: true,
+      isIn: {
+        options: [languages],
+        errorMessage: 'Select languages.',
       },
     },
   });
