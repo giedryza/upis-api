@@ -18,7 +18,6 @@ export const languages = [
   'cy',
   'da',
   'de',
-  'dv',
   'en',
   'es',
   'et',
