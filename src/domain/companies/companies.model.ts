@@ -4,6 +4,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import { ModelName, languages } from 'types/common';
 import { Tour } from 'domain/tours/tours.model';
 import {
+  boats,
   CompanyDocument,
   CompanyModel,
   CompanyRecord,
@@ -63,6 +64,9 @@ const schema = new Schema<CompanyDocument, CompanyModel, CompanyRecord>(
     },
     languages: {
       type: [{ type: String, enum: languages }],
+    },
+    boats: {
+      type: [{ type: String, enum: boats }],
     },
     amenities: {
       type: [

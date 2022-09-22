@@ -3,7 +3,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 import { ModelName, currencies, PriceDocument } from 'types/common';
 
-import { TourDocument, TourModel, regions, rivers, boats } from './tours.types';
+import { TourDocument, TourModel, regions, rivers } from './tours.types';
 
 const schema = new Schema<TourDocument>(
   {
@@ -103,9 +103,6 @@ const schema = new Schema<TourDocument>(
       type: Schema.Types.ObjectId,
       ref: ModelName.User,
       required: true,
-    },
-    boats: {
-      type: [{ type: String, enum: boats }],
     },
   },
   {

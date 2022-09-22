@@ -5,6 +5,7 @@ import { Company } from 'domain/companies/companies.model';
 import { BadRequestError, NotFoundError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Language } from 'types/common';
+import { Boat } from 'domain/companies/companies.types';
 
 interface GetAll {
   query: Request['query'];
@@ -36,6 +37,7 @@ interface Update {
     address?: string;
     location?: { coordinates: number[] };
     languages?: Language[];
+    boats?: Boat[];
   };
 }
 
@@ -110,7 +112,7 @@ export class Service {
     const slug = await SlugService.get(body.name ?? '');
 
     const filter = { _id: id, user: userId };
-    const { languages, ...update } = body;
+    const { languages, boats, ...update } = body;
     const options = { new: true, runValidators: true };
 
     const company = await Company.findOneAndUpdate(
@@ -120,6 +122,7 @@ export class Service {
         ...{
           $set: {
             ...(!!languages && { languages }),
+            ...(!!boats && { boats }),
           },
         },
         ...(slug && { slug }),

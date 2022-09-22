@@ -2,6 +2,7 @@ import { checkSchema } from 'express-validator';
 
 import { NotFoundError } from 'errors';
 import { languages } from 'types/common';
+import { boats } from 'domain/companies/companies.types';
 
 export class Validation {
   static create = checkSchema({
@@ -133,6 +134,20 @@ export class Validation {
       isIn: {
         options: [languages],
         errorMessage: 'Select languages.',
+      },
+    },
+    boats: {
+      optional: true,
+      isArray: {
+        errorMessage: 'Select boats.',
+      },
+    },
+    'boats.*': {
+      in: ['body'],
+      trim: true,
+      isIn: {
+        options: [boats],
+        errorMessage: 'Select boats.',
       },
     },
   });

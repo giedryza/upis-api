@@ -225,18 +225,9 @@ export const rivers = [
   'zvelsa',
 ] as const;
 
-export const boats = [
-  'single-kayak',
-  'double-kayak',
-  'triple-kayak',
-  'raft',
-] as const;
-
 export type Region = typeof regions[number];
 
 export type River = typeof rivers[number];
-
-export type Boat = typeof boats[number];
 
 export interface TourRecord extends WithTimestamp {
   name: string;
@@ -254,7 +245,6 @@ export interface TourRecord extends WithTimestamp {
   regions: Region[];
   photos: AppFile[];
   amenities: (EntityId | AmenityDocument)[];
-  boats: Boat[];
   company: EntityId | CompanyDocument;
   user: EntityId;
 }
