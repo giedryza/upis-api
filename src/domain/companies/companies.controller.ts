@@ -9,6 +9,7 @@ import {
   NoContentResponse,
 } from 'responses';
 import { Service } from 'domain/companies/companies.service';
+import { Boat } from 'domain/companies/companies.types';
 
 interface Create {
   params: {};
@@ -33,6 +34,7 @@ interface Update {
     address?: string;
     location?: { coordinates: number[] };
     languages?: Language[];
+    boats?: Boat[];
   };
 }
 
