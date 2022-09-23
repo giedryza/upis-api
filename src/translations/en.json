@@ -58,5 +58,31 @@
         "invalid": "Choose currency."
       }
     }
+  },
+  "companies": {
+    "errors": {
+      "id": {
+        "invalid": "Company does not exist."
+      },
+      "name": {
+        "invalid": "Enter company name.",
+        "max": "Use {{ maxLength }} characters or less for name."
+      },
+      "phone": {
+        "invalid": "Enter phone."
+      },
+      "email": {
+        "invalid": "Enter email."
+      },
+      "location": {
+        "invalid": "Provide location coordinates."
+      },
+      "languages": {
+        "invalid": "Select languages."
+      },
+      "boats": {
+        "invalid": "Select boats."
+      }
+    }
   }
 }
