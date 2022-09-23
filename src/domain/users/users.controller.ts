@@ -1,23 +1,63 @@
 import { Request, Response } from 'express';
 
 import { SuccessResponse, CreatedResponse, NoContentResponse } from 'responses';
-import { AppRequest } from 'types/common';
-import { Body } from 'domain/users/users.types';
 import { Service } from 'domain/users/users.service';
+import { ValidatorService } from 'tools/services';
+
+interface Signup {
+  body: {
+    email: string;
+    password: string;
+  };
+}
+
+interface Signin {
+  body: {
+    email: string;
+    password: string;
+  };
+}
+
+interface UpdatePassword {
+  body: {
+    currentPassword: string;
+    newPassword: string;
+  };
+}
+
+interface ForgotPassword {
+  body: {
+    email: string;
+  };
+}
+
+interface ResetPassword {
+  body: {
+    userId: string;
+    token: string;
+    password: string;
+  };
+}
 
 class Controller {
-  signup = async (req: Request<{}, {}, Body['signup']>, res: Response) => {
-    const { email, password } = req.body;
+  signup = async (req: Request, res: Response) => {
+    const { body } = ValidatorService.getData<{}, Signup['body']>(req);
 
-    const { data } = await Service.signup({ email, password });
+    const { data } = await Service.signup({
+      email: body.email,
+      password: body.password,
+    });
 
     return new CreatedResponse(res, data).send();
   };
 
-  signin = async (req: Request<{}, {}, Body['signin']>, res: Response) => {
-    const { email, password } = req.body;
+  signin = async (req: Request, res: Response) => {
+    const { body } = ValidatorService.getData<{}, Signin['body']>(req);
 
-    const { data } = await Service.signin({ email, password });
+    const { data } = await Service.signin({
+      email: body.email,
+      password: body.password,
+    });
 
     return new SuccessResponse(res, data).send();
   };
@@ -30,40 +70,35 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  updatePassword = async (
-    req: Request<{}, {}, Body['updatePassword']>,
-    res: Response
-  ) => {
-    const { currentPassword, newPassword } = req.body;
+  updatePassword = async (req: Request, res: Response) => {
     const { _id: userId } = req.user!;
+    const { body } = ValidatorService.getData<{}, UpdatePassword['body']>(req);
 
     await Service.updatePassword({
       userId,
-      currentPassword,
-      newPassword,
+      currentPassword: body.currentPassword,
+      newPassword: body.newPassword,
     });
 
     return new NoContentResponse(res).send();
   };
 
-  forgotPassword = async (
-    req: AppRequest<{}, Body['forgotPassword']>,
-    res: Response
-  ) => {
-    const { email } = req.body;
+  forgotPassword = async (req: Request, res: Response) => {
+    const { body } = ValidatorService.getData<{}, ForgotPassword['body']>(req);
 
-    const { data } = await Service.forgotPassword({ email });
+    const { data } = await Service.forgotPassword({ email: body.email });
 
     return new SuccessResponse(res, data).send();
   };
 
-  resetPassword = async (
-    req: AppRequest<{}, Body['resetPassword']>,
-    res: Response
-  ) => {
-    const { userId, token, password } = req.body;
+  resetPassword = async (req: Request, res: Response) => {
+    const { body } = ValidatorService.getData<{}, ResetPassword['body']>(req);
 
-    const { data } = await Service.resetPassword({ userId, token, password });
+    const { data } = await Service.resetPassword({
+      userId: body.userId,
+      token: body.token,
+      password: body.password,
+    });
 
     return new SuccessResponse(res, data).send();
   };

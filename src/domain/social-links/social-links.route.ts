@@ -30,7 +30,7 @@ class Route extends BaseRoute {
 
     this.router
       .route('/:id')
-      .get(Validation.getOneById, ValidatorService.catch, controller.getOneById)
+      .get(Validation.getOne, ValidatorService.catch, controller.getOne)
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('social-link'),

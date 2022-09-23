@@ -1,21 +1,30 @@
-import { checkSchema } from 'express-validator';
+import { checkSchema, Meta } from 'express-validator';
 
 import { NotFoundError } from 'errors';
 import { languages } from 'types/common';
 import { boats } from 'domain/companies/companies.types';
 
 export class Validation {
+  static getOne = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: true,
+    },
+  });
+
   static create = checkSchema({
     name: {
       in: ['body'],
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter company name.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.name.invalid'),
       },
       isLength: {
         options: { max: 150 },
-        errorMessage: 'Use 150 characters or less for name.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.name.max', { maxLength: 150 }),
       },
     },
     phone: {
@@ -23,7 +32,8 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter company contact phone.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.phone.invalid'),
       },
     },
     email: {
@@ -31,10 +41,12 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter contact email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.email.invalid'),
       },
       isEmail: {
-        errorMessage: 'Enter valid email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.email.invalid'),
       },
     },
     description: {
@@ -48,8 +60,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('companies.errors.id.invalid'));
         },
       },
     },
@@ -59,7 +71,13 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter company name.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.name.invalid'),
+      },
+      isLength: {
+        options: { max: 150 },
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.name.max', { maxLength: 150 }),
       },
     },
     phone: {
@@ -68,7 +86,8 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter company contact phone.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.phone.invalid'),
       },
     },
     email: {
@@ -76,11 +95,13 @@ export class Validation {
       optional: true,
       trim: true,
       isEmail: {
-        errorMessage: 'Enter valid email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.email.invalid'),
       },
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter company email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.email.invalid'),
       },
     },
     description: {
@@ -109,7 +130,8 @@ export class Validation {
         options: {
           max: 2,
         },
-        errorMessage: 'Provide location coordinates.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.location.invalid'),
       },
     },
     'location.coordinates.*': {
@@ -119,13 +141,15 @@ export class Validation {
           min: -180,
           max: 180,
         },
-        errorMessage: 'Provide location coordinates.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.location.invalid'),
       },
     },
     languages: {
       optional: true,
       isArray: {
-        errorMessage: 'Select languages.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.languages.invalid'),
       },
     },
     'languages.*': {
@@ -133,13 +157,15 @@ export class Validation {
       trim: true,
       isIn: {
         options: [languages],
-        errorMessage: 'Select languages.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.languages.invalid'),
       },
     },
     boats: {
       optional: true,
       isArray: {
-        errorMessage: 'Select boats.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.boats.invalid'),
       },
     },
     'boats.*': {
@@ -147,7 +173,8 @@ export class Validation {
       trim: true,
       isIn: {
         options: [boats],
-        errorMessage: 'Select boats.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('companies.errors.boats.invalid'),
       },
     },
   });
@@ -156,8 +183,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('companies.errors.id.invalid'));
         },
       },
     },
@@ -167,8 +194,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('companies.errors.id.invalid'));
         },
       },
     },

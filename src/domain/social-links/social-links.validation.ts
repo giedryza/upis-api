@@ -1,27 +1,23 @@
-import { checkSchema } from 'express-validator';
+import { checkSchema, Meta } from 'express-validator';
 
 import { NotFoundError } from 'errors';
 import { SocialLinkType } from 'domain/social-links/social-links.types';
 
 export class Validation {
+  static getOne = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: true,
+    },
+  });
+
   static getAll = checkSchema({
     host: {
       in: ['query'],
       optional: true,
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Records not found.');
-        },
-      },
-    },
-  });
-
-  static getOneById = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('socialLinks.errors.id.invalid'));
         },
       },
     },
@@ -33,11 +29,13 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Choose social link type.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socialLinks.errors.type.invalid'),
       },
       isIn: {
         options: [Object.values(SocialLinkType)],
-        errorMessage: 'Choose valid social link type.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socialLinks.errors.type.invalid'),
       },
     },
     url: {
@@ -45,14 +43,15 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter social link url.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socialLinks.errors.url.invalid'),
       },
     },
     host: {
       in: ['body'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('socialLinks.errors.host.invalid'));
         },
       },
     },
@@ -62,8 +61,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('socialLinks.errors.id.invalid'));
         },
       },
     },
@@ -73,7 +72,8 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter social link url.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socialLinks.errors.url.invalid'),
       },
     },
     type: {
@@ -82,11 +82,13 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Choose social link type.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socialLinks.errors.type.invalid'),
       },
       isIn: {
         options: [Object.values(SocialLinkType)],
-        errorMessage: 'Choose valid social link type.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socialLinks.errors.type.invalid'),
       },
     },
   });
@@ -95,8 +97,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('socialLinks.errors.id.invalid'));
         },
       },
     },

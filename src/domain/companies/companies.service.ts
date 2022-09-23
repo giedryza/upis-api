@@ -1,11 +1,11 @@
 import { Request } from 'express';
-import { isValidObjectId } from 'mongoose';
+import { LeanDocument } from 'mongoose';
 
 import { Company } from 'domain/companies/companies.model';
 import { BadRequestError, NotFoundError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
-import { Language } from 'types/common';
-import { Boat } from 'domain/companies/companies.types';
+import { Language, PaginatedList } from 'types/common';
+import { Boat, CompanyRecord } from 'domain/companies/companies.types';
 
 interface GetAll {
   query: Request['query'];
@@ -57,7 +57,9 @@ interface Cleanup {
 }
 
 export class Service {
-  static getAll = async ({ query }: GetAll) => {
+  static getAll = async ({
+    query,
+  }: GetAll): Promise<PaginatedList<CompanyRecord>> => {
     const { filter, sort, select, page, limit } = new QueryService(query);
     const options = {
       page,
@@ -74,15 +76,9 @@ export class Service {
     return { data: docs, meta: { total, page, limit } };
   };
 
-  static getOne = async ({ id }: GetOne) => {
-    if (!id) {
-      throw new BadRequestError('Missing property: {id}.');
-    }
-
-    if (!isValidObjectId(id)) {
-      return { data: null };
-    }
-
+  static getOne = async ({
+    id,
+  }: GetOne): Promise<{ data: LeanDocument<CompanyRecord> | null }> => {
     const company = await Company.findById(id)
       .populate(['user', 'socialLinks', 'amenities'])
       .lean();
@@ -94,7 +90,10 @@ export class Service {
     return { data: company };
   };
 
-  static create = async ({ userId, body }: Create) => {
+  static create = async ({
+    userId,
+    body,
+  }: Create): Promise<{ data: CompanyRecord }> => {
     const slug = await SlugService.get(body.name);
 
     const company = new Company({
@@ -108,7 +107,11 @@ export class Service {
     return { data: company };
   };
 
-  static update = async ({ id, userId, body }: Update) => {
+  static update = async ({
+    id,
+    userId,
+    body,
+  }: Update): Promise<{ data: LeanDocument<CompanyRecord> }> => {
     const slug = await SlugService.get(body.name ?? '');
 
     const filter = { _id: id, user: userId };
@@ -137,7 +140,7 @@ export class Service {
     return { data: company };
   };
 
-  static destroy = async ({ id, userId }: Destroy) => {
+  static destroy = async ({ id, userId }: Destroy): Promise<void> => {
     if (!id) {
       throw new NotFoundError('Record not found.');
     }
@@ -153,7 +156,11 @@ export class Service {
     Service.deleteLogo({ logo: company.logo.key });
   };
 
-  static addLogo = async ({ id, userId, file }: AddLogo) => {
+  static addLogo = async ({
+    id,
+    userId,
+    file,
+  }: AddLogo): Promise<{ data: LeanDocument<CompanyRecord> }> => {
     if (!id || !file) {
       throw new BadRequestError('File upload failed. Try again.');
     }

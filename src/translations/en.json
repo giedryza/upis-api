@@ -39,5 +39,94 @@
         "invalid": "Company does not exist."
       }
     }
+  },
+  "amenities": {
+    "errors": {
+      "id": {
+        "invalid": "Amenity does not exist."
+      },
+      "variant": {
+        "invalid": "Choose amenity."
+      },
+      "unit": {
+        "invalid": "Choose unit."
+      },
+      "amount": {
+        "invalid": "Enter price."
+      },
+      "currency": {
+        "invalid": "Choose currency."
+      }
+    }
+  },
+  "companies": {
+    "errors": {
+      "id": {
+        "invalid": "Company does not exist."
+      },
+      "name": {
+        "invalid": "Enter company name.",
+        "max": "Use {{ maxLength }} characters or less for name."
+      },
+      "phone": {
+        "invalid": "Enter phone."
+      },
+      "email": {
+        "invalid": "Enter email."
+      },
+      "location": {
+        "invalid": "Provide location coordinates."
+      },
+      "languages": {
+        "invalid": "Select languages."
+      },
+      "boats": {
+        "invalid": "Select boats."
+      }
+    }
+  },
+  "socialLinks": {
+    "errors": {
+      "id": {
+        "invalid": "Social link does not exist."
+      },
+      "host": {
+        "invalid": "Host does not exist."
+      },
+      "type": {
+        "invalid": "Choose social link type."
+      },
+      "url": {
+        "invalid": "Enter social link url."
+      }
+    }
+  },
+  "users": {
+    "errors": {
+      "email": {
+        "invalid": "Enter email."
+      },
+      "password": {
+        "invalid": "Enter password.",
+        "length": "Use between {{ min }} and {{ max }} characters for password."
+      },
+      "confirmPassword": {
+        "invalid": "Confirm password.",
+        "match": "Passwords didn't match. Try again."
+      },
+      "currentPassword": {
+        "invalid": "Enter current password."
+      },
+      "newPassword": {
+        "invalid": "Enter new password.",
+        "length": "Use between {{ min }} and {{ max }} characters for password."
+      },
+      "token": {
+        "invalid": "Unable to reset password. Try again."
+      },
+      "userId": {
+        "invalid": "Unable to reset password. Try again."
+      }
+    }
   }
 }

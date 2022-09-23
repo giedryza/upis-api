@@ -1,4 +1,4 @@
-import { checkSchema } from 'express-validator';
+import { checkSchema, Meta } from 'express-validator';
 
 import {
   PASSWORD_MIN_LENGTH,
@@ -12,67 +12,41 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.email.invalid'),
       },
       isEmail: {
-        errorMessage: 'Enter valid email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.email.invalid'),
       },
     },
     password: {
       in: ['body'],
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter password.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.password.invalid'),
       },
       isLength: {
         options: { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH },
-        errorMessage: `Use between ${PASSWORD_MIN_LENGTH} and ${PASSWORD_MAX_LENGTH} characters for password.`,
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.password.length', {
+            min: PASSWORD_MIN_LENGTH,
+            max: PASSWORD_MAX_LENGTH,
+          }),
       },
     },
     confirmPassword: {
       in: ['body'],
       isEmpty: {
         negated: true,
-        errorMessage: 'Confirm password.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.confirmPassword.invalid'),
       },
       custom: {
         options: (value, { req }) => value === req.body.password,
-        errorMessage: "Passwords didn't match. Try again.",
-      },
-    },
-  });
-
-  static updatePassword = checkSchema({
-    currentPassword: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: 'Enter current password.',
-      },
-    },
-    newPassword: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: 'Enter new password.',
-      },
-      isLength: {
-        options: { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH },
-        errorMessage: `Use between ${PASSWORD_MIN_LENGTH} and ${PASSWORD_MAX_LENGTH} characters for password.`,
-      },
-    },
-    confirmPassword: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: 'Confirm password.',
-      },
-      custom: {
-        options: (value, { req }) => value === req.body.newPassword,
-        errorMessage: "Passwords didn't match. Try again.",
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.confirmPassword.match'),
       },
     },
   });
@@ -83,17 +57,63 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.email.invalid'),
       },
       isEmail: {
-        errorMessage: 'Wrong email. Enter valid email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.email.invalid'),
       },
     },
     password: {
       in: ['body'],
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter password.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.password.invalid'),
+      },
+    },
+  });
+
+  static updatePassword = checkSchema({
+    currentPassword: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.currentPassword.invalid'),
+      },
+    },
+    newPassword: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.newPassword.invalid'),
+      },
+      isLength: {
+        options: { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH },
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.password.length', {
+            min: PASSWORD_MIN_LENGTH,
+            max: PASSWORD_MAX_LENGTH,
+          }),
+      },
+    },
+    confirmPassword: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.confirmPassword.invalid'),
+      },
+      custom: {
+        options: (value, { req }) => value === req.body.newPassword,
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.confirmPassword.match'),
       },
     },
   });
@@ -104,10 +124,12 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Enter email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.email.invalid'),
       },
       isEmail: {
-        errorMessage: 'Wrong email. Enter valid email.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.email.invalid'),
       },
     },
   });
@@ -117,17 +139,20 @@ export class Validation {
       in: ['body'],
       isEmpty: {
         negated: true,
-        errorMessage: 'Unable to reset password. Try again.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.userId.invalid'),
       },
       isMongoId: {
-        errorMessage: 'Unable to reset password. Try again.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.userId.invalid'),
       },
     },
     token: {
       in: ['body'],
       isEmpty: {
         negated: true,
-        errorMessage: 'Unable to reset password. Try again.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.token.invalid'),
       },
     },
     password: {
@@ -135,7 +160,8 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Unable to reset password. Try again.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('users.errors.password.invalid'),
       },
     },
   });

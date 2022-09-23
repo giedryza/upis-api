@@ -68,8 +68,6 @@ export class Service {
   static getOne = async ({
     id,
   }: GetOne): Promise<{ data: LeanDocument<TourRecord> | null }> => {
-    if (!id) return { data: null };
-
     const tour = await Tour.findById(id)
       .populate([
         { path: 'company', populate: 'amenities' },

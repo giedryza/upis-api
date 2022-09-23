@@ -39,5 +39,94 @@
         "invalid": "Nurodyta įmonė neegzistuoja."
       }
     }
+  },
+  "amenities": {
+    "errors": {
+      "id": {
+        "invalid": "Nurodytas patogumas neegzistuoja."
+      },
+      "variant": {
+        "invalid": "Pasirinkite patogumą."
+      },
+      "unit": {
+        "invalid": "Pasirinkite vienetą."
+      },
+      "amount": {
+        "invalid": "Įveskite kainą."
+      },
+      "currency": {
+        "invalid": "Pasirinkite valiutą."
+      }
+    }
+  },
+  "companies": {
+    "errors": {
+      "id": {
+        "invalid": "Nurodyta įmonė neegzistuoja."
+      },
+      "name": {
+        "invalid": "Įveskite įmonės pavadinimą.",
+        "max": "Naudokite {{ maxLength }} arba mažiau simbolių įmonės pavadinime."
+      },
+      "phone": {
+        "invalid": "Įveskite telefono numerį."
+      },
+      "email": {
+        "invalid": "Įveskite el. pašto adresą."
+      },
+      "location": {
+        "invalid": "Pasirinkite lokaciją."
+      },
+      "languages": {
+        "invalid": "Pasirinkite kalbas."
+      },
+      "boats": {
+        "invalid": "Pasirinkite valčių tipus."
+      }
+    }
+  },
+  "socialLinks": {
+    "errors": {
+      "id": {
+        "invalid": "Nurodytas socialinis tinklas neegzistuoja."
+      },
+      "host": {
+        "invalid": "Nurodytas socialinio tinklo savininkas neegzistuoja."
+      },
+      "type": {
+        "invalid": "Pasirinkite variantą."
+      },
+      "url": {
+        "invalid": "Įveskite interneto nuorodą."
+      }
+    }
+  },
+  "users": {
+    "errors": {
+      "email": {
+        "invalid": "Įveskite el. pašto adresą."
+      },
+      "password": {
+        "invalid": "Įveskite slaptažodį.",
+        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo."
+      },
+      "confirmPassword": {
+        "invalid": "Patvirtinkite slaptažodį.",
+        "match": "Slaptažodžiai nesutampa. Bandykite dar kartą."
+      },
+      "currentPassword": {
+        "invalid": "Įveskite dabartinį slaptažodį."
+      },
+      "newPassword": {
+        "invalid": "Įveskite naują slaptažodį.",
+        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo."
+      },
+      "token": {
+        "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
+      },
+      "userId": {
+        "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
+      }
+    }
   }
 }

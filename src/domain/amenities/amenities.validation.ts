@@ -1,4 +1,4 @@
-import { checkSchema } from 'express-validator';
+import { checkSchema, Meta } from 'express-validator';
 
 import { NotFoundError } from 'errors';
 import { currencies } from 'types/common';
@@ -18,26 +18,29 @@ export class Validation {
       in: ['body'],
       trim: true,
       isIn: {
-        errorMessage: 'Choose valid amenity.',
         options: [variants],
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.variant.invalid'),
       },
     },
     unit: {
       in: ['body'],
       trim: true,
       isIn: {
-        errorMessage: 'Choose valid unit.',
         options: [units],
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.unit.invalid'),
       },
     },
     amount: {
       in: ['body'],
       isInt: {
-        errorMessage: 'Enter price.',
         options: {
           min: 0,
           allow_leading_zeroes: false,
         },
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.amount.invalid'),
       },
       toInt: true,
     },
@@ -46,11 +49,13 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Choose available currency.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.currency.invalid'),
       },
       isIn: {
-        errorMessage: 'Choose available currency.',
         options: currencies,
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.currency.invalid'),
       },
     },
     info: {
@@ -60,8 +65,8 @@ export class Validation {
     companyId: {
       in: ['body'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('amenities.errors.id.invalid'));
         },
       },
     },
@@ -71,8 +76,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('amenities.errors.id.invalid'));
         },
       },
     },
@@ -80,26 +85,29 @@ export class Validation {
       in: ['body'],
       trim: true,
       isIn: {
-        errorMessage: 'Choose valid amenity.',
         options: [variants],
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.variant.invalid'),
       },
     },
     unit: {
       in: ['body'],
       trim: true,
       isIn: {
-        errorMessage: 'Choose valid unit.',
         options: [units],
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.unit.invalid'),
       },
     },
     amount: {
       in: ['body'],
       isInt: {
-        errorMessage: 'Enter amount.',
         options: {
           min: 0,
           allow_leading_zeroes: false,
         },
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.amount.invalid'),
       },
       toInt: true,
     },
@@ -108,11 +116,13 @@ export class Validation {
       trim: true,
       isEmpty: {
         negated: true,
-        errorMessage: 'Choose available currency.',
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.currency.invalid'),
       },
       isIn: {
-        errorMessage: 'Choose available currency.',
         options: currencies,
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('amenities.errors.currency.invalid'),
       },
     },
     info: {
@@ -125,8 +135,8 @@ export class Validation {
     id: {
       in: ['params'],
       isMongoId: {
-        errorMessage: () => {
-          throw new NotFoundError('Record not found.');
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('amenities.errors.id.invalid'));
         },
       },
     },

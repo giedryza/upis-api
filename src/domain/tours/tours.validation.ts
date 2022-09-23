@@ -49,16 +49,17 @@ export class Validation {
     name: {
       in: ['body'],
       optional: true,
+      trim: true,
       isEmpty: {
         negated: true,
         errorMessage: (_: string, { req }: Meta) =>
           req.t('tours.errors.name.invalid'),
       },
-      isString: {
+      isLength: {
+        options: { max: 200 },
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('tours.errors.name.invalid'),
+          req.t('tours.errors.name.max', { maxLength: 200 }),
       },
-      trim: true,
     },
     description: {
       in: ['body'],
