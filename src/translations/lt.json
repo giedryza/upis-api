@@ -100,5 +100,33 @@
         "invalid": "Įveskite interneto nuorodą."
       }
     }
+  },
+  "users": {
+    "errors": {
+      "email": {
+        "invalid": "Įveskite el. pašto adresą."
+      },
+      "password": {
+        "invalid": "Įveskite slaptažodį.",
+        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo."
+      },
+      "confirmPassword": {
+        "invalid": "Patvirtinkite slaptažodį.",
+        "match": "Slaptažodžiai nesutampa. Bandykite dar kartą."
+      },
+      "currentPassword": {
+        "invalid": "Įveskite dabartinį slaptažodį."
+      },
+      "newPassword": {
+        "invalid": "Įveskite naują slaptažodį.",
+        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo."
+      },
+      "token": {
+        "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
+      },
+      "userId": {
+        "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
+      }
+    }
   }
 }

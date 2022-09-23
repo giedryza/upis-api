@@ -100,5 +100,33 @@
         "invalid": "Enter social link url."
       }
     }
+  },
+  "users": {
+    "errors": {
+      "email": {
+        "invalid": "Enter email."
+      },
+      "password": {
+        "invalid": "Enter password.",
+        "length": "Use between {{ min }} and {{ max }} characters for password."
+      },
+      "confirmPassword": {
+        "invalid": "Confirm password.",
+        "match": "Passwords didn't match. Try again."
+      },
+      "currentPassword": {
+        "invalid": "Enter current password."
+      },
+      "newPassword": {
+        "invalid": "Enter new password.",
+        "length": "Use between {{ min }} and {{ max }} characters for password."
+      },
+      "token": {
+        "invalid": "Unable to reset password. Try again."
+      },
+      "userId": {
+        "invalid": "Unable to reset password. Try again."
+      }
+    }
   }
 }
