@@ -1,11 +1,48 @@
-import { Payload } from 'domain/social-links/social-links.types';
+import { Request } from 'express';
+import { LeanDocument } from 'mongoose';
+
+import {
+  SocialLinkRecord,
+  SocialLinkType,
+} from 'domain/social-links/social-links.types';
 import { SocialLink } from 'domain/social-links/social-links.model';
 import { NotFoundError, BadRequestError } from 'errors';
 import { Utils } from 'tools/utils';
 import { QueryService } from 'tools/services';
+import { PaginatedList } from 'types/common';
+
+interface GetOne {
+  id: string;
+}
+
+interface GetAll {
+  query: Request['query'];
+}
+
+interface Create {
+  body: {
+    type: SocialLinkType;
+    url: string;
+    host: string;
+  };
+}
+
+interface Update {
+  id: string;
+  body: {
+    type: SocialLinkType | undefined;
+    url: string | undefined;
+  };
+}
+
+interface Destroy {
+  id: string;
+}
 
 export class Service {
-  static getAll = async ({ query }: Payload['getAll']) => {
+  static getAll = async ({
+    query,
+  }: GetAll): Promise<PaginatedList<SocialLinkRecord>> => {
     const { filter, sort, select, page, limit } = new QueryService(query);
     const options = {
       page,
@@ -24,21 +61,23 @@ export class Service {
     return { data: docs, meta: { total, page, limit } };
   };
 
-  static getOneById = async ({ id }: Payload['getOneById']) => {
-    if (!id) {
-      throw new NotFoundError('Record not found.');
-    }
-
+  static getOne = async ({
+    id,
+  }: GetOne): Promise<{
+    data: LeanDocument<SocialLinkRecord> | null;
+  }> => {
     const socialLink = await SocialLink.findById(id).lean();
 
     if (!socialLink) {
-      throw new NotFoundError('Record not found.');
+      return { data: null };
     }
 
     return { data: socialLink };
   };
 
-  static create = async ({ body }: Payload['create']) => {
+  static create = async ({
+    body,
+  }: Create): Promise<{ data: SocialLinkRecord }> => {
     const socialLink = new SocialLink(body);
 
     await socialLink.save();
@@ -46,7 +85,10 @@ export class Service {
     return { data: socialLink };
   };
 
-  static update = async ({ id, body }: Payload['update']) => {
+  static update = async ({
+    id,
+    body,
+  }: Update): Promise<{ data: LeanDocument<SocialLinkRecord> }> => {
     if (!id) {
       throw new NotFoundError('Record not found.');
     }
@@ -68,7 +110,7 @@ export class Service {
     return { data: socialLink };
   };
 
-  static destroy = async ({ id }: Payload['destroy']) => {
+  static destroy = async ({ id }: Destroy): Promise<void> => {
     if (!id) {
       throw new NotFoundError('Record not found.');
     }

@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 
 import { ValidatorService } from 'tools/services';
-import { AppRequest } from 'types/common';
-import { Body } from 'domain/social-links/social-links.types';
+import { SocialLinkType } from 'domain/social-links/social-links.types';
 import { Service } from 'domain/social-links/social-links.service';
 import {
   CreatedResponse,
@@ -10,6 +9,36 @@ import {
   SuccessResponse,
   ListResponse,
 } from 'responses';
+
+interface GetOne {
+  params: {
+    id: string;
+  };
+}
+
+interface Create {
+  body: {
+    type: SocialLinkType;
+    url: string;
+    host: string;
+  };
+}
+
+interface Update {
+  params: {
+    id: string;
+  };
+  body: {
+    type: SocialLinkType | undefined;
+    url: string | undefined;
+  };
+}
+
+interface Destroy {
+  params: {
+    id: string;
+  };
+}
 
 class Controller {
   getAll = async (req: Request, res: Response) => {
@@ -20,16 +49,16 @@ class Controller {
     return new ListResponse(res, data, meta).send();
   };
 
-  getOneById = async (req: Request, res: Response) => {
-    const { id = '' } = req.params;
+  getOne = async (req: Request, res: Response) => {
+    const { params } = ValidatorService.getData<GetOne['params']>(req);
 
-    const { data } = await Service.getOneById({ id });
+    const { data } = await Service.getOne({ id: params.id });
 
     return new SuccessResponse(res, data).send();
   };
 
-  create = async (req: AppRequest<{}, Body['create']>, res: Response) => {
-    const { body } = ValidatorService.getData<{}, Body['create']>(req);
+  create = async (req: Request, res: Response) => {
+    const { body } = ValidatorService.getData<{}, Create['body']>(req);
 
     const { data } = await Service.create({
       body,
@@ -40,8 +69,8 @@ class Controller {
 
   update = async (req: Request, res: Response) => {
     const { params, body } = ValidatorService.getData<
-      { id: string },
-      Body['update']
+      Update['params'],
+      Update['body']
     >(req);
 
     const { data } = await Service.update({
@@ -53,9 +82,9 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { id = '' } = req.params;
+    const { params } = ValidatorService.getData<Destroy['params']>(req);
 
-    await Service.destroy({ id });
+    await Service.destroy({ id: params.id });
 
     return new NoContentResponse(res).send();
   };

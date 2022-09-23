@@ -84,5 +84,21 @@
         "invalid": "Pasirinkite valčių tipus."
       }
     }
+  },
+  "socialLinks": {
+    "errors": {
+      "id": {
+        "invalid": "Nurodytas socialinis tinklas neegzistuoja."
+      },
+      "host": {
+        "invalid": "Nurodytas socialinio tinklo savininkas neegzistuoja."
+      },
+      "type": {
+        "invalid": "Pasirinkite variantą."
+      },
+      "url": {
+        "invalid": "Įveskite interneto nuorodą."
+      }
+    }
   }
 }

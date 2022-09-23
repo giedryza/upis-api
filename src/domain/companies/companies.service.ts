@@ -79,8 +79,6 @@ export class Service {
   static getOne = async ({
     id,
   }: GetOne): Promise<{ data: LeanDocument<CompanyRecord> | null }> => {
-    if (!id) return { data: null };
-
     const company = await Company.findById(id)
       .populate(['user', 'socialLinks', 'amenities'])
       .lean();

@@ -84,5 +84,21 @@
         "invalid": "Select boats."
       }
     }
+  },
+  "socialLinks": {
+    "errors": {
+      "id": {
+        "invalid": "Social link does not exist."
+      },
+      "host": {
+        "invalid": "Host does not exist."
+      },
+      "type": {
+        "invalid": "Choose social link type."
+      },
+      "url": {
+        "invalid": "Enter social link url."
+      }
+    }
   }
 }
