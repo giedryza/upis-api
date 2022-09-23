@@ -39,5 +39,24 @@
         "invalid": "Nurodyta įmonė neegzistuoja."
       }
     }
+  },
+  "amenities": {
+    "errors": {
+      "id": {
+        "invalid": "Nurodytas patogumas neegzistuoja."
+      },
+      "variant": {
+        "invalid": "Pasirinkite patogumą."
+      },
+      "unit": {
+        "invalid": "Pasirinkite vienetą."
+      },
+      "amount": {
+        "invalid": "Įveskite kainą."
+      },
+      "currency": {
+        "invalid": "Pasirinkite valiutą."
+      }
+    }
   }
 }

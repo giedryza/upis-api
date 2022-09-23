@@ -39,5 +39,24 @@
         "invalid": "Company does not exist."
       }
     }
+  },
+  "amenities": {
+    "errors": {
+      "id": {
+        "invalid": "Amenity does not exist."
+      },
+      "variant": {
+        "invalid": "Choose amenity."
+      },
+      "unit": {
+        "invalid": "Choose unit."
+      },
+      "amount": {
+        "invalid": "Enter price."
+      },
+      "currency": {
+        "invalid": "Choose currency."
+      }
+    }
   }
 }
