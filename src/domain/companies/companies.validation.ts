@@ -5,6 +5,13 @@ import { languages } from 'types/common';
 import { boats } from 'domain/companies/companies.types';
 
 export class Validation {
+  static getOne = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: true,
+    },
+  });
+
   static create = checkSchema({
     name: {
       in: ['body'],

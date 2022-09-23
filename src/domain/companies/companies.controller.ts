@@ -11,6 +11,24 @@ import {
 import { Service } from 'domain/companies/companies.service';
 import { Boat } from 'domain/companies/companies.types';
 
+interface GetOne {
+  params: {
+    id: string;
+  };
+}
+
+interface Destroy {
+  params: {
+    id: string;
+  };
+}
+
+interface AddLogo {
+  params: {
+    id: string;
+  };
+}
+
 interface Create {
   params: {};
   body: {
@@ -48,9 +66,9 @@ class Controller {
   };
 
   getOne = async (req: Request, res: Response) => {
-    const { id = '' } = req.params;
+    const { params } = ValidatorService.getData<GetOne['params']>(req);
 
-    const { data } = await Service.getOne({ id });
+    const { data } = await Service.getOne({ id: params.id });
 
     return new SuccessResponse(res, data).send();
   };
@@ -86,20 +104,20 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { id = '' } = req.params;
     const { _id: userId } = req.user!;
+    const { params } = ValidatorService.getData<Destroy['params']>(req);
 
-    await Service.destroy({ id, userId });
+    await Service.destroy({ id: params.id, userId });
 
     return new NoContentResponse(res).send();
   };
 
   addLogo = async (req: Request, res: Response) => {
-    const { id = '' } = req.params;
     const { _id: userId } = req.user!;
     const { file } = req;
+    const { params } = ValidatorService.getData<AddLogo['params']>(req);
 
-    const { data } = await Service.addLogo({ id, userId, file });
+    const { data } = await Service.addLogo({ id: params.id, userId, file });
 
     return new SuccessResponse(res, data).send();
   };
