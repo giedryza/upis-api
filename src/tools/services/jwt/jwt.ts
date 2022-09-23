@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 import { APP } from 'config';
-import { User } from 'domain/users/users.types';
+import { AppUser } from 'domain/users/users.types';
 
 export class JwtService {
   private static secret = APP.token.jwtSecret;
@@ -10,19 +10,19 @@ export class JwtService {
 
   static expiresIn = APP.token.jwtExpiresInDays * 24 * 60 * 60;
 
-  static token = (payload: User) =>
+  static token = (payload: AppUser) =>
     jwt.sign(payload, JwtService.secret, {
       expiresIn: JwtService.expiresIn,
     });
 
-  static verify = (token: string): Promise<User | null> =>
+  static verify = (token: string): Promise<AppUser | null> =>
     new Promise((resolve) => {
       jwt.verify(token, JwtService.secret, (err, decoded) => {
         if (err) {
           resolve(null);
         }
 
-        resolve(decoded as User);
+        resolve(decoded as AppUser);
       });
     });
 

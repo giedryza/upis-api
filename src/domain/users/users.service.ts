@@ -1,5 +1,4 @@
 import { APP } from 'config';
-import { Payload } from 'domain/users/users.types';
 import {
   BadRequestError,
   RequestValidationError,
@@ -8,10 +7,41 @@ import {
 import { JwtService, PasswordService } from 'tools/services';
 import { ResetPasswordEmail } from 'emails';
 import { User } from 'domain/users/users.model';
+import { AppUser } from 'domain/users/users.types';
 import { Token } from 'domain/token/token.model';
 
+interface Signup {
+  email: string;
+  password: string;
+}
+
+interface Signin {
+  email: string;
+  password: string;
+}
+
+interface Me {
+  user?: AppUser;
+}
+
+interface UpdatePassword {
+  userId: string;
+  currentPassword: string;
+  newPassword: string;
+}
+
+interface ForgotPassword {
+  email: string;
+}
+
+interface ResetPassword {
+  userId: string;
+  token: string;
+  password: string;
+}
+
 export class Service {
-  static signup = async ({ email, password }: Payload['signup']) => {
+  static signup = async ({ email, password }: Signup) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -39,7 +69,7 @@ export class Service {
     };
   };
 
-  static signin = async ({ email, password }: Payload['signin']) => {
+  static signin = async ({ email, password }: Signin) => {
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
@@ -75,7 +105,7 @@ export class Service {
     };
   };
 
-  static me = async ({ user }: Payload['me']) => {
+  static me = async ({ user }: Me) => {
     const data = user ?? null;
 
     return {
@@ -87,7 +117,7 @@ export class Service {
     userId,
     currentPassword,
     newPassword,
-  }: Payload['updatePassword']) => {
+  }: UpdatePassword) => {
     const user = await User.findById(userId).select('+password');
 
     if (!user) {
@@ -109,7 +139,7 @@ export class Service {
     await user.save();
   };
 
-  static forgotPassword = async ({ email }: Payload['forgotPassword']) => {
+  static forgotPassword = async ({ email }: ForgotPassword) => {
     const user = await User.findOne({ email });
 
     if (!user) {
@@ -156,11 +186,7 @@ export class Service {
     };
   };
 
-  static resetPassword = async ({
-    userId,
-    token,
-    password,
-  }: Payload['resetPassword']) => {
+  static resetPassword = async ({ userId, token, password }: ResetPassword) => {
     const resetToken = await Token.findOneAndDelete({ user: userId });
 
     if (!resetToken) {

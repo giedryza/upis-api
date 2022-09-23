@@ -42,6 +42,27 @@ export class Validation {
     },
   });
 
+  static signin = checkSchema({
+    email: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter email.',
+      },
+      isEmail: {
+        errorMessage: 'Wrong email. Enter valid email.',
+      },
+    },
+    password: {
+      in: ['body'],
+      isEmpty: {
+        negated: true,
+        errorMessage: 'Enter password.',
+      },
+    },
+  });
+
   static updatePassword = checkSchema({
     currentPassword: {
       in: ['body'],
@@ -73,27 +94,6 @@ export class Validation {
       custom: {
         options: (value, { req }) => value === req.body.newPassword,
         errorMessage: "Passwords didn't match. Try again.",
-      },
-    },
-  });
-
-  static signin = checkSchema({
-    email: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: 'Enter email.',
-      },
-      isEmail: {
-        errorMessage: 'Wrong email. Enter valid email.',
-      },
-    },
-    password: {
-      in: ['body'],
-      isEmpty: {
-        negated: true,
-        errorMessage: 'Enter password.',
       },
     },
   });
