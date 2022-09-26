@@ -24,12 +24,24 @@ const schema = new Schema<TourDocument>(
       default: '',
     },
     departure: {
-      type: String,
-      default: '',
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point',
+      },
+      coordinates: {
+        type: [Number],
+      },
     },
     arrival: {
-      type: String,
-      default: '',
+      type: {
+        type: String,
+        enum: ['Point'],
+        default: 'Point',
+      },
+      coordinates: {
+        type: [Number],
+      },
     },
     distance: {
       type: Number,

@@ -71,16 +71,6 @@ export class Validation {
       optional: true,
       trim: true,
     },
-    departure: {
-      in: ['body'],
-      optional: true,
-      trim: true,
-    },
-    arrival: {
-      in: ['body'],
-      optional: true,
-      trim: true,
-    },
     distance: {
       in: ['body'],
       optional: true,
@@ -126,6 +116,40 @@ export class Validation {
           min: 0,
           max: 5,
         },
+      },
+    },
+    departure: {
+      in: ['body'],
+      optional: true,
+      isArray: {
+        options: { max: 2, min: 2 },
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.departure.invalid'),
+      },
+    },
+    'departure.*': {
+      in: ['body'],
+      isFloat: {
+        options: { min: -180, max: 180 },
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.departure.invalid'),
+      },
+    },
+    arrival: {
+      in: ['body'],
+      optional: true,
+      isArray: {
+        options: { max: 2, min: 2 },
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.arrival.invalid'),
+      },
+    },
+    'arrival.*': {
+      in: ['body'],
+      isFloat: {
+        options: { min: -180, max: 180 },
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.arrival.invalid'),
       },
     },
   });
