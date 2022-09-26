@@ -34,8 +34,8 @@ interface Update {
     name: string;
     description: string;
     website: string;
-    departure: string;
-    arrival: string;
+    departure: [number, number];
+    arrival: [number, number];
     distance: number;
     duration: number;
     days: number;

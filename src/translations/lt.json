@@ -35,6 +35,12 @@
       "amenities": {
         "invalid": "Pasirinkite patogumus."
       },
+      "departure": {
+        "invalid": "Nurodykite išvykimo taško koordinates."
+      },
+      "arrival": {
+        "invalid": "Nurodykite atvykimo taško koordinates."
+      },
       "company": {
         "invalid": "Nurodyta įmonė neegzistuoja."
       }

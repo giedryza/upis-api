@@ -234,8 +234,14 @@ export interface TourRecord extends WithTimestamp {
   slug: string;
   description: string;
   website: string;
-  departure: string;
-  arrival: string;
+  departure: {
+    type: 'Point';
+    coordinates: number[];
+  };
+  arrival: {
+    type: 'Point';
+    coordinates: number[];
+  };
   distance: number | null;
   duration: number | null;
   days: number;

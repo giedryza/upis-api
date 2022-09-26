@@ -30,8 +30,8 @@ interface Update {
     name?: string;
     description?: string;
     website?: string;
-    departure?: string;
-    arrival?: string;
+    departure?: [number, number];
+    arrival?: [number, number];
     distance?: number;
     duration?: number;
     days?: number;
@@ -128,11 +128,19 @@ export class Service {
   }: Update): Promise<{ data: LeanDocument<TourRecord> }> => {
     const slug = await SlugService.get(body.name ?? '');
 
+    const { arrival, departure, ...update } = body;
+
     const tour = await Tour.findByIdAndUpdate(
       id,
       {
-        ...body,
-        ...(slug && { slug }),
+        ...update,
+        ...{
+          $set: {
+            ...(slug && { slug }),
+            ...(!!arrival && { 'arrival.coordinates': arrival }),
+            ...(!!departure && { 'departure.coordinates': departure }),
+          },
+        },
       },
       { new: true, runValidators: true }
     ).lean();

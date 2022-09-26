@@ -35,6 +35,12 @@
       "amenities": {
         "invalid": "Choose amenities."
       },
+      "departure": {
+        "invalid": "Provide departure point coordinates."
+      },
+      "arrival": {
+        "invalid": "Provide arrival point coordinates."
+      },
       "company": {
         "invalid": "Company does not exist."
       }
