@@ -74,7 +74,7 @@ class FilesService {
           resolve(data);
         });
       });
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
     }
   };

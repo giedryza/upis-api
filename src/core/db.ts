@@ -27,7 +27,7 @@ class Db {
       const { name, host } = connection.connections[0]!;
 
       console.info(`connected to ${name} database on ${host}`);
-    } catch (err: unknown) {
+    } catch (err) {
       console.error(err);
 
       const message =
