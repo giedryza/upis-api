@@ -50,7 +50,7 @@ interface Update {
     description?: string;
     website?: string;
     address?: string;
-    location?: { coordinates: number[] };
+    location?: [number, number];
     languages?: Language[];
     boats?: Boat[];
   };

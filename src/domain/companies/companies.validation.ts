@@ -121,26 +121,17 @@ export class Validation {
     },
     location: {
       in: ['body'],
-      optional: { options: { checkFalsy: true } },
-    },
-    'location.coordinates': {
-      in: ['body'],
-      optional: { options: { checkFalsy: true } },
+      optional: true,
       isArray: {
-        options: {
-          max: 2,
-        },
+        options: { min: 2, max: 2 },
         errorMessage: (_: string, { req }: Meta) =>
           req.t('companies.errors.location.invalid'),
       },
     },
-    'location.coordinates.*': {
+    'location.*': {
       in: ['body'],
       isFloat: {
-        options: {
-          min: -180,
-          max: 180,
-        },
+        options: { min: -180, max: 180 },
         errorMessage: (_: string, { req }: Meta) =>
           req.t('companies.errors.location.invalid'),
       },

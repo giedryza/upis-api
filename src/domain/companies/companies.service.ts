@@ -35,7 +35,7 @@ interface Update {
     description?: string;
     website?: string;
     address?: string;
-    location?: { coordinates: number[] };
+    location?: [number, number];
     languages?: Language[];
     boats?: Boat[];
   };
@@ -115,8 +115,7 @@ export class Service {
     const slug = await SlugService.get(body.name ?? '');
 
     const filter = { _id: id, user: userId };
-    const { languages, boats, ...update } = body;
-    const options = { new: true, runValidators: true };
+    const { languages, boats, location, ...update } = body;
 
     const company = await Company.findOneAndUpdate(
       filter,
@@ -124,13 +123,14 @@ export class Service {
         ...update,
         ...{
           $set: {
+            ...(!!slug && { slug }),
+            ...(!!location && { 'location.coordinates': location }),
             ...(!!languages && { languages }),
             ...(!!boats && { boats }),
           },
         },
-        ...(slug && { slug }),
       },
-      options
+      { new: true, runValidators: true }
     ).lean();
 
     if (!company) {
