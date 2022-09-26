@@ -3,6 +3,7 @@ import { checkSchema, Meta } from 'express-validator';
 import { BadRequestError, NotFoundError } from 'errors';
 import { currencies } from 'types/common';
 import { regions, rivers } from 'domain/tours/tours.types';
+import { Company } from 'domain/companies/companies.model';
 
 export class Validation {
   static getOne = checkSchema({
@@ -32,6 +33,15 @@ export class Validation {
       isMongoId: {
         errorMessage: (_: string, { req }: Meta) => {
           throw new BadRequestError(req.t('tours.errors.company.invalid'));
+        },
+      },
+      custom: {
+        options: async (value, { req }) => {
+          const company = await Company.findById(value);
+
+          if (!company) {
+            throw new BadRequestError(req.t('tours.errors.company.invalid'));
+          }
         },
       },
     },
