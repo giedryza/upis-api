@@ -2,7 +2,10 @@
   "tours": {
     "errors": {
       "id": {
-        "invalid": "Nurodytas maršrutas neegzistuoja."
+        "invalid": "Nurodytas maršrutas neegzistuoja.",
+        "create": "Nepavyko sukurti maršruto.",
+        "update": "Nepavyko atnaujinti maršruto.",
+        "destroy": "Nepavyko ištrinti maršruto."
       },
       "name": {
         "invalid": "Nurodykite maršruto pavadinimą.",
@@ -33,7 +36,8 @@
         "invalid": "Pasirinkite upes."
       },
       "amenities": {
-        "invalid": "Pasirinkite patogumus."
+        "invalid": "Pasirinkite patogumus.",
+        "contain": "Vienas ar keli patogumai nepriklauso pasirinktai įmonei."
       },
       "departure": {
         "invalid": "Nurodykite išvykimo taško koordinates."

@@ -2,7 +2,10 @@
   "tours": {
     "errors": {
       "id": {
-        "invalid": "Tour does not exist."
+        "invalid": "Tour does not exist.",
+        "create": "Failed to create the tour.",
+        "update": "Failed to update the tour.",
+        "destroy": "Failed to delete the tour."
       },
       "name": {
         "invalid": "Enter tour name.",
@@ -33,7 +36,8 @@
         "invalid": "Choose rivers."
       },
       "amenities": {
-        "invalid": "Choose amenities."
+        "invalid": "Choose amenities.",
+        "contain": "Company does not contain one or more amenities you are trying to add to the tour."
       },
       "departure": {
         "invalid": "Provide departure point coordinates."
