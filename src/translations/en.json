@@ -62,6 +62,9 @@
       },
       "currency": {
         "invalid": "Choose currency."
+      },
+      "companyId": {
+        "invalid": "Company does not exist."
       }
     }
   },

@@ -62,6 +62,9 @@
       },
       "currency": {
         "invalid": "Pasirinkite valiutą."
+      },
+      "companyId": {
+        "invalid": "Nurodyta įmonė neegzistuoja."
       }
     }
   },

@@ -49,7 +49,9 @@ class Controller {
     const { params } = ValidatorService.getData<GetOne['params']>(req);
 
     const { data } = await Service.getOne({
-      id: params.id,
+      data: {
+        id: params.id,
+      },
     });
 
     return new SuccessResponse(res, data).send();
@@ -60,7 +62,7 @@ class Controller {
       req
     );
 
-    const { data } = await Service.create(body);
+    const { data } = await Service.create({ data: body, t: req.t });
 
     return new SuccessResponse(res, data).send();
   };
@@ -72,8 +74,11 @@ class Controller {
     >(req);
 
     const { data } = await Service.update({
-      id: params.id,
-      ...body,
+      data: {
+        id: params.id,
+        ...body,
+      },
+      t: req.t,
     });
 
     return new SuccessResponse(res, data).send();
@@ -83,7 +88,10 @@ class Controller {
     const { params } = ValidatorService.getData<Destroy['params']>(req);
 
     await Service.destroy({
-      id: params.id,
+      data: {
+        id: params.id,
+      },
+      t: req.t,
     });
 
     return new NoContentResponse(res).send();
