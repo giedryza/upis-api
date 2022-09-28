@@ -126,11 +126,14 @@
   "users": {
     "errors": {
       "email": {
-        "invalid": "Enter email."
+        "invalid": "Enter email.",
+        "taken": "Email is taken. Try another."
       },
       "password": {
         "invalid": "Enter password.",
-        "length": "Use between {{ min }} and {{ max }} characters for password."
+        "length": "Use between {{ min }} and {{ max }} characters for password.",
+        "wrong": "Wrong credentials. Try again or click 'Forgot password?' to reset it.",
+        "reset": "Unable to reset password. Try again."
       },
       "confirmPassword": {
         "invalid": "Confirm password.",
