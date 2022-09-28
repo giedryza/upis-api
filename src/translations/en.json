@@ -71,7 +71,10 @@
   "companies": {
     "errors": {
       "id": {
-        "invalid": "Company does not exist."
+        "invalid": "Company does not exist.",
+        "create": "Failed to create the company.",
+        "update": "Failed to update the company.",
+        "destroy": "Failed to delete the company."
       },
       "name": {
         "invalid": "Enter company name.",
@@ -91,6 +94,9 @@
       },
       "boats": {
         "invalid": "Select boats."
+      },
+      "file": {
+        "upload": "Failed to upload the file."
       }
     }
   },

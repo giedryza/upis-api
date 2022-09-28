@@ -71,7 +71,10 @@
   "companies": {
     "errors": {
       "id": {
-        "invalid": "Nurodyta įmonė neegzistuoja."
+        "invalid": "Nurodyta įmonė neegzistuoja.",
+        "create": "Nepavyko sukurti įmonės.",
+        "update": "Nepavyko atnaujinti įmonės.",
+        "destroy": "Nepavyko ištrinti įmonės."
       },
       "name": {
         "invalid": "Įveskite įmonės pavadinimą.",
@@ -91,6 +94,9 @@
       },
       "boats": {
         "invalid": "Pasirinkite valčių tipus."
+      },
+      "file": {
+        "upload": "Nepavyko įkelti failo."
       }
     }
   },

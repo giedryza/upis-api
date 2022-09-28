@@ -68,7 +68,7 @@ class Controller {
   getOne = async (req: Request, res: Response) => {
     const { params } = ValidatorService.getData<GetOne['params']>(req);
 
-    const { data } = await Service.getOne({ id: params.id });
+    const { data } = await Service.getOne({ data: { id: params.id } });
 
     return new SuccessResponse(res, data).send();
   };
@@ -80,8 +80,11 @@ class Controller {
     const { _id } = req.user!;
 
     const { data } = await Service.create({
-      userId: _id,
-      body,
+      data: {
+        userId: _id,
+        ...body,
+      },
+      t: req.t,
     });
 
     return new CreatedResponse(res, data).send();
@@ -95,9 +98,12 @@ class Controller {
     >(req);
 
     const { data } = await Service.update({
-      id: params.id,
-      userId,
-      body,
+      data: {
+        id: params.id,
+        userId,
+        ...body,
+      },
+      t: req.t,
     });
 
     return new SuccessResponse(res, data).send();
@@ -107,7 +113,10 @@ class Controller {
     const { _id: userId } = req.user!;
     const { params } = ValidatorService.getData<Destroy['params']>(req);
 
-    await Service.destroy({ id: params.id, userId });
+    await Service.destroy({
+      data: { id: params.id, userId },
+      t: req.t,
+    });
 
     return new NoContentResponse(res).send();
   };
@@ -117,7 +126,10 @@ class Controller {
     const { file } = req;
     const { params } = ValidatorService.getData<AddLogo['params']>(req);
 
-    const { data } = await Service.addLogo({ id: params.id, userId, file });
+    const { data } = await Service.addLogo({
+      data: { id: params.id, userId, file },
+      t: req.t,
+    });
 
     return new SuccessResponse(res, data).send();
   };

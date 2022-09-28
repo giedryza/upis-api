@@ -1,8 +1,9 @@
 import { Request } from 'express';
 import { LeanDocument } from 'mongoose';
+import { TFunction } from 'i18next';
 
 import { Company } from 'domain/companies/companies.model';
-import { BadRequestError, NotFoundError } from 'errors';
+import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Language, PaginatedList } from 'types/common';
 import { Boat, CompanyRecord } from 'domain/companies/companies.types';
@@ -12,23 +13,26 @@ interface GetAll {
 }
 
 interface GetOne {
-  id: string;
+  data: {
+    id: string;
+  };
 }
 
 interface Create {
-  userId: string;
-  body: {
+  data: {
+    userId: string;
     name: string;
     phone: string;
     email: string;
     description?: string;
   };
+  t: TFunction;
 }
 
 interface Update {
-  id: string;
-  userId: string;
-  body: {
+  data: {
+    id: string;
+    userId: string;
     name?: string;
     phone?: string;
     email?: string;
@@ -39,21 +43,30 @@ interface Update {
     languages?: Language[];
     boats?: Boat[];
   };
+  t: TFunction;
 }
 
 interface Destroy {
-  id: string;
-  userId: string;
+  data: {
+    id: string;
+    userId: string;
+  };
+  t: TFunction;
 }
 
 interface AddLogo {
-  id: string;
-  userId: string;
-  file?: Request['file'];
+  data: {
+    id: string;
+    userId: string;
+    file?: Request['file'];
+  };
+  t: TFunction;
 }
 
 interface Cleanup {
-  logo?: string;
+  data: {
+    logo?: string;
+  };
 }
 
 export class Service {
@@ -77,7 +90,7 @@ export class Service {
   };
 
   static getOne = async ({
-    id,
+    data: { id },
   }: GetOne): Promise<{ data: LeanDocument<CompanyRecord> | null }> => {
     const company = await Company.findById(id)
       .populate(['user', 'socialLinks', 'amenities'])
@@ -91,16 +104,23 @@ export class Service {
   };
 
   static create = async ({
-    userId,
-    body,
+    data: { userId, name, phone, email, description },
+    t,
   }: Create): Promise<{ data: CompanyRecord }> => {
-    const slug = await SlugService.get(body.name);
+    const slug = await SlugService.get(name);
 
     const company = new Company({
       user: userId,
       slug,
-      ...body,
+      name,
+      phone,
+      email,
+      description,
     });
+
+    if (!company) {
+      throw new BadRequestError(t('companies.errors.id.create'));
+    }
 
     await company.save();
 
@@ -108,14 +128,13 @@ export class Service {
   };
 
   static update = async ({
-    id,
-    userId,
-    body,
+    data,
+    t,
   }: Update): Promise<{ data: LeanDocument<CompanyRecord> }> => {
-    const slug = await SlugService.get(body.name ?? '');
+    const slug = await SlugService.get(data.name ?? '');
 
+    const { id, userId, languages, boats, location, ...update } = data;
     const filter = { _id: id, user: userId };
-    const { languages, boats, location, ...update } = body;
 
     const company = await Company.findOneAndUpdate(
       filter,
@@ -134,35 +153,33 @@ export class Service {
     ).lean();
 
     if (!company) {
-      throw new BadRequestError('Failed to update the record.');
+      throw new BadRequestError(t('companies.errors.id.update'));
     }
 
     return { data: company };
   };
 
-  static destroy = async ({ id, userId }: Destroy): Promise<void> => {
-    if (!id) {
-      throw new NotFoundError('Record not found.');
-    }
-
+  static destroy = async ({
+    data: { id, userId },
+    t,
+  }: Destroy): Promise<void> => {
     const filter = { _id: id, user: userId };
 
     const company = await Company.findOneAndDelete(filter).lean();
 
     if (!company) {
-      throw new BadRequestError('Failed to delete the record.');
+      throw new BadRequestError(t('companies.errors.id.destroy'));
     }
 
-    Service.deleteLogo({ logo: company.logo.key });
+    Service.deleteLogo({ data: { logo: company.logo.key } });
   };
 
   static addLogo = async ({
-    id,
-    userId,
-    file,
+    data: { id, userId, file },
+    t,
   }: AddLogo): Promise<{ data: LeanDocument<CompanyRecord> }> => {
     if (!id || !file) {
-      throw new BadRequestError('File upload failed. Try again.');
+      throw new BadRequestError(t('companies.errors.file.upload'));
     }
 
     const filter = { _id: id, user: userId };
@@ -177,15 +194,15 @@ export class Service {
     const company = await Company.findOneAndUpdate(filter, update).lean();
 
     if (!company) {
-      throw new BadRequestError('Failed to update the record.');
+      throw new BadRequestError(t('companies.errors.id.update'));
     }
 
-    Service.deleteLogo({ logo: company.logo.key });
+    Service.deleteLogo({ data: { logo: company.logo.key } });
 
     return { data: { ...company, ...update } };
   };
 
-  static deleteLogo = ({ logo }: Cleanup) => {
+  static deleteLogo = ({ data: { logo } }: Cleanup) => {
     if (logo) {
       filesService.delete(logo);
     }
