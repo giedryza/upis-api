@@ -103,7 +103,10 @@
   "socialLinks": {
     "errors": {
       "id": {
-        "invalid": "Social link does not exist."
+        "invalid": "Social link does not exist.",
+        "create": "Failed to create the social link.",
+        "update": "Failed to update the social link.",
+        "destroy": "Failed to delete the social link."
       },
       "host": {
         "invalid": "Host does not exist."

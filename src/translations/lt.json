@@ -103,7 +103,10 @@
   "socialLinks": {
     "errors": {
       "id": {
-        "invalid": "Nurodytas socialinis tinklas neegzistuoja."
+        "invalid": "Nurodytas socialinis tinklas neegzistuoja.",
+        "create": "Nepavyko sukurti socialinio tinklo.",
+        "update": "Nepavyko atnaujinti socialinio tinklo.",
+        "destroy": "Nepavyko ištrinti socialinio tinklo."
       },
       "host": {
         "invalid": "Nurodytas socialinio tinklo savininkas neegzistuoja."
