@@ -1,3 +1,5 @@
+import { TFunction } from 'i18next';
+
 import { BadRequestError } from 'errors';
 import { Currency } from 'types/common';
 import { Company } from 'domain/companies/companies.model';
@@ -6,34 +8,45 @@ import { Variant, Unit, AmenityRecord } from './amenities.types';
 import { Amenity } from './amenities.model';
 
 interface GetOne {
-  id: string;
+  data: {
+    id: string;
+  };
 }
 
 interface Create {
-  variant: Variant;
-  amount: number;
-  currency: Currency;
-  unit: Unit;
-  info: string;
-  companyId: string;
+  data: {
+    variant: Variant;
+    amount: number;
+    currency: Currency;
+    unit: Unit;
+    info: string;
+    companyId: string;
+  };
+  t: TFunction;
 }
 
 interface Update {
-  id: string;
-  variant: Variant;
-  unit: Unit;
-  info: string;
-  amount: number;
-  currency: Currency;
+  data: {
+    id: string;
+    variant: Variant;
+    unit: Unit;
+    info: string;
+    amount: number;
+    currency: Currency;
+  };
+  t: TFunction;
 }
 
 interface Destroy {
-  id: string;
+  data: {
+    id: string;
+  };
+  t: TFunction;
 }
 
 export class Service {
   static getOne = async ({
-    id,
+    data: { id },
   }: GetOne): Promise<{ data: AmenityRecord | null }> => {
     const amenity = await Amenity.findById(id).lean();
 
@@ -47,12 +60,8 @@ export class Service {
   };
 
   static create = async ({
-    companyId,
-    variant,
-    unit,
-    info,
-    amount,
-    currency,
+    data: { companyId, variant, unit, info, amount, currency },
+    t,
   }: Create): Promise<{ data: AmenityRecord }> => {
     const amenity = new Amenity({
       variant,
@@ -73,7 +82,7 @@ export class Service {
     ).lean();
 
     if (!company) {
-      throw new BadRequestError('Company does not exist.');
+      throw new BadRequestError(t('amenities.errors.companyId.invalid'));
     }
 
     return {
@@ -82,12 +91,8 @@ export class Service {
   };
 
   static update = async ({
-    id,
-    variant,
-    unit,
-    info,
-    amount,
-    currency,
+    data: { id, variant, unit, info, amount, currency },
+    t,
   }: Update): Promise<{ data: AmenityRecord }> => {
     const amenity = await Amenity.findByIdAndUpdate(
       id,
@@ -101,7 +106,7 @@ export class Service {
     ).lean();
 
     if (!amenity) {
-      throw new BadRequestError('Amenity does not exist.');
+      throw new BadRequestError(t('amenities.errors.id.invalid'));
     }
 
     return {
@@ -109,11 +114,11 @@ export class Service {
     };
   };
 
-  static destroy = async ({ id }: Destroy): Promise<void> => {
+  static destroy = async ({ data: { id }, t }: Destroy): Promise<void> => {
     const amenity = await Amenity.findByIdAndDelete(id).lean();
 
     if (!amenity) {
-      throw new BadRequestError('Amenity does not exist.');
+      throw new BadRequestError(t('amenities.errors.id.invalid'));
     }
   };
 }

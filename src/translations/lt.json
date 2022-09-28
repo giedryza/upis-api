@@ -2,7 +2,10 @@
   "tours": {
     "errors": {
       "id": {
-        "invalid": "Nurodytas maršrutas neegzistuoja."
+        "invalid": "Nurodytas maršrutas neegzistuoja.",
+        "create": "Nepavyko sukurti maršruto.",
+        "update": "Nepavyko atnaujinti maršruto.",
+        "destroy": "Nepavyko ištrinti maršruto."
       },
       "name": {
         "invalid": "Nurodykite maršruto pavadinimą.",
@@ -33,7 +36,8 @@
         "invalid": "Pasirinkite upes."
       },
       "amenities": {
-        "invalid": "Pasirinkite patogumus."
+        "invalid": "Pasirinkite patogumus.",
+        "contain": "Vienas ar keli patogumai nepriklauso pasirinktai įmonei."
       },
       "departure": {
         "invalid": "Nurodykite išvykimo taško koordinates."
@@ -62,13 +66,19 @@
       },
       "currency": {
         "invalid": "Pasirinkite valiutą."
+      },
+      "companyId": {
+        "invalid": "Nurodyta įmonė neegzistuoja."
       }
     }
   },
   "companies": {
     "errors": {
       "id": {
-        "invalid": "Nurodyta įmonė neegzistuoja."
+        "invalid": "Nurodyta įmonė neegzistuoja.",
+        "create": "Nepavyko sukurti įmonės.",
+        "update": "Nepavyko atnaujinti įmonės.",
+        "destroy": "Nepavyko ištrinti įmonės."
       },
       "name": {
         "invalid": "Įveskite įmonės pavadinimą.",
@@ -88,13 +98,19 @@
       },
       "boats": {
         "invalid": "Pasirinkite valčių tipus."
+      },
+      "file": {
+        "upload": "Nepavyko įkelti failo."
       }
     }
   },
   "socialLinks": {
     "errors": {
       "id": {
-        "invalid": "Nurodytas socialinis tinklas neegzistuoja."
+        "invalid": "Nurodytas socialinis tinklas neegzistuoja.",
+        "create": "Nepavyko sukurti socialinio tinklo.",
+        "update": "Nepavyko atnaujinti socialinio tinklo.",
+        "destroy": "Nepavyko ištrinti socialinio tinklo."
       },
       "host": {
         "invalid": "Nurodytas socialinio tinklo savininkas neegzistuoja."
@@ -110,11 +126,14 @@
   "users": {
     "errors": {
       "email": {
-        "invalid": "Įveskite el. pašto adresą."
+        "invalid": "Įveskite el. pašto adresą.",
+        "taken": "Šis el. pašto adresas jau užregistruotas."
       },
       "password": {
         "invalid": "Įveskite slaptažodį.",
-        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo."
+        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo.",
+        "wrong": "Neteisingi prisijungimo duomenys. Bandykite dar kartą arba spauskite 'Pamiršai slaptažodį?', kad atstatytumėte.",
+        "reset": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
       },
       "confirmPassword": {
         "invalid": "Patvirtinkite slaptažodį.",

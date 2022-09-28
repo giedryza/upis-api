@@ -1,42 +1,49 @@
 import { Request } from 'express';
 import { LeanDocument } from 'mongoose';
+import { TFunction } from 'i18next';
 
 import {
   SocialLinkRecord,
   SocialLinkType,
 } from 'domain/social-links/social-links.types';
 import { SocialLink } from 'domain/social-links/social-links.model';
-import { NotFoundError, BadRequestError } from 'errors';
-import { Utils } from 'tools/utils';
+import { BadRequestError } from 'errors';
 import { QueryService } from 'tools/services';
 import { PaginatedList } from 'types/common';
-
-interface GetOne {
-  id: string;
-}
 
 interface GetAll {
   query: Request['query'];
 }
 
+interface GetOne {
+  data: {
+    id: string;
+  };
+}
+
 interface Create {
-  body: {
+  data: {
     type: SocialLinkType;
     url: string;
     host: string;
   };
+  t: TFunction;
 }
 
 interface Update {
-  id: string;
-  body: {
+  data: {
+    id: string;
     type: SocialLinkType | undefined;
     url: string | undefined;
   };
+  t: TFunction;
 }
 
 interface Destroy {
-  id: string;
+  data: {
+    id: string;
+  };
+  t: TFunction;
 }
 
 export class Service {
@@ -62,7 +69,7 @@ export class Service {
   };
 
   static getOne = async ({
-    id,
+    data: { id },
   }: GetOne): Promise<{
     data: LeanDocument<SocialLinkRecord> | null;
   }> => {
@@ -76,9 +83,14 @@ export class Service {
   };
 
   static create = async ({
-    body,
+    data,
+    t,
   }: Create): Promise<{ data: SocialLinkRecord }> => {
-    const socialLink = new SocialLink(body);
+    const socialLink = new SocialLink(data);
+
+    if (!socialLink) {
+      throw new BadRequestError(t('socialLinks.errors.id.create'));
+    }
 
     await socialLink.save();
 
@@ -86,15 +98,12 @@ export class Service {
   };
 
   static update = async ({
-    id,
-    body,
+    data,
+    t,
   }: Update): Promise<{ data: LeanDocument<SocialLinkRecord> }> => {
-    if (!id) {
-      throw new NotFoundError('Record not found.');
-    }
+    const { id, ...update } = data;
 
     const filter = { _id: id };
-    const update = Utils.stripUndefined(body);
     const options = { new: true };
 
     const socialLink = await SocialLink.findOneAndUpdate(
@@ -104,21 +113,17 @@ export class Service {
     ).lean();
 
     if (!socialLink) {
-      throw new BadRequestError('Failed to update the record.');
+      throw new BadRequestError(t('socialLinks.errors.id.update'));
     }
 
     return { data: socialLink };
   };
 
-  static destroy = async ({ id }: Destroy): Promise<void> => {
-    if (!id) {
-      throw new NotFoundError('Record not found.');
-    }
-
+  static destroy = async ({ data: { id }, t }: Destroy): Promise<void> => {
     const socialLink = await SocialLink.findByIdAndDelete(id).lean();
 
     if (!socialLink) {
-      throw new BadRequestError('Failed to update the record.');
+      throw new BadRequestError(t('socialLinks.errors.id.destroy'));
     }
   };
 }

@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import { LeanDocument } from 'mongoose';
+import { TFunction } from 'i18next';
 
 import { Tour } from 'domain/tours/tours.model';
 import { Region, TourRecord } from 'domain/tours/tours.types';
@@ -8,25 +9,28 @@ import { QueryService, SlugService } from 'tools/services';
 import { Currency, PaginatedList } from 'types/common';
 import { Company } from 'domain/companies/companies.model';
 
-interface GetOne {
-  id?: string;
-}
-
 interface GetAll {
   query: Request['query'];
 }
 
-interface Create {
-  userId: string;
-  body: {
-    name: string;
-    company: string;
+interface GetOne {
+  data: {
+    id: string;
   };
 }
 
+interface Create {
+  data: {
+    userId: string;
+    name: string;
+    company: string;
+  };
+  t: TFunction;
+}
+
 interface Update {
-  id: string;
-  body: {
+  data: {
+    id: string;
     name?: string;
     description?: string;
     website?: string;
@@ -37,36 +41,45 @@ interface Update {
     days?: number;
     difficulty?: number;
   };
+  t: TFunction;
 }
 
 interface Destroy {
-  id: string;
+  data: {
+    id: string;
+  };
+  t: TFunction;
 }
 
 interface UpdatePrice {
-  id: string;
-  body: {
+  data: {
+    id: string;
     amount?: number;
     currency?: Currency;
   };
+  t: TFunction;
 }
 
 interface UpdateGeography {
-  id: string;
-  body: {
+  data: {
+    id: string;
     regions: Region[];
     rivers: string[];
   };
+  t: TFunction;
 }
 
 interface UpdateAmenities {
-  id: string;
-  amenities: string[];
+  data: {
+    id: string;
+    amenities: string[];
+  };
+  t: TFunction;
 }
 
 export class Service {
   static getOne = async ({
-    id,
+    data: { id },
   }: GetOne): Promise<{ data: LeanDocument<TourRecord> | null }> => {
     const tour = await Tour.findById(id)
       .populate([
@@ -89,7 +102,10 @@ export class Service {
       limit,
       sort,
       select,
-      populate: ['company', 'amenities'],
+      populate: [
+        { path: 'company', populate: 'amenities' },
+        { path: 'amenities' },
+      ],
       lean: true,
       leanWithId: false,
     };
@@ -103,17 +119,21 @@ export class Service {
   };
 
   static create = async ({
-    userId,
-    body,
+    data: { userId, name, company },
+    t,
   }: Create): Promise<{ data: TourRecord }> => {
-    const slug = await SlugService.get(body.name);
+    const slug = await SlugService.get(name);
 
     const tour = new Tour({
-      name: body.name,
+      name,
       slug,
-      company: body.company,
+      company,
       user: userId,
     });
+
+    if (!tour) {
+      throw new BadRequestError(t('tours.errors.id.create'));
+    }
 
     await tour.save();
 
@@ -123,12 +143,12 @@ export class Service {
   };
 
   static update = async ({
-    id,
-    body,
+    data,
+    t,
   }: Update): Promise<{ data: LeanDocument<TourRecord> }> => {
-    const slug = await SlugService.get(body.name ?? '');
+    const slug = await SlugService.get(data.name ?? '');
 
-    const { arrival, departure, ...update } = body;
+    const { id, arrival, departure, ...update } = data;
 
     const tour = await Tour.findByIdAndUpdate(
       id,
@@ -146,7 +166,7 @@ export class Service {
     ).lean();
 
     if (!tour) {
-      throw new BadRequestError('Tour does not exist.');
+      throw new BadRequestError(t('tours.errors.id.update'));
     }
 
     return {
@@ -154,36 +174,30 @@ export class Service {
     };
   };
 
-  static destroy = async ({ id }: Destroy): Promise<void> => {
+  static destroy = async ({ data: { id }, t }: Destroy): Promise<void> => {
     const tour = await Tour.findByIdAndDelete(id).lean();
 
     if (!tour) {
-      throw new BadRequestError('Tour does not exist.');
+      throw new BadRequestError(t('tours.errors.id.destroy'));
     }
   };
 
   static updatePrice = async ({
-    id,
-    body: { amount, currency },
+    data: { id, amount, currency },
+    t,
   }: UpdatePrice): Promise<{ data: TourRecord }> => {
     const tour = await Tour.findOneAndUpdate(
       { _id: id },
       {
         $set: {
-          price:
-            amount && currency
-              ? {
-                  amount,
-                  currency,
-                }
-              : null,
+          price: amount && currency ? { amount, currency } : null,
         },
       },
       { new: true, runValidators: true }
     );
 
     if (!tour) {
-      throw new BadRequestError('Tour does not exist.');
+      throw new BadRequestError(t('tours.errors.id.update'));
     }
 
     return {
@@ -192,8 +206,8 @@ export class Service {
   };
 
   static updateGeography = async ({
-    id,
-    body: { regions, rivers },
+    data: { id, regions, rivers },
+    t,
   }: UpdateGeography): Promise<{ data: TourRecord }> => {
     const tour = await Tour.findOneAndUpdate(
       { _id: id },
@@ -207,7 +221,7 @@ export class Service {
     );
 
     if (!tour) {
-      throw new BadRequestError('Tour does not exist.');
+      throw new BadRequestError(t('tours.errors.id.update'));
     }
 
     return {
@@ -216,13 +230,13 @@ export class Service {
   };
 
   static updateAmenities = async ({
-    id,
-    amenities,
+    data: { id, amenities },
+    t,
   }: UpdateAmenities): Promise<{ data: TourRecord }> => {
     const tour = await Tour.findById(id);
 
     if (!tour) {
-      throw new BadRequestError('Tour does not exist.');
+      throw new BadRequestError(t('tours.errors.id.update'));
     }
 
     const company = await Company.findOne({
@@ -231,9 +245,7 @@ export class Service {
     });
 
     if (!company) {
-      throw new BadRequestError(
-        'Company does not contain one or more amenities you are trying to add to the tour.'
-      );
+      throw new BadRequestError(t('tours.errors.amenities.contain'));
     }
 
     tour.set('amenities', amenities);

@@ -1,3 +1,5 @@
+import { TFunction } from 'i18next';
+
 import { APP } from 'config';
 import {
   BadRequestError,
@@ -11,42 +13,58 @@ import { AppUser } from 'domain/users/users.types';
 import { Token } from 'domain/token/token.model';
 
 interface Signup {
-  email: string;
-  password: string;
+  data: {
+    email: string;
+    password: string;
+  };
+  t: TFunction;
 }
 
 interface Signin {
-  email: string;
-  password: string;
+  data: {
+    email: string;
+    password: string;
+  };
+  t: TFunction;
 }
 
 interface Me {
-  user?: AppUser;
+  data: {
+    user?: AppUser;
+  };
 }
 
 interface UpdatePassword {
-  userId: string;
-  currentPassword: string;
-  newPassword: string;
+  data: {
+    userId: string;
+    currentPassword: string;
+    newPassword: string;
+  };
+  t: TFunction;
 }
 
 interface ForgotPassword {
-  email: string;
+  data: {
+    email: string;
+  };
 }
 
 interface ResetPassword {
-  userId: string;
-  token: string;
-  password: string;
+  data: {
+    userId: string;
+    token: string;
+    password: string;
+  };
+  t: TFunction;
 }
 
 export class Service {
-  static signup = async ({ email, password }: Signup) => {
+  static signup = async ({ data: { email, password }, t }: Signup) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       throw new RequestValidationError([
-        { param: 'email', msg: 'Email is taken. Try another.' },
+        { param: 'email', msg: t('users.errors.email.taken') },
       ]);
     }
 
@@ -69,12 +87,12 @@ export class Service {
     };
   };
 
-  static signin = async ({ email, password }: Signin) => {
+  static signin = async ({ data: { email, password }, t }: Signin) => {
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
       throw new RequestValidationError([
-        { param: 'email', msg: 'Incorrect email. Try again.' },
+        { param: 'email', msg: t('users.errors.password.wrong') },
       ]);
     }
 
@@ -84,7 +102,7 @@ export class Service {
       throw new RequestValidationError([
         {
           param: 'password',
-          msg: 'Wrong password. Try again or click Forgot password to reset it.',
+          msg: t('users.errors.password.wrong'),
         },
       ]);
     }
@@ -105,7 +123,7 @@ export class Service {
     };
   };
 
-  static me = async ({ user }: Me) => {
+  static me = async ({ data: { user } }: Me) => {
     const data = user ?? null;
 
     return {
@@ -114,9 +132,8 @@ export class Service {
   };
 
   static updatePassword = async ({
-    userId,
-    currentPassword,
-    newPassword,
+    data: { userId, currentPassword, newPassword },
+    t,
   }: UpdatePassword) => {
     const user = await User.findById(userId).select('+password');
 
@@ -130,7 +147,7 @@ export class Service {
       throw new RequestValidationError([
         {
           param: 'password',
-          msg: 'Wrong password. Try again or click Forgot password to reset it.',
+          msg: t('users.errors.password.wrong'),
         },
       ]);
     }
@@ -139,13 +156,13 @@ export class Service {
     await user.save();
   };
 
-  static forgotPassword = async ({ email }: ForgotPassword) => {
+  static forgotPassword = async ({ data: { email } }: ForgotPassword) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      throw new RequestValidationError([
-        { param: 'email', msg: 'Incorrect email. Try again.' },
-      ]);
+      return {
+        data: { email },
+      };
     }
 
     const token = await Token.findOne({ user: user._id });
@@ -186,11 +203,14 @@ export class Service {
     };
   };
 
-  static resetPassword = async ({ userId, token, password }: ResetPassword) => {
+  static resetPassword = async ({
+    data: { userId, token, password },
+    t,
+  }: ResetPassword) => {
     const resetToken = await Token.findOneAndDelete({ user: userId });
 
     if (!resetToken) {
-      throw new BadRequestError('Unable to reset password. Try again.');
+      throw new BadRequestError(t('users.errors.password.reset'));
     }
 
     const [user, match, hashed] = await Promise.all([
@@ -200,7 +220,7 @@ export class Service {
     ]);
 
     if (!user || !match || !hashed) {
-      throw new BadRequestError('Unable to reset password. Try again.');
+      throw new BadRequestError(t('users.errors.password.reset'));
     }
 
     await User.updateOne(

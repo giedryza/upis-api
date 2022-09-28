@@ -44,8 +44,11 @@ class Controller {
     const { body } = ValidatorService.getData<{}, Signup['body']>(req);
 
     const { data } = await Service.signup({
-      email: body.email,
-      password: body.password,
+      data: {
+        email: body.email,
+        password: body.password,
+      },
+      t: req.t,
     });
 
     return new CreatedResponse(res, data).send();
@@ -55,8 +58,11 @@ class Controller {
     const { body } = ValidatorService.getData<{}, Signin['body']>(req);
 
     const { data } = await Service.signin({
-      email: body.email,
-      password: body.password,
+      data: {
+        email: body.email,
+        password: body.password,
+      },
+      t: req.t,
     });
 
     return new SuccessResponse(res, data).send();
@@ -65,7 +71,7 @@ class Controller {
   me = async (req: Request, res: Response) => {
     const { user } = req;
 
-    const { data } = await Service.me({ user });
+    const { data } = await Service.me({ data: { user } });
 
     return new SuccessResponse(res, data).send();
   };
@@ -75,9 +81,12 @@ class Controller {
     const { body } = ValidatorService.getData<{}, UpdatePassword['body']>(req);
 
     await Service.updatePassword({
-      userId,
-      currentPassword: body.currentPassword,
-      newPassword: body.newPassword,
+      data: {
+        userId,
+        currentPassword: body.currentPassword,
+        newPassword: body.newPassword,
+      },
+      t: req.t,
     });
 
     return new NoContentResponse(res).send();
@@ -86,7 +95,11 @@ class Controller {
   forgotPassword = async (req: Request, res: Response) => {
     const { body } = ValidatorService.getData<{}, ForgotPassword['body']>(req);
 
-    const { data } = await Service.forgotPassword({ email: body.email });
+    const { data } = await Service.forgotPassword({
+      data: {
+        email: body.email,
+      },
+    });
 
     return new SuccessResponse(res, data).send();
   };
@@ -95,9 +108,12 @@ class Controller {
     const { body } = ValidatorService.getData<{}, ResetPassword['body']>(req);
 
     const { data } = await Service.resetPassword({
-      userId: body.userId,
-      token: body.token,
-      password: body.password,
+      data: {
+        userId: body.userId,
+        token: body.token,
+        password: body.password,
+      },
+      t: req.t,
     });
 
     return new SuccessResponse(res, data).send();

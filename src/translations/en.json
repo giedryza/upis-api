@@ -2,7 +2,10 @@
   "tours": {
     "errors": {
       "id": {
-        "invalid": "Tour does not exist."
+        "invalid": "Tour does not exist.",
+        "create": "Failed to create the tour.",
+        "update": "Failed to update the tour.",
+        "destroy": "Failed to delete the tour."
       },
       "name": {
         "invalid": "Enter tour name.",
@@ -33,7 +36,8 @@
         "invalid": "Choose rivers."
       },
       "amenities": {
-        "invalid": "Choose amenities."
+        "invalid": "Choose amenities.",
+        "contain": "Company does not contain one or more amenities you are trying to add to the tour."
       },
       "departure": {
         "invalid": "Provide departure point coordinates."
@@ -62,13 +66,19 @@
       },
       "currency": {
         "invalid": "Choose currency."
+      },
+      "companyId": {
+        "invalid": "Company does not exist."
       }
     }
   },
   "companies": {
     "errors": {
       "id": {
-        "invalid": "Company does not exist."
+        "invalid": "Company does not exist.",
+        "create": "Failed to create the company.",
+        "update": "Failed to update the company.",
+        "destroy": "Failed to delete the company."
       },
       "name": {
         "invalid": "Enter company name.",
@@ -88,13 +98,19 @@
       },
       "boats": {
         "invalid": "Select boats."
+      },
+      "file": {
+        "upload": "Failed to upload the file."
       }
     }
   },
   "socialLinks": {
     "errors": {
       "id": {
-        "invalid": "Social link does not exist."
+        "invalid": "Social link does not exist.",
+        "create": "Failed to create the social link.",
+        "update": "Failed to update the social link.",
+        "destroy": "Failed to delete the social link."
       },
       "host": {
         "invalid": "Host does not exist."
@@ -110,11 +126,14 @@
   "users": {
     "errors": {
       "email": {
-        "invalid": "Enter email."
+        "invalid": "Enter email.",
+        "taken": "Email is taken. Try another."
       },
       "password": {
         "invalid": "Enter password.",
-        "length": "Use between {{ min }} and {{ max }} characters for password."
+        "length": "Use between {{ min }} and {{ max }} characters for password.",
+        "wrong": "Wrong credentials. Try again or click 'Forgot password?' to reset it.",
+        "reset": "Unable to reset password. Try again."
       },
       "confirmPassword": {
         "invalid": "Confirm password.",

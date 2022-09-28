@@ -90,7 +90,7 @@ class Controller {
   getOne = async (req: AppRequest, res: Response) => {
     const { params } = ValidatorService.getData<GetOne['params']>(req);
 
-    const { data } = await Service.getOne({ id: params.id });
+    const { data } = await Service.getOne({ data: { id: params.id } });
 
     return new SuccessResponse(res, data).send();
   };
@@ -101,7 +101,13 @@ class Controller {
       req
     );
 
-    const { data } = await Service.create({ userId, body });
+    const { data } = await Service.create({
+      data: {
+        userId,
+        ...body,
+      },
+      t: req.t,
+    });
 
     return new CreatedResponse(res, data).send();
   };
@@ -112,7 +118,13 @@ class Controller {
       Partial<Update['body']>
     >(req);
 
-    const { data } = await Service.update({ id: params.id, body });
+    const { data } = await Service.update({
+      data: {
+        id: params.id,
+        ...body,
+      },
+      t: req.t,
+    });
 
     return new SuccessResponse(res, data).send();
   };
@@ -120,7 +132,12 @@ class Controller {
   destroy = async (req: AppRequest, res: Response) => {
     const { params } = ValidatorService.getData<Destroy['params']>(req);
 
-    await Service.destroy({ id: params.id });
+    await Service.destroy({
+      data: {
+        id: params.id,
+      },
+      t: req.t,
+    });
 
     return new NoContentResponse(res).send();
   };
@@ -131,7 +148,13 @@ class Controller {
       UpdatePrice['body']
     >(req);
 
-    const { data } = await Service.updatePrice({ id: params.id, body });
+    const { data } = await Service.updatePrice({
+      data: {
+        id: params.id,
+        ...body,
+      },
+      t: req.t,
+    });
 
     return new SuccessResponse(res, data).send();
   };
@@ -142,7 +165,13 @@ class Controller {
       UpdateGeography['body']
     >(req);
 
-    const { data } = await Service.updateGeography({ id: params.id, body });
+    const { data } = await Service.updateGeography({
+      data: {
+        id: params.id,
+        ...body,
+      },
+      t: req.t,
+    });
 
     return new SuccessResponse(res, data).send();
   };
@@ -154,8 +183,11 @@ class Controller {
     >(req);
 
     const { data } = await Service.updateAmenities({
-      id: params.id,
-      amenities: body.amenities,
+      data: {
+        id: params.id,
+        amenities: body.amenities,
+      },
+      t: req.t,
     });
 
     return new SuccessResponse(res, data).send();

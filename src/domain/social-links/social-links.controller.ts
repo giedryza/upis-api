@@ -52,7 +52,11 @@ class Controller {
   getOne = async (req: Request, res: Response) => {
     const { params } = ValidatorService.getData<GetOne['params']>(req);
 
-    const { data } = await Service.getOne({ id: params.id });
+    const { data } = await Service.getOne({
+      data: {
+        id: params.id,
+      },
+    });
 
     return new SuccessResponse(res, data).send();
   };
@@ -61,7 +65,8 @@ class Controller {
     const { body } = ValidatorService.getData<{}, Create['body']>(req);
 
     const { data } = await Service.create({
-      body,
+      data: body,
+      t: req.t,
     });
 
     return new CreatedResponse(res, data).send();
@@ -74,8 +79,11 @@ class Controller {
     >(req);
 
     const { data } = await Service.update({
-      id: params.id,
-      body,
+      data: {
+        id: params.id,
+        ...body,
+      },
+      t: req.t,
     });
 
     return new SuccessResponse(res, data).send();
@@ -84,7 +92,12 @@ class Controller {
   destroy = async (req: Request, res: Response) => {
     const { params } = ValidatorService.getData<Destroy['params']>(req);
 
-    await Service.destroy({ id: params.id });
+    await Service.destroy({
+      data: {
+        id: params.id,
+      },
+      t: req.t,
+    });
 
     return new NoContentResponse(res).send();
   };
