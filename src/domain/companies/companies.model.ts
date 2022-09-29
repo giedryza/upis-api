@@ -3,6 +3,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 
 import { ModelName, languages } from 'types/common';
 import { Tour } from 'domain/tours/tours.model';
+import { Amenity } from 'domain/amenities/amenities.model';
 import {
   boats,
   CompanyDocument,
@@ -105,7 +106,10 @@ schema.post<Query<CompanyDocument | null, CompanyDocument>>(
   async (doc, next) => {
     if (!doc) return next();
 
-    await Tour.deleteMany({ company: doc._id });
+    await Promise.all([
+      Tour.deleteMany({ company: doc._id }),
+      Amenity.deleteMany({ _id: { $in: doc.amenities } }),
+    ]);
 
     next();
   }
