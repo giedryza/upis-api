@@ -153,5 +153,15 @@
         "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
       }
     }
+  },
+  "images": {
+    "errors": {
+      "id": {
+        "invalid": "Nurodyta nuotrauka neegzistuoja.",
+        "createMany": "Nepavyko įkelti nuotraukų.",
+        "update": "Nepavyko atnaujinti nuotraukos.",
+        "destroy": "Nepavyko ištrinti nuotraukos."
+      }
+    }
   }
 }

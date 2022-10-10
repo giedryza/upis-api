@@ -153,5 +153,15 @@
         "invalid": "Unable to reset password. Try again."
       }
     }
+  },
+  "images": {
+    "errors": {
+      "id": {
+        "invalid": "Image does not exist.",
+        "createMany": "Failed to create images.",
+        "update": "Failed to update the image.",
+        "destroy": "Failed to delete the image."
+      }
+    }
   }
 }
