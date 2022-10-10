@@ -1,6 +1,6 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
-import { AppRequest, Currency } from 'types/common';
+import { Currency } from 'types/common';
 import {
   CreatedResponse,
   ListResponse,
@@ -78,8 +78,17 @@ interface UpdateAmenities {
   };
 }
 
+interface UpdatePhotos {
+  params: {
+    id: string;
+  };
+  body: {
+    photosToRemove?: string[];
+  };
+}
+
 class Controller {
-  getAll = async (req: AppRequest, res: Response) => {
+  getAll = async (req: Request, res: Response) => {
     const { query } = req;
 
     const { data, meta } = await Service.getAll({ query });
@@ -87,7 +96,7 @@ class Controller {
     return new ListResponse(res, data, meta).send();
   };
 
-  getOne = async (req: AppRequest, res: Response) => {
+  getOne = async (req: Request, res: Response) => {
     const { params } = ValidatorService.getData<GetOne['params']>(req);
 
     const { data } = await Service.getOne({ data: { id: params.id } });
@@ -95,7 +104,7 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  create = async (req: AppRequest, res: Response) => {
+  create = async (req: Request, res: Response) => {
     const { _id: userId } = req.user!;
     const { body } = ValidatorService.getData<Create['params'], Create['body']>(
       req
@@ -112,7 +121,7 @@ class Controller {
     return new CreatedResponse(res, data).send();
   };
 
-  update = async (req: AppRequest, res: Response) => {
+  update = async (req: Request, res: Response) => {
     const { params, body } = ValidatorService.getData<
       Update['params'],
       Partial<Update['body']>
@@ -129,7 +138,7 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  destroy = async (req: AppRequest, res: Response) => {
+  destroy = async (req: Request, res: Response) => {
     const { params } = ValidatorService.getData<Destroy['params']>(req);
 
     await Service.destroy({
@@ -142,7 +151,7 @@ class Controller {
     return new NoContentResponse(res).send();
   };
 
-  updatePrice = async (req: AppRequest, res: Response) => {
+  updatePrice = async (req: Request, res: Response) => {
     const { params, body } = ValidatorService.getData<
       UpdatePrice['params'],
       UpdatePrice['body']
@@ -159,7 +168,7 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  updateGeography = async (req: AppRequest, res: Response) => {
+  updateGeography = async (req: Request, res: Response) => {
     const { params, body } = ValidatorService.getData<
       UpdateGeography['params'],
       UpdateGeography['body']
@@ -176,7 +185,7 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  updateAmenities = async (req: AppRequest, res: Response) => {
+  updateAmenities = async (req: Request, res: Response) => {
     const { params, body } = ValidatorService.getData<
       UpdateAmenities['params'],
       UpdateAmenities['body']
@@ -186,6 +195,24 @@ class Controller {
       data: {
         id: params.id,
         amenities: body.amenities,
+      },
+      t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  updatePhotos = async (req: Request, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      UpdatePhotos['params'],
+      UpdatePhotos['body']
+    >(req);
+
+    const { data } = await Service.updatePhotos({
+      data: {
+        id: params.id,
+        photos: req.files,
+        photosToRemove: body.photosToRemove ?? [],
       },
       t: req.t,
     });
