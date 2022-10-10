@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { AuthMiddleware } from 'middlewares';
 import { BaseRoute } from 'routes/_base.route';
-import { ValidatorService } from 'tools/services';
+import { filesService, ValidatorService } from 'tools/services';
 
 import { controller } from './tours.controller';
 import { Validation } from './tours.validation';
@@ -70,6 +70,25 @@ class Route extends BaseRoute {
         Validation.updateAmenities,
         ValidatorService.catch,
         controller.updateAmenities
+      );
+
+    this.router
+      .route('/:id/photos')
+      .patch(
+        AuthMiddleware.protect,
+        filesService
+          .upload([
+            'image/jpeg',
+            'image/png',
+            'image/avif',
+            'image/gif',
+            'image/svg+xml',
+            'image/bmp',
+          ])
+          .array('photos', 5),
+        Validation.updatePhotos,
+        ValidatorService.catch,
+        controller.updatePhotos
       );
   };
 }

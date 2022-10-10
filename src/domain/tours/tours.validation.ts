@@ -282,4 +282,22 @@ export class Validation {
       },
     },
   });
+
+  static updatePhotos = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('tours.errors.id.invalid'));
+        },
+      },
+    },
+    photosToRemove: {
+      in: ['body'],
+      optional: true,
+      customSanitizer: {
+        options: (value) => (Array.isArray(value) ? value : [value]),
+      },
+    },
+  });
 }

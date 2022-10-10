@@ -61,27 +61,22 @@ class FilesService {
       storage: this.storage,
     });
 
-  delete = async (keys: string[]) => {
-    try {
-      await new Promise((resolve, reject) => {
-        this.s3.deleteObjects(
-          {
-            Bucket: this.awsCredentials.bucket,
-            Delete: { Objects: keys.map((key) => ({ Key: key })) },
-          },
-          (err, data) => {
-            if (err) {
-              reject(new BadRequestError('File delete failed.'));
-            }
-
-            resolve(data);
+  delete = async (keys: string[]) =>
+    new Promise((resolve, reject) => {
+      this.s3.deleteObjects(
+        {
+          Bucket: this.awsCredentials.bucket,
+          Delete: { Objects: keys.map((key) => ({ Key: key })) },
+        },
+        (err, data) => {
+          if (err) {
+            reject(new BadRequestError('File delete failed.'));
           }
-        );
-      });
-    } catch (err) {
-      console.error(err);
-    }
-  };
+
+          resolve(data);
+        }
+      );
+    });
 }
 
 export const filesService = new FilesService();

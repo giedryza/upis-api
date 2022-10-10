@@ -5,7 +5,7 @@ import { TFunction } from 'i18next';
 import { Tour } from 'domain/tours/tours.model';
 import { Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
-import { QueryService, SlugService } from 'tools/services';
+import { filesService, QueryService, SlugService } from 'tools/services';
 import { Currency, PaginatedList } from 'types/common';
 import { Company } from 'domain/companies/companies.model';
 
@@ -73,6 +73,15 @@ interface UpdateAmenities {
   data: {
     id: string;
     amenities: string[];
+  };
+  t: TFunction;
+}
+
+interface UpdatePhotos {
+  data: {
+    id: string;
+    photos: Request['files'];
+    photosToRemove: string[];
   };
   t: TFunction;
 }
@@ -250,6 +259,59 @@ export class Service {
 
     tour.set('amenities', amenities);
     await tour.save();
+
+    return {
+      data: tour,
+    };
+  };
+
+  static updatePhotos = async ({
+    data: { id, photos, photosToRemove },
+    t,
+  }: UpdatePhotos): Promise<{ data: LeanDocument<TourRecord> }> => {
+    if (photosToRemove.length) {
+      await filesService.delete(photosToRemove);
+    }
+
+    const document = await Tour.findByIdAndUpdate(
+      id,
+      {
+        $pull: {
+          photos: { key: { $in: photosToRemove } },
+        },
+      },
+      { new: true }
+    ).lean();
+
+    if (!document) {
+      throw new BadRequestError(t('tours.errors.id.update'));
+    }
+
+    const photosToAdd = Array.isArray(photos)
+      ? photos.map((photo) => ({
+          location: photo.location,
+          key: photo.key,
+          contentType: photo.contentType,
+        }))
+      : [];
+
+    if (document.photos.length + photosToAdd.length > 5) {
+      throw new BadRequestError(t('tours.errors.id.update'));
+    }
+
+    const tour = await Tour.findByIdAndUpdate(
+      id,
+      {
+        $push: {
+          photos: photosToAdd,
+        },
+      },
+      { new: true, runValidators: true }
+    ).lean();
+
+    if (!tour) {
+      throw new BadRequestError(t('tours.errors.id.update'));
+    }
 
     return {
       data: tour,
