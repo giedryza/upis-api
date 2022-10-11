@@ -3,8 +3,9 @@ import { Router } from 'express';
 import { BaseRoute } from 'routes/_base.route';
 import { AuthMiddleware } from 'middlewares';
 import { ValidatorService } from 'tools/services';
-import { controller } from 'domain/social-links/social-links.controller';
-import { Validation } from 'domain/social-links/social-links.validation';
+
+import { controller } from './social-links.controller';
+import { Validation } from './social-links.validation';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });

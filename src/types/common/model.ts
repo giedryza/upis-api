@@ -14,10 +14,11 @@ export interface WithTimestamp {
 }
 
 export enum ModelName {
+  User = 'User',
+  Token = 'Token',
+  Image = 'Image',
   Company = 'Company',
   SocialLink = 'SocialLink',
   Amenity = 'Amenity',
-  Token = 'Token',
   Tour = 'Tour',
-  User = 'User',
 }

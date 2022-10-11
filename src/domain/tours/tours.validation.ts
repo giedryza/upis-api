@@ -128,6 +128,11 @@ export class Validation {
         },
       },
     },
+    primaryPhoto: {
+      in: ['body'],
+      optional: true,
+      isMongoId: true,
+    },
     departure: {
       in: ['body'],
       optional: true,
@@ -283,7 +288,7 @@ export class Validation {
     },
   });
 
-  static updatePhotos = checkSchema({
+  static addPhoto = checkSchema({
     id: {
       in: ['params'],
       isMongoId: {
@@ -292,12 +297,10 @@ export class Validation {
         },
       },
     },
-    photosToRemove: {
+    description: {
       in: ['body'],
       optional: true,
-      customSanitizer: {
-        options: (value) => (Array.isArray(value) ? value : [value]),
-      },
+      trim: true,
     },
   });
 }

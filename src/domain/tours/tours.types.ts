@@ -1,8 +1,9 @@
 import { Document, PaginateModel } from 'mongoose';
 
-import { AppFile, EntityId, PriceRecord, WithTimestamp } from 'types/common';
+import { EntityId, PriceRecord, WithTimestamp } from 'types/common';
 import { AmenityDocument } from 'domain/amenities/amenities.types';
 import { CompanyDocument } from 'domain/companies/companies.types';
+import { ImageDocument } from 'domain/images/images.types';
 
 export const regions = [
   'aukstaitija',
@@ -247,9 +248,10 @@ export interface TourRecord extends WithTimestamp {
   days: number;
   difficulty: number;
   price: PriceRecord | null;
+  primaryPhoto: string;
   rivers: River[];
   regions: Region[];
-  photos: AppFile[];
+  photos: (EntityId | ImageDocument)[];
   amenities: (EntityId | AmenityDocument)[];
   company: EntityId | CompanyDocument;
   user: EntityId;

@@ -5,7 +5,7 @@ import { TFunction } from 'i18next';
 import { Company } from 'domain/companies/companies.model';
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
-import { Language, PaginatedList } from 'types/common';
+import { EntityId, Language, PaginatedList } from 'types/common';
 import { Boat, CompanyRecord } from 'domain/companies/companies.types';
 
 interface GetAll {
@@ -20,7 +20,7 @@ interface GetOne {
 
 interface Create {
   data: {
-    userId: string;
+    userId: EntityId;
     name: string;
     phone: string;
     email: string;
@@ -32,7 +32,7 @@ interface Create {
 interface Update {
   data: {
     id: string;
-    userId: string;
+    userId: EntityId;
     name?: string;
     phone?: string;
     email?: string;
@@ -49,7 +49,7 @@ interface Update {
 interface Destroy {
   data: {
     id: string;
-    userId: string;
+    userId: EntityId;
   };
   t: TFunction;
 }
@@ -57,7 +57,7 @@ interface Destroy {
 interface AddLogo {
   data: {
     id: string;
-    userId: string;
+    userId: EntityId;
     file?: Request['file'];
   };
   t: TFunction;

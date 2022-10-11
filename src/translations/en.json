@@ -45,6 +45,9 @@
       "arrival": {
         "invalid": "Provide arrival point coordinates."
       },
+      "photos": {
+        "max": "You have exceeded the maximum limit of photos for the tour ({{max}}). Delete some of the current photos to add more."
+      },
       "company": {
         "invalid": "Company does not exist."
       }
@@ -151,6 +154,16 @@
       },
       "userId": {
         "invalid": "Unable to reset password. Try again."
+      }
+    }
+  },
+  "images": {
+    "errors": {
+      "id": {
+        "invalid": "Image does not exist.",
+        "createMany": "Failed to create images.",
+        "update": "Failed to update the image.",
+        "destroy": "Failed to delete the image."
       }
     }
   }

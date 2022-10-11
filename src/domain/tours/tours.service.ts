@@ -6,8 +6,10 @@ import { Tour } from 'domain/tours/tours.model';
 import { Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
-import { Currency, PaginatedList } from 'types/common';
+import { Currency, EntityId, PaginatedList } from 'types/common';
 import { Company } from 'domain/companies/companies.model';
+import { Service as ImageService } from 'domain/images/images.service';
+import { MAX_PHOTOS } from 'domain/tours/tours.constants';
 
 interface GetAll {
   query: Request['query'];
@@ -21,7 +23,7 @@ interface GetOne {
 
 interface Create {
   data: {
-    userId: string;
+    userId: EntityId;
     name: string;
     company: string;
   };
@@ -40,6 +42,7 @@ interface Update {
     duration?: number;
     days?: number;
     difficulty?: number;
+    primaryPhoto?: string;
   };
   t: TFunction;
 }
@@ -77,11 +80,12 @@ interface UpdateAmenities {
   t: TFunction;
 }
 
-interface UpdatePhotos {
+interface AddPhoto {
   data: {
     id: string;
-    photos: Request['files'];
-    photosToRemove: string[];
+    userId: EntityId;
+    photo: Request['file'];
+    description?: string;
   };
   t: TFunction;
 }
@@ -94,6 +98,7 @@ export class Service {
       .populate([
         { path: 'company', populate: 'amenities' },
         { path: 'amenities' },
+        { path: 'photos' },
       ])
       .lean();
 
@@ -114,6 +119,7 @@ export class Service {
       populate: [
         { path: 'company', populate: 'amenities' },
         { path: 'amenities' },
+        { path: 'photos' },
       ],
       lean: true,
       leanWithId: false,
@@ -265,56 +271,53 @@ export class Service {
     };
   };
 
-  static updatePhotos = async ({
-    data: { id, photos, photosToRemove },
+  static addPhoto = async ({
+    data: { id, userId, photo, description },
     t,
-  }: UpdatePhotos): Promise<{ data: LeanDocument<TourRecord> }> => {
-    if (photosToRemove.length) {
-      await filesService.delete(photosToRemove);
-    }
-
-    const document = await Tour.findByIdAndUpdate(
-      id,
-      {
-        $pull: {
-          photos: { key: { $in: photosToRemove } },
-        },
-      },
-      { new: true }
-    ).lean();
-
-    if (!document) {
+  }: AddPhoto): Promise<{ data: LeanDocument<TourRecord> }> => {
+    if (!photo) {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
 
-    const photosToAdd = Array.isArray(photos)
-      ? photos.map((photo) => ({
-          location: photo.location,
-          key: photo.key,
-          contentType: photo.contentType,
-        }))
-      : [];
-
-    if (document.photos.length + photosToAdd.length > 5) {
-      throw new BadRequestError(t('tours.errors.id.update'));
-    }
-
-    const tour = await Tour.findByIdAndUpdate(
-      id,
-      {
-        $push: {
-          photos: photosToAdd,
-        },
-      },
-      { new: true, runValidators: true }
-    ).lean();
+    const tour = await Tour.findById(id).lean();
 
     if (!tour) {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
 
+    if (tour.photos.length >= MAX_PHOTOS) {
+      await filesService.delete([photo.key]);
+
+      throw new BadRequestError(
+        t('tours.errors.photos.max', { max: MAX_PHOTOS })
+      );
+    }
+
+    const { data } = await ImageService.create({
+      data: {
+        file: {
+          url: photo.location,
+          key: photo.key,
+          contentType: photo.contentType,
+          description,
+        },
+        user: userId,
+      },
+      t,
+    });
+
+    const updated = await Tour.findByIdAndUpdate(
+      id,
+      { $push: { photos: data._id } },
+      { new: true, runValidators: true }
+    ).lean();
+
+    if (!updated) {
+      throw new BadRequestError(t('tours.errors.id.update'));
+    }
+
     return {
-      data: tour,
+      data: updated,
     };
   };
 }

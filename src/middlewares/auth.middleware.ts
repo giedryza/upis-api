@@ -77,7 +77,7 @@ export class AuthMiddleware {
             throw new UnauthorizedError();
           }
 
-          if (socialLink.host.toString() === user._id) {
+          if (socialLink.host === user._id) {
             break;
           }
 

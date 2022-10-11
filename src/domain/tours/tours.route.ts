@@ -73,7 +73,7 @@ class Route extends BaseRoute {
       );
 
     this.router
-      .route('/:id/photos')
+      .route('/:id/photo')
       .patch(
         AuthMiddleware.protect,
         filesService
@@ -85,10 +85,10 @@ class Route extends BaseRoute {
             'image/svg+xml',
             'image/bmp',
           ])
-          .array('photos', 5),
-        Validation.updatePhotos,
+          .single('photo'),
+        Validation.addPhoto,
         ValidatorService.catch,
-        controller.updatePhotos
+        controller.addPhoto
       );
   };
 }

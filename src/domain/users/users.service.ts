@@ -11,6 +11,7 @@ import { ResetPasswordEmail } from 'emails';
 import { User } from 'domain/users/users.model';
 import { AppUser } from 'domain/users/users.types';
 import { Token } from 'domain/token/token.model';
+import { EntityId } from 'types/common';
 
 interface Signup {
   data: {
@@ -36,7 +37,7 @@ interface Me {
 
 interface UpdatePassword {
   data: {
-    userId: string;
+    userId: EntityId;
     currentPassword: string;
     newPassword: string;
   };

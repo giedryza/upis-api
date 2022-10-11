@@ -45,6 +45,9 @@
       "arrival": {
         "invalid": "Nurodykite atvykimo taško koordinates."
       },
+      "photos": {
+        "max": "Jūs viršijote maksimalų leistiną nuotraukų limitą vienam maršrutui ({{max}}). Ištrinkite vieną ar kelias nuotraukas norėdami pridėti daugiau."
+      },
       "company": {
         "invalid": "Nurodyta įmonė neegzistuoja."
       }
@@ -151,6 +154,16 @@
       },
       "userId": {
         "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
+      }
+    }
+  },
+  "images": {
+    "errors": {
+      "id": {
+        "invalid": "Nurodyta nuotrauka neegzistuoja.",
+        "createMany": "Nepavyko įkelti nuotraukų.",
+        "update": "Nepavyko atnaujinti nuotraukos.",
+        "destroy": "Nepavyko ištrinti nuotraukos."
       }
     }
   }

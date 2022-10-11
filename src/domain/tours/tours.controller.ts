@@ -40,6 +40,7 @@ interface Update {
     duration: number;
     days: number;
     difficulty: number;
+    primaryPhoto: string;
   };
 }
 
@@ -78,12 +79,12 @@ interface UpdateAmenities {
   };
 }
 
-interface UpdatePhotos {
+interface AddPhoto {
   params: {
     id: string;
   };
   body: {
-    photosToRemove?: string[];
+    description?: string;
   };
 }
 
@@ -202,17 +203,18 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  updatePhotos = async (req: Request, res: Response) => {
+  addPhoto = async (req: Request, res: Response) => {
     const { params, body } = ValidatorService.getData<
-      UpdatePhotos['params'],
-      UpdatePhotos['body']
+      AddPhoto['params'],
+      AddPhoto['body']
     >(req);
 
-    const { data } = await Service.updatePhotos({
+    const { data } = await Service.addPhoto({
       data: {
         id: params.id,
-        photos: req.files,
-        photosToRemove: body.photosToRemove ?? [],
+        userId: req.user?._id!,
+        photo: req.file,
+        description: body.description,
       },
       t: req.t,
     });
