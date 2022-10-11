@@ -248,6 +248,7 @@ export interface TourRecord extends WithTimestamp {
   days: number;
   difficulty: number;
   price: PriceRecord | null;
+  primaryPhoto: string;
   rivers: River[];
   regions: Region[];
   photos: (EntityId | ImageDocument)[];

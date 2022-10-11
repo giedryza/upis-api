@@ -40,6 +40,7 @@ interface Update {
     duration: number;
     days: number;
     difficulty: number;
+    primaryPhoto: string;
   };
 }
 

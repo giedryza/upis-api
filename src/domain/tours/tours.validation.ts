@@ -128,6 +128,11 @@ export class Validation {
         },
       },
     },
+    primaryPhoto: {
+      in: ['body'],
+      optional: true,
+      isMongoId: true,
+    },
     departure: {
       in: ['body'],
       optional: true,

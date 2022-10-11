@@ -102,6 +102,10 @@ const schema = new Schema<TourDocument>(
       ],
       default: [],
     },
+    primaryPhoto: {
+      type: String,
+      default: '',
+    },
     company: {
       type: Schema.Types.ObjectId,
       ref: ModelName.Company,
