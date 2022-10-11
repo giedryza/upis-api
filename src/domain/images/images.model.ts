@@ -1,8 +1,9 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Query } from 'mongoose';
 
+import { Tour } from 'domain/tours/tours.model';
 import { ModelName } from 'types/common';
 
-import { ImageRecord } from './images.types';
+import { ImageDocument, ImageRecord } from './images.types';
 
 const schema = new Schema<ImageRecord>(
   {
@@ -34,6 +35,19 @@ const schema = new Schema<ImageRecord>(
       versionKey: false,
       virtuals: true,
     },
+  }
+);
+
+schema.post<Query<ImageDocument | null, ImageDocument>>(
+  'findOneAndDelete',
+  async (doc, next) => {
+    if (!doc) return next();
+
+    await Promise.all([
+      Tour.updateMany({ photos: doc._id }, { $pull: { photos: doc._id } }),
+    ]);
+
+    next();
   }
 );
 
