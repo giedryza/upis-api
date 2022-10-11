@@ -5,10 +5,11 @@ import { TFunction } from 'i18next';
 import { Tour } from 'domain/tours/tours.model';
 import { Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
-import { QueryService, SlugService } from 'tools/services';
+import { filesService, QueryService, SlugService } from 'tools/services';
 import { Currency, EntityId, PaginatedList } from 'types/common';
 import { Company } from 'domain/companies/companies.model';
 import { Service as ImageService } from 'domain/images/images.service';
+import { MAX_PHOTOS } from 'domain/tours/tours.constants';
 
 interface GetAll {
   query: Request['query'];
@@ -277,6 +278,20 @@ export class Service {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
 
+    const tour = await Tour.findById(id).lean();
+
+    if (!tour) {
+      throw new BadRequestError(t('tours.errors.id.update'));
+    }
+
+    if (tour.photos.length >= MAX_PHOTOS) {
+      await filesService.delete([photo.key]);
+
+      throw new BadRequestError(
+        t('tours.errors.photos.max', { max: MAX_PHOTOS })
+      );
+    }
+
     const { data } = await ImageService.create({
       data: {
         file: {
@@ -290,18 +305,18 @@ export class Service {
       t,
     });
 
-    const tour = await Tour.findByIdAndUpdate(
+    const updated = await Tour.findByIdAndUpdate(
       id,
       { $push: { photos: data._id } },
       { new: true, runValidators: true }
     ).lean();
 
-    if (!tour) {
+    if (!updated) {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
 
     return {
-      data: tour,
+      data: updated,
     };
   };
 }
