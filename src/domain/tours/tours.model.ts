@@ -1,7 +1,9 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Query } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
+import { filesService } from 'tools/services';
 import { ModelName, currencies, PriceDocument } from 'types/common';
+import { Image } from 'domain/images/images.model';
 
 import { TourDocument, TourModel, regions, rivers } from './tours.types';
 
@@ -121,5 +123,21 @@ const schema = new Schema<TourDocument>(
 );
 
 schema.plugin(mongoosePaginate);
+
+schema.post<Query<TourDocument | null, TourDocument>>(
+  'findOneAndDelete',
+  async (doc, next) => {
+    if (!doc) return next();
+
+    const photos = await Image.find({ _id: { $in: doc.photos } }).lean();
+
+    await Promise.all([
+      Image.deleteMany({ _id: { $in: doc.photos } }),
+      filesService.delete(photos.map((photo) => photo.key)),
+    ]);
+
+    next();
+  }
+);
 
 export const Tour = model<TourDocument, TourModel>(ModelName.Tour, schema);
