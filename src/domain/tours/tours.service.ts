@@ -6,7 +6,7 @@ import { Tour } from 'domain/tours/tours.model';
 import { Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
-import { Currency, PaginatedList } from 'types/common';
+import { Currency, EntityId, PaginatedList } from 'types/common';
 import { Company } from 'domain/companies/companies.model';
 
 interface GetAll {
@@ -21,7 +21,7 @@ interface GetOne {
 
 interface Create {
   data: {
-    userId: string;
+    userId: EntityId;
     name: string;
     company: string;
   };

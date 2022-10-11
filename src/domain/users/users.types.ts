@@ -1,6 +1,6 @@
 import { Document, PaginateModel } from 'mongoose';
 
-import { WithTimestamp } from 'types/common';
+import { EntityId, WithTimestamp } from 'types/common';
 
 export enum Role {
   User = 'user',
@@ -9,7 +9,7 @@ export enum Role {
 }
 
 export interface AppUser {
-  _id: string;
+  _id: EntityId;
   email: string;
   role: Role;
 }
