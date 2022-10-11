@@ -93,18 +93,12 @@ const schema = new Schema<TourDocument>(
     photos: {
       type: [
         {
-          location: {
-            type: String,
-            required: true,
-          },
-          key: {
-            type: String,
-          },
-          contentType: {
-            type: String,
-          },
+          type: Schema.Types.ObjectId,
+          ref: ModelName.Image,
+          required: true,
         },
       ],
+      default: [],
     },
     company: {
       type: Schema.Types.ObjectId,

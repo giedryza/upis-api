@@ -73,6 +73,25 @@ class Route extends BaseRoute {
       );
 
     this.router
+      .route('/:id/photo')
+      .patch(
+        AuthMiddleware.protect,
+        filesService
+          .upload([
+            'image/jpeg',
+            'image/png',
+            'image/avif',
+            'image/gif',
+            'image/svg+xml',
+            'image/bmp',
+          ])
+          .single('photo'),
+        Validation.addPhoto,
+        ValidatorService.catch,
+        controller.addPhoto
+      );
+
+    this.router
       .route('/:id/photos')
       .patch(
         AuthMiddleware.protect,

@@ -78,6 +78,15 @@ interface UpdateAmenities {
   };
 }
 
+interface AddPhoto {
+  params: {
+    id: string;
+  };
+  body: {
+    description?: string;
+  };
+}
+
 interface UpdatePhotos {
   params: {
     id: string;
@@ -195,6 +204,25 @@ class Controller {
       data: {
         id: params.id,
         amenities: body.amenities,
+      },
+      t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  addPhoto = async (req: Request, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      AddPhoto['params'],
+      AddPhoto['body']
+    >(req);
+
+    const { data } = await Service.addPhoto({
+      data: {
+        id: params.id,
+        userId: req.user?._id!,
+        photo: req.file,
+        description: body.description,
       },
       t: req.t,
     });

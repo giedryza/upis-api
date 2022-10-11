@@ -5,7 +5,7 @@ import { filesService } from 'tools/services';
 import { EntityId } from 'types/common';
 
 import { Image } from './images.model';
-import { ImageRecord } from './images.types';
+import { ImageDocument, ImageRecord } from './images.types';
 
 interface CreateMany {
   data: {
@@ -15,6 +15,19 @@ interface CreateMany {
       contentType: string;
       description?: string;
     }[];
+    user: EntityId;
+  };
+  t: TFunction;
+}
+
+interface Create {
+  data: {
+    file: {
+      url: string;
+      key: string;
+      contentType: string;
+      description?: string;
+    };
     user: EntityId;
   };
   t: TFunction;
@@ -36,6 +49,27 @@ interface Destroy {
 }
 
 export class Service {
+  static create = async ({
+    data: { file, user },
+    t,
+  }: Create): Promise<{ data: ImageDocument }> => {
+    const image = await Image.create({
+      url: file.url,
+      key: file.key,
+      contentType: file.contentType,
+      description: file.description ?? '',
+      user,
+    });
+
+    if (!image) {
+      throw new BadRequestError(t('images.errors.id.createMany'));
+    }
+
+    return {
+      data: image,
+    };
+  };
+
   static createMany = async ({
     data: { files, user },
     t,

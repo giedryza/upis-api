@@ -8,6 +8,7 @@ import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Currency, EntityId, PaginatedList } from 'types/common';
 import { Company } from 'domain/companies/companies.model';
+import { Service as ImageService } from 'domain/images/images.service';
 
 interface GetAll {
   query: Request['query'];
@@ -86,6 +87,16 @@ interface UpdatePhotos {
   t: TFunction;
 }
 
+interface AddPhoto {
+  data: {
+    id: string;
+    userId: EntityId;
+    photo: Request['file'];
+    description?: string;
+  };
+  t: TFunction;
+}
+
 export class Service {
   static getOne = async ({
     data: { id },
@@ -94,6 +105,7 @@ export class Service {
       .populate([
         { path: 'company', populate: 'amenities' },
         { path: 'amenities' },
+        { path: 'photos' },
       ])
       .lean();
 
@@ -114,6 +126,7 @@ export class Service {
       populate: [
         { path: 'company', populate: 'amenities' },
         { path: 'amenities' },
+        { path: 'photos' },
       ],
       lean: true,
       leanWithId: false,
@@ -259,6 +272,42 @@ export class Service {
 
     tour.set('amenities', amenities);
     await tour.save();
+
+    return {
+      data: tour,
+    };
+  };
+
+  static addPhoto = async ({
+    data: { id, userId, photo, description },
+    t,
+  }: AddPhoto): Promise<{ data: LeanDocument<TourRecord> }> => {
+    if (!photo) {
+      throw new BadRequestError(t('tours.errors.id.update'));
+    }
+
+    const { data } = await ImageService.create({
+      data: {
+        file: {
+          url: photo.location,
+          key: photo.key,
+          contentType: photo.contentType,
+          description,
+        },
+        user: userId,
+      },
+      t,
+    });
+
+    const tour = await Tour.findByIdAndUpdate(
+      id,
+      { $push: { photos: data._id } },
+      { new: true, runValidators: true }
+    ).lean();
+
+    if (!tour) {
+      throw new BadRequestError(t('tours.errors.id.update'));
+    }
 
     return {
       data: tour,
