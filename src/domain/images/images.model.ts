@@ -2,9 +2,9 @@ import { Schema, model } from 'mongoose';
 
 import { ModelName } from 'types/common';
 
-import { ImageDocument, ImageModel } from './images.types';
+import { ImageRecord } from './images.types';
 
-const schema = new Schema<ImageDocument>(
+const schema = new Schema<ImageRecord>(
   {
     url: {
       type: String,
@@ -22,6 +22,11 @@ const schema = new Schema<ImageDocument>(
       type: String,
       default: '',
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: ModelName.User,
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -32,4 +37,4 @@ const schema = new Schema<ImageDocument>(
   }
 );
 
-export const Image = model<ImageDocument, ImageModel>(ModelName.Image, schema);
+export const Image = model<ImageRecord>(ModelName.Image, schema);

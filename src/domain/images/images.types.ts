@@ -1,12 +1,13 @@
 import { Document, Model } from 'mongoose';
 
-import { WithTimestamp } from 'types/common';
+import { EntityId, WithTimestamp } from 'types/common';
 
 export interface ImageRecord extends WithTimestamp {
   url: string;
   key: string;
   contentType: string;
   description: string;
+  user: EntityId;
 }
 
 export interface ImageDocument extends ImageRecord, Document {}

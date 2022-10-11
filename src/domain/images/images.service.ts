@@ -2,6 +2,7 @@ import { TFunction } from 'i18next';
 
 import { BadRequestError } from 'errors';
 import { filesService } from 'tools/services';
+import { EntityId } from 'types/common';
 
 import { Image } from './images.model';
 import { ImageRecord } from './images.types';
@@ -14,6 +15,7 @@ interface CreateMany {
       contentType: string;
       description?: string;
     }[];
+    user: EntityId;
   };
   t: TFunction;
 }
@@ -35,7 +37,7 @@ interface Destroy {
 
 export class Service {
   static createMany = async ({
-    data: { files },
+    data: { files, user },
     t,
   }: CreateMany): Promise<{ data: ImageRecord[] }> => {
     const images = await Image.insertMany(
@@ -44,6 +46,7 @@ export class Service {
         key: file.key,
         contentType: file.contentType,
         description: file.description ?? '',
+        user,
       }))
     );
 
