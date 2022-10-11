@@ -298,15 +298,4 @@ export class Validation {
       trim: true,
     },
   });
-
-  static updatePhotos = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('tours.errors.id.invalid'));
-        },
-      },
-    },
-  });
 }

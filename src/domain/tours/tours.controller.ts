@@ -87,15 +87,6 @@ interface AddPhoto {
   };
 }
 
-interface UpdatePhotos {
-  params: {
-    id: string;
-  };
-  body: {
-    photosToRemove?: string[];
-  };
-}
-
 class Controller {
   getAll = async (req: Request, res: Response) => {
     const { query } = req;
@@ -223,24 +214,6 @@ class Controller {
         userId: req.user?._id!,
         photo: req.file,
         description: body.description,
-      },
-      t: req.t,
-    });
-
-    return new SuccessResponse(res, data).send();
-  };
-
-  updatePhotos = async (req: Request, res: Response) => {
-    const { params, body } = ValidatorService.getData<
-      UpdatePhotos['params'],
-      UpdatePhotos['body']
-    >(req);
-
-    const { data } = await Service.updatePhotos({
-      data: {
-        id: params.id,
-        photos: req.files,
-        photosToRemove: body.photosToRemove ?? [],
       },
       t: req.t,
     });

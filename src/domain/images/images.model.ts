@@ -2,6 +2,7 @@ import { Schema, model, Query } from 'mongoose';
 
 import { Tour } from 'domain/tours/tours.model';
 import { ModelName } from 'types/common';
+import { filesService } from 'tools/services';
 
 import { ImageDocument, ImageRecord } from './images.types';
 
@@ -45,6 +46,7 @@ schema.post<Query<ImageDocument | null, ImageDocument>>(
 
     await Promise.all([
       Tour.updateMany({ photos: doc._id }, { $pull: { photos: doc._id } }),
+      filesService.delete([doc.key]),
     ]);
 
     next();

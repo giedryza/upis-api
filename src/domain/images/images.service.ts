@@ -1,7 +1,6 @@
 import { TFunction } from 'i18next';
 
 import { BadRequestError } from 'errors';
-import { filesService } from 'tools/services';
 import { EntityId } from 'types/common';
 
 import { Image } from './images.model';
@@ -116,7 +115,5 @@ export class Service {
     if (!image) {
       throw new BadRequestError(t('images.errors.id.destroy'));
     }
-
-    await filesService.delete([image.key]);
   };
 }

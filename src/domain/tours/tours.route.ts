@@ -90,25 +90,6 @@ class Route extends BaseRoute {
         ValidatorService.catch,
         controller.addPhoto
       );
-
-    this.router
-      .route('/:id/photos')
-      .patch(
-        AuthMiddleware.protect,
-        filesService
-          .upload([
-            'image/jpeg',
-            'image/png',
-            'image/avif',
-            'image/gif',
-            'image/svg+xml',
-            'image/bmp',
-          ])
-          .array('photos', 5),
-        Validation.updatePhotos,
-        ValidatorService.catch,
-        controller.updatePhotos
-      );
   };
 }
 
