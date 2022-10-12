@@ -56,7 +56,8 @@
   "amenities": {
     "errors": {
       "id": {
-        "invalid": "Amenity does not exist."
+        "invalid": "Amenity does not exist.",
+        "create": "Failed to create the amenity."
       },
       "variant": {
         "invalid": "Choose amenity."

@@ -62,7 +62,10 @@ class Controller {
       req
     );
 
-    const { data } = await Service.create({ data: body, t: req.t });
+    const { data } = await Service.create({
+      data: { ...body, user: req.user!._id },
+      t: req.t,
+    });
 
     return new SuccessResponse(res, data).send();
   };
