@@ -1,6 +1,6 @@
 import { PaginateModel, Types } from 'mongoose';
 
-import { PriceRecord, WithTimestamp } from 'types/common';
+import { EntityId, PriceRecord, WithTimestamp } from 'types/common';
 
 export const variants = [
   'transport',
@@ -27,6 +27,7 @@ export interface AmenityRecord extends WithTimestamp {
   price: PriceRecord | null;
   unit: Unit;
   info: string;
+  user: EntityId;
 }
 
 export interface AmenityDocument extends AmenityRecord, Types.Subdocument {}

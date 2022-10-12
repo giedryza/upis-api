@@ -44,6 +44,11 @@ export const schema = new Schema<AmenityDocument, AmenityModel, AmenityRecord>(
       type: String,
       default: '',
     },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: ModelName.User,
+      required: true,
+    },
   },
   {
     timestamps: true,
