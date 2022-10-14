@@ -23,12 +23,14 @@ class Route extends BaseRoute {
       .route('/:id')
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('image'),
         Validation.update,
         ValidatorService.catch,
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('image'),
         Validation.destroy,
         ValidatorService.catch,
         controller.destroy

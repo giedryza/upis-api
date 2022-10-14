@@ -6,6 +6,9 @@ import { UnauthorizedError } from 'errors';
 import { Role } from 'domain/users/users.types';
 import { Company } from 'domain/companies/companies.model';
 import { SocialLink } from 'domain/social-links/social-links.model';
+import { Tour } from 'domain/tours/tours.model';
+import { Amenity } from 'domain/amenities/amenities.model';
+import { Image } from 'domain/images/images.model';
 
 export class AuthMiddleware {
   static protect = async (req: Request, _res: Response, next: NextFunction) => {
@@ -52,31 +55,54 @@ export class AuthMiddleware {
     };
 
   static isOwner =
-    (model: 'company' | 'social-link') =>
+    (model: 'company' | 'tour' | 'amenity' | 'image' | 'social-link') =>
     async (req: Request, _res: Response, next: NextFunction) => {
       const { user, params } = req;
-      const { id } = params;
 
-      if (!user || !id || !id) {
+      if (!user || !params.id) {
         throw new UnauthorizedError();
       }
 
+      const filter = {
+        _id: params.id,
+        user: user._id,
+      };
+
       switch (model) {
         case 'company': {
-          const company = await Company.findOne({
-            _id: id,
-            user: user._id,
-          }).lean();
+          const company = await Company.findOne(filter).lean();
 
-          if (!company) {
-            throw new UnauthorizedError();
-          }
+          if (!company) throw new UnauthorizedError();
+
+          break;
+        }
+
+        case 'tour': {
+          const tour = await Tour.findOne(filter).lean();
+
+          if (!tour) throw new UnauthorizedError();
+
+          break;
+        }
+
+        case 'amenity': {
+          const amenity = await Amenity.findOne(filter).lean();
+
+          if (!amenity) throw new UnauthorizedError();
+
+          break;
+        }
+
+        case 'image': {
+          const image = await Image.findOne(filter).lean();
+
+          if (!image) throw new UnauthorizedError();
 
           break;
         }
 
         case 'social-link': {
-          const socialLink = await SocialLink.findById(id).lean();
+          const socialLink = await SocialLink.findById(params.id).lean();
 
           if (!socialLink) {
             throw new UnauthorizedError();

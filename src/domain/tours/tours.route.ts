@@ -34,12 +34,14 @@ class Route extends BaseRoute {
       .get(Validation.getOne, controller.getOne)
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('tour'),
         Validation.update,
         ValidatorService.catch,
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('tour'),
         Validation.destroy,
         ValidatorService.catch,
         controller.destroy
@@ -49,6 +51,7 @@ class Route extends BaseRoute {
       .route('/:id/price')
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('tour'),
         Validation.updatePrice,
         ValidatorService.catch,
         controller.updatePrice
@@ -58,6 +61,7 @@ class Route extends BaseRoute {
       .route('/:id/geography')
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('tour'),
         Validation.updateGeography,
         ValidatorService.catch,
         controller.updateGeography
@@ -67,6 +71,7 @@ class Route extends BaseRoute {
       .route('/:id/amenities')
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('tour'),
         Validation.updateAmenities,
         ValidatorService.catch,
         controller.updateAmenities
@@ -76,6 +81,7 @@ class Route extends BaseRoute {
       .route('/:id/photo')
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('tour'),
         filesService
           .upload([
             'image/jpeg',
