@@ -33,12 +33,14 @@ class Route extends BaseRoute {
       .get(Validation.getOne, controller.getOne)
       .patch(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('amenity'),
         Validation.update,
         ValidatorService.catch,
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
+        AuthMiddleware.isOwner('amenity'),
         Validation.destroy,
         ValidatorService.catch,
         controller.destroy
