@@ -6,8 +6,8 @@ import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { EntityId, Language, PaginatedList } from 'types/common';
 
-import { Company } from './providers.model';
-import { Boat, CompanyRecord } from './providers.types';
+import { Provider } from './providers.model';
+import { Boat, ProviderRecord } from './providers.types';
 
 interface GetAll {
   query: Request['query'];
@@ -73,7 +73,7 @@ interface Cleanup {
 export class Service {
   static getAll = async ({
     query,
-  }: GetAll): Promise<PaginatedList<CompanyRecord>> => {
+  }: GetAll): Promise<PaginatedList<ProviderRecord>> => {
     const { filter, sort, select, page, limit } = new QueryService(query);
     const options = {
       page,
@@ -85,15 +85,15 @@ export class Service {
       leanWithId: false,
     };
 
-    const { docs, totalDocs: total } = await Company.paginate(filter, options);
+    const { docs, totalDocs: total } = await Provider.paginate(filter, options);
 
     return { data: docs, meta: { total, page, limit } };
   };
 
   static getOne = async ({
     data: { id },
-  }: GetOne): Promise<{ data: LeanDocument<CompanyRecord> | null }> => {
-    const company = await Company.findById(id)
+  }: GetOne): Promise<{ data: LeanDocument<ProviderRecord> | null }> => {
+    const company = await Provider.findById(id)
       .populate(['user', 'socialLinks', 'amenities'])
       .lean();
 
@@ -107,10 +107,10 @@ export class Service {
   static create = async ({
     data: { userId, name, phone, email, description },
     t,
-  }: Create): Promise<{ data: CompanyRecord }> => {
+  }: Create): Promise<{ data: ProviderRecord }> => {
     const slug = await SlugService.get(name);
 
-    const company = new Company({
+    const company = new Provider({
       user: userId,
       slug,
       name,
@@ -131,13 +131,13 @@ export class Service {
   static update = async ({
     data,
     t,
-  }: Update): Promise<{ data: LeanDocument<CompanyRecord> }> => {
+  }: Update): Promise<{ data: LeanDocument<ProviderRecord> }> => {
     const slug = await SlugService.get(data.name ?? '');
 
     const { id, userId, languages, boats, location, ...update } = data;
     const filter = { _id: id, user: userId };
 
-    const company = await Company.findOneAndUpdate(
+    const company = await Provider.findOneAndUpdate(
       filter,
       {
         ...update,
@@ -166,7 +166,7 @@ export class Service {
   }: Destroy): Promise<void> => {
     const filter = { _id: id, user: userId };
 
-    const company = await Company.findOneAndDelete(filter).lean();
+    const company = await Provider.findOneAndDelete(filter).lean();
 
     if (!company) {
       throw new BadRequestError(t('companies.errors.id.destroy'));
@@ -178,7 +178,7 @@ export class Service {
   static addLogo = async ({
     data: { id, userId, file },
     t,
-  }: AddLogo): Promise<{ data: LeanDocument<CompanyRecord> }> => {
+  }: AddLogo): Promise<{ data: LeanDocument<ProviderRecord> }> => {
     if (!id || !file) {
       throw new BadRequestError(t('companies.errors.file.upload'));
     }
@@ -192,7 +192,7 @@ export class Service {
       },
     };
 
-    const company = await Company.findOneAndUpdate(filter, update).lean();
+    const company = await Provider.findOneAndUpdate(filter, update).lean();
 
     if (!company) {
       throw new BadRequestError(t('companies.errors.id.update'));

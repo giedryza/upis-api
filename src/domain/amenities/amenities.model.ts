@@ -2,7 +2,7 @@ import { Schema, model, Query } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
 import { currencies, ModelName, PriceDocument } from 'types/common';
-import { Company } from 'domain/providers/providers.model';
+import { Provider } from 'domain/providers/providers.model';
 import { Tour } from 'domain/tours/tours.model';
 
 import {
@@ -67,7 +67,7 @@ schema.post<Query<AmenityDocument | null, AmenityDocument>>(
     if (!doc) return next();
 
     await Promise.all([
-      Company.updateMany(
+      Provider.updateMany(
         { amenities: doc._id },
         { $pull: { amenities: doc._id } }
       ),

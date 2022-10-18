@@ -7,7 +7,7 @@ import { Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Currency, EntityId, PaginatedList } from 'types/common';
-import { Company } from 'domain/providers/providers.model';
+import { Provider } from 'domain/providers/providers.model';
 import { Service as ImageService } from 'domain/images/images.service';
 import { MAX_PHOTOS } from 'domain/tours/tours.constants';
 
@@ -254,7 +254,7 @@ export class Service {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
 
-    const company = await Company.findOne({
+    const company = await Provider.findOne({
       _id: tour.company,
       ...(!!amenities.length && { amenities: { $all: amenities } }),
     });

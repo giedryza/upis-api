@@ -3,7 +3,7 @@ import { checkSchema, Meta } from 'express-validator';
 import { BadRequestError, NotFoundError } from 'errors';
 import { currencies } from 'types/common';
 import { regions, rivers } from 'domain/tours/tours.types';
-import { Company } from 'domain/providers/providers.model';
+import { Provider } from 'domain/providers/providers.model';
 
 export class Validation {
   static getOne = checkSchema({
@@ -37,7 +37,7 @@ export class Validation {
       },
       custom: {
         options: async (value, { req }) => {
-          const company = await Company.findById(value);
+          const company = await Provider.findById(value);
 
           if (!company) {
             throw new BadRequestError(req.t('tours.errors.company.invalid'));

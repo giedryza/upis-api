@@ -12,7 +12,7 @@ export const boats = [
 
 export type Boat = typeof boats[number];
 
-export interface CompanyRecord extends WithTimestamp {
+export interface ProviderRecord extends WithTimestamp {
   name: string;
   phone: string;
   email: string;
@@ -30,6 +30,6 @@ export interface CompanyRecord extends WithTimestamp {
   amenities: EntityId[];
 }
 
-export interface CompanyDocument extends CompanyRecord, Document {}
+export interface ProviderDocument extends ProviderRecord, Document {}
 
-export interface CompanyModel extends PaginateModel<CompanyDocument> {}
+export interface ProviderModel extends PaginateModel<ProviderDocument> {}

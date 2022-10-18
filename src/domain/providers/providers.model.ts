@@ -7,12 +7,12 @@ import { Amenity } from 'domain/amenities/amenities.model';
 
 import {
   boats,
-  CompanyDocument,
-  CompanyModel,
-  CompanyRecord,
+  ProviderDocument,
+  ProviderModel,
+  ProviderRecord,
 } from './providers.types';
 
-const schema = new Schema<CompanyDocument, CompanyModel, CompanyRecord>(
+const schema = new Schema<ProviderDocument, ProviderModel, ProviderRecord>(
   {
     name: {
       type: String,
@@ -102,7 +102,7 @@ schema.virtual('socialLinks', {
   localField: '_id',
 });
 
-schema.post<Query<CompanyDocument | null, CompanyDocument>>(
+schema.post<Query<ProviderDocument | null, ProviderDocument>>(
   'findOneAndDelete',
   async (doc, next) => {
     if (!doc) return next();
@@ -116,7 +116,7 @@ schema.post<Query<CompanyDocument | null, CompanyDocument>>(
   }
 );
 
-export const Company = model<CompanyDocument, CompanyModel>(
-  ModelName.Company,
+export const Provider = model<ProviderDocument, ProviderModel>(
+  ModelName.Provider,
   schema
 );

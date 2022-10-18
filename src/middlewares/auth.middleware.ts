@@ -4,7 +4,7 @@ import { isValidObjectId } from 'mongoose';
 import { JwtService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
 import { Role } from 'domain/users/users.types';
-import { Company } from 'domain/providers/providers.model';
+import { Provider } from 'domain/providers/providers.model';
 import { SocialLink } from 'domain/social-links/social-links.model';
 import { Tour } from 'domain/tours/tours.model';
 import { Amenity } from 'domain/amenities/amenities.model';
@@ -70,7 +70,7 @@ export class AuthMiddleware {
 
       switch (model) {
         case 'company': {
-          const company = await Company.findOne(filter).lean();
+          const company = await Provider.findOne(filter).lean();
 
           if (!company) throw new UnauthorizedError();
 
@@ -112,7 +112,7 @@ export class AuthMiddleware {
             break;
           }
 
-          const company = await Company.findOne({
+          const company = await Provider.findOne({
             _id: socialLink.host,
             user: user._id,
           }).lean();

@@ -2,7 +2,7 @@ import { TFunction } from 'i18next';
 
 import { BadRequestError } from 'errors';
 import { Currency, EntityId } from 'types/common';
-import { Company } from 'domain/providers/providers.model';
+import { Provider } from 'domain/providers/providers.model';
 
 import { Variant, Unit, AmenityRecord } from './amenities.types';
 import { Amenity } from './amenities.model';
@@ -76,7 +76,7 @@ export class Service {
       throw new BadRequestError(t('amenities.errors.id.create'));
     }
 
-    const company = await Company.findOneAndUpdate(
+    const company = await Provider.findOneAndUpdate(
       { _id: companyId },
       {
         $push: {
