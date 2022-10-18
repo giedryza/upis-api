@@ -3,7 +3,7 @@ import { checkSchema, Meta } from 'express-validator';
 import { BadRequestError, NotFoundError } from 'errors';
 import { currencies } from 'types/common';
 import { regions, rivers } from 'domain/tours/tours.types';
-import { Company } from 'domain/companies/companies.model';
+import { Company } from 'domain/providers/providers.model';
 
 export class Validation {
   static getOne = checkSchema({

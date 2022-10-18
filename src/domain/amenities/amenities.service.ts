@@ -2,7 +2,7 @@ import { TFunction } from 'i18next';
 
 import { BadRequestError } from 'errors';
 import { Currency, EntityId } from 'types/common';
-import { Company } from 'domain/companies/companies.model';
+import { Company } from 'domain/providers/providers.model';
 
 import { Variant, Unit, AmenityRecord } from './amenities.types';
 import { Amenity } from './amenities.model';

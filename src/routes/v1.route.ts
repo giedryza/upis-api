@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { BaseRoute } from 'routes/_base.route';
 import { usersRoute } from 'domain/users/users.route';
-import { companiesRoute } from 'domain/companies/companies.route';
+import { companiesRoute } from 'domain/providers/providers.route';
 import { socialLinksRoute } from 'domain/social-links/social-links.route';
 import { toursRoute } from 'domain/tours/tours.route';
 import { amenitiesRoute } from 'domain/amenities/amenities.route';

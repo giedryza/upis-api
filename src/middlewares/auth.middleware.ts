@@ -4,7 +4,7 @@ import { isValidObjectId } from 'mongoose';
 import { JwtService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
 import { Role } from 'domain/users/users.types';
-import { Company } from 'domain/companies/companies.model';
+import { Company } from 'domain/providers/providers.model';
 import { SocialLink } from 'domain/social-links/social-links.model';
 import { Tour } from 'domain/tours/tours.model';
 import { Amenity } from 'domain/amenities/amenities.model';

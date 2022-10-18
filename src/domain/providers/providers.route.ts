@@ -1,10 +1,11 @@
 import { Router } from 'express';
 
 import { BaseRoute } from 'routes/_base.route';
-import { controller } from 'domain/companies/companies.controller';
 import { AuthMiddleware } from 'middlewares';
 import { filesService, ValidatorService } from 'tools/services';
-import { Validation } from 'domain/companies/companies.validation';
+
+import { controller } from './providers.controller';
+import { Validation } from './providers.validation';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });

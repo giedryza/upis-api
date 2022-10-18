@@ -2,7 +2,8 @@ import { checkSchema, Meta } from 'express-validator';
 
 import { NotFoundError } from 'errors';
 import { languages } from 'types/common';
-import { boats } from 'domain/companies/companies.types';
+
+import { boats } from './providers.types';
 
 export class Validation {
   static getOne = checkSchema({

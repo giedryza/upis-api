@@ -2,11 +2,12 @@ import { Request } from 'express';
 import { LeanDocument } from 'mongoose';
 import { TFunction } from 'i18next';
 
-import { Company } from 'domain/companies/companies.model';
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { EntityId, Language, PaginatedList } from 'types/common';
-import { Boat, CompanyRecord } from 'domain/companies/companies.types';
+
+import { Company } from './providers.model';
+import { Boat, CompanyRecord } from './providers.types';
 
 interface GetAll {
   query: Request['query'];

@@ -7,7 +7,7 @@ import { Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Currency, EntityId, PaginatedList } from 'types/common';
-import { Company } from 'domain/companies/companies.model';
+import { Company } from 'domain/providers/providers.model';
 import { Service as ImageService } from 'domain/images/images.service';
 import { MAX_PHOTOS } from 'domain/tours/tours.constants';
 

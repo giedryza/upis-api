@@ -8,8 +8,9 @@ import {
   CreatedResponse,
   NoContentResponse,
 } from 'responses';
-import { Service } from 'domain/companies/companies.service';
-import { Boat } from 'domain/companies/companies.types';
+
+import { Service } from './providers.service';
+import { Boat } from './providers.types';
 
 interface GetOne {
   params: {

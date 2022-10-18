@@ -4,12 +4,13 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import { ModelName, languages } from 'types/common';
 import { Tour } from 'domain/tours/tours.model';
 import { Amenity } from 'domain/amenities/amenities.model';
+
 import {
   boats,
   CompanyDocument,
   CompanyModel,
   CompanyRecord,
-} from 'domain/companies/companies.types';
+} from './providers.types';
 
 const schema = new Schema<CompanyDocument, CompanyModel, CompanyRecord>(
   {
