@@ -108,7 +108,7 @@ schema.post<Query<ProviderDocument | null, ProviderDocument>>(
     if (!doc) return next();
 
     await Promise.all([
-      Tour.deleteMany({ company: doc._id }),
+      Tour.deleteMany({ provider: doc._id }),
       Amenity.deleteMany({ _id: { $in: doc.amenities } }),
     ]);
 

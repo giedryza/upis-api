@@ -48,7 +48,7 @@
       "photos": {
         "max": "You have exceeded the maximum limit of photos for the tour ({{max}}). Delete some of the current photos to add more."
       },
-      "company": {
+      "provider": {
         "invalid": "Provider does not exist."
       }
     }
@@ -71,12 +71,12 @@
       "currency": {
         "invalid": "Choose currency."
       },
-      "companyId": {
+      "providerId": {
         "invalid": "Provider does not exist."
       }
     }
   },
-  "companies": {
+  "providers": {
     "errors": {
       "id": {
         "invalid": "Provider does not exist.",

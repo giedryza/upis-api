@@ -20,7 +20,7 @@ interface Create {
     currency: Currency;
     unit: Unit;
     info: string;
-    companyId: string;
+    providerId: string;
     user: EntityId;
   };
   t: TFunction;
@@ -61,7 +61,7 @@ export class Service {
   };
 
   static create = async ({
-    data: { companyId, variant, unit, info, amount, currency, user },
+    data: { providerId, variant, unit, info, amount, currency, user },
     t,
   }: Create): Promise<{ data: AmenityRecord }> => {
     const amenity = await Amenity.create({
@@ -76,8 +76,8 @@ export class Service {
       throw new BadRequestError(t('amenities.errors.id.create'));
     }
 
-    const company = await Provider.findOneAndUpdate(
-      { _id: companyId },
+    const provider = await Provider.findOneAndUpdate(
+      { _id: providerId },
       {
         $push: {
           amenities: amenity._id,
@@ -85,8 +85,8 @@ export class Service {
       }
     ).lean();
 
-    if (!company) {
-      throw new BadRequestError(t('amenities.errors.companyId.invalid'));
+    if (!provider) {
+      throw new BadRequestError(t('amenities.errors.providerId.invalid'));
     }
 
     return {

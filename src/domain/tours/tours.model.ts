@@ -106,7 +106,7 @@ const schema = new Schema<TourDocument>(
       type: String,
       default: '',
     },
-    company: {
+    provider: {
       type: Schema.Types.ObjectId,
       ref: ModelName.Provider,
       required: true,

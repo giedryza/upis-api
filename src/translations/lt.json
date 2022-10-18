@@ -48,7 +48,7 @@
       "photos": {
         "max": "Jūs viršijote maksimalų leistiną nuotraukų limitą vienam maršrutui ({{max}}). Ištrinkite vieną ar kelias nuotraukas norėdami pridėti daugiau."
       },
-      "company": {
+      "provider": {
         "invalid": "Nurodytas tiekėjas neegzistuoja."
       }
     }
@@ -71,12 +71,12 @@
       "currency": {
         "invalid": "Pasirinkite valiutą."
       },
-      "companyId": {
+      "providerId": {
         "invalid": "Nurodytas tiekėjas neegzistuoja."
       }
     }
   },
-  "companies": {
+  "providers": {
     "errors": {
       "id": {
         "invalid": "Nurodytas tiekėjas neegzistuoja.",

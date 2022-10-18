@@ -28,19 +28,19 @@ export class Validation {
           req.t('tours.errors.name.max', { maxLength: 200 }),
       },
     },
-    company: {
+    provider: {
       in: ['body'],
       isMongoId: {
         errorMessage: (_: string, { req }: Meta) => {
-          throw new BadRequestError(req.t('tours.errors.company.invalid'));
+          throw new BadRequestError(req.t('tours.errors.provider.invalid'));
         },
       },
       custom: {
         options: async (value, { req }) => {
-          const company = await Provider.findById(value);
+          const provider = await Provider.findById(value);
 
-          if (!company) {
-            throw new BadRequestError(req.t('tours.errors.company.invalid'));
+          if (!provider) {
+            throw new BadRequestError(req.t('tours.errors.provider.invalid'));
           }
         },
       },

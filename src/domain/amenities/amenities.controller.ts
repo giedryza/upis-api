@@ -21,7 +21,7 @@ interface Create {
     currency: Currency;
     unit: Unit;
     info: string;
-    companyId: string;
+    providerId: string;
   };
 }
 

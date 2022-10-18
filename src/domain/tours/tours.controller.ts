@@ -22,7 +22,7 @@ interface Create {
   params: {};
   body: {
     name: string;
-    company: string;
+    provider: string;
   };
 }
 

@@ -93,15 +93,15 @@ export class Service {
   static getOne = async ({
     data: { id },
   }: GetOne): Promise<{ data: LeanDocument<ProviderRecord> | null }> => {
-    const company = await Provider.findById(id)
+    const provider = await Provider.findById(id)
       .populate(['user', 'socialLinks', 'amenities'])
       .lean();
 
-    if (!company) {
+    if (!provider) {
       return { data: null };
     }
 
-    return { data: company };
+    return { data: provider };
   };
 
   static create = async ({
@@ -110,7 +110,7 @@ export class Service {
   }: Create): Promise<{ data: ProviderRecord }> => {
     const slug = await SlugService.get(name);
 
-    const company = new Provider({
+    const provider = new Provider({
       user: userId,
       slug,
       name,
@@ -119,13 +119,13 @@ export class Service {
       description,
     });
 
-    if (!company) {
-      throw new BadRequestError(t('companies.errors.id.create'));
+    if (!provider) {
+      throw new BadRequestError(t('providers.errors.id.create'));
     }
 
-    await company.save();
+    await provider.save();
 
-    return { data: company };
+    return { data: provider };
   };
 
   static update = async ({
@@ -137,7 +137,7 @@ export class Service {
     const { id, userId, languages, boats, location, ...update } = data;
     const filter = { _id: id, user: userId };
 
-    const company = await Provider.findOneAndUpdate(
+    const provider = await Provider.findOneAndUpdate(
       filter,
       {
         ...update,
@@ -153,11 +153,11 @@ export class Service {
       { new: true, runValidators: true }
     ).lean();
 
-    if (!company) {
-      throw new BadRequestError(t('companies.errors.id.update'));
+    if (!provider) {
+      throw new BadRequestError(t('providers.errors.id.update'));
     }
 
-    return { data: company };
+    return { data: provider };
   };
 
   static destroy = async ({
@@ -166,13 +166,13 @@ export class Service {
   }: Destroy): Promise<void> => {
     const filter = { _id: id, user: userId };
 
-    const company = await Provider.findOneAndDelete(filter).lean();
+    const provider = await Provider.findOneAndDelete(filter).lean();
 
-    if (!company) {
-      throw new BadRequestError(t('companies.errors.id.destroy'));
+    if (!provider) {
+      throw new BadRequestError(t('providers.errors.id.destroy'));
     }
 
-    Service.deleteLogo({ data: { logo: company.logo.key } });
+    Service.deleteLogo({ data: { logo: provider.logo.key } });
   };
 
   static addLogo = async ({
@@ -180,7 +180,7 @@ export class Service {
     t,
   }: AddLogo): Promise<{ data: LeanDocument<ProviderRecord> }> => {
     if (!id || !file) {
-      throw new BadRequestError(t('companies.errors.file.upload'));
+      throw new BadRequestError(t('providers.errors.file.upload'));
     }
 
     const filter = { _id: id, user: userId };
@@ -192,15 +192,15 @@ export class Service {
       },
     };
 
-    const company = await Provider.findOneAndUpdate(filter, update).lean();
+    const provider = await Provider.findOneAndUpdate(filter, update).lean();
 
-    if (!company) {
-      throw new BadRequestError(t('companies.errors.id.update'));
+    if (!provider) {
+      throw new BadRequestError(t('providers.errors.id.update'));
     }
 
-    Service.deleteLogo({ data: { logo: company.logo.key } });
+    Service.deleteLogo({ data: { logo: provider.logo.key } });
 
-    return { data: { ...company, ...update } };
+    return { data: { ...provider, ...update } };
   };
 
   static deleteLogo = ({ data: { logo } }: Cleanup) => {
