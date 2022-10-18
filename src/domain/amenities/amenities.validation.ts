@@ -62,11 +62,11 @@ export class Validation {
       in: ['body'],
       trim: true,
     },
-    companyId: {
+    providerId: {
       in: ['body'],
       isMongoId: {
         errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('amenities.errors.companyId.invalid'));
+          throw new NotFoundError(req.t('amenities.errors.providerId.invalid'));
         },
       },
     },

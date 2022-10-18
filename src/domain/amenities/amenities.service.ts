@@ -2,7 +2,7 @@ import { TFunction } from 'i18next';
 
 import { BadRequestError } from 'errors';
 import { Currency, EntityId } from 'types/common';
-import { Company } from 'domain/companies/companies.model';
+import { Provider } from 'domain/providers/providers.model';
 
 import { Variant, Unit, AmenityRecord } from './amenities.types';
 import { Amenity } from './amenities.model';
@@ -20,7 +20,7 @@ interface Create {
     currency: Currency;
     unit: Unit;
     info: string;
-    companyId: string;
+    providerId: string;
     user: EntityId;
   };
   t: TFunction;
@@ -61,7 +61,7 @@ export class Service {
   };
 
   static create = async ({
-    data: { companyId, variant, unit, info, amount, currency, user },
+    data: { providerId, variant, unit, info, amount, currency, user },
     t,
   }: Create): Promise<{ data: AmenityRecord }> => {
     const amenity = await Amenity.create({
@@ -76,8 +76,8 @@ export class Service {
       throw new BadRequestError(t('amenities.errors.id.create'));
     }
 
-    const company = await Company.findOneAndUpdate(
-      { _id: companyId },
+    const provider = await Provider.findOneAndUpdate(
+      { _id: providerId },
       {
         $push: {
           amenities: amenity._id,
@@ -85,8 +85,8 @@ export class Service {
       }
     ).lean();
 
-    if (!company) {
-      throw new BadRequestError(t('amenities.errors.companyId.invalid'));
+    if (!provider) {
+      throw new BadRequestError(t('amenities.errors.providerId.invalid'));
     }
 
     return {

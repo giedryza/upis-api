@@ -37,7 +37,7 @@
       },
       "amenities": {
         "invalid": "Pasirinkite patogumus.",
-        "contain": "Vienas ar keli patogumai nepriklauso pasirinktai įmonei."
+        "contain": "Vienas ar keli patogumai nepriklauso pasirinktam tiekėjui."
       },
       "departure": {
         "invalid": "Nurodykite išvykimo taško koordinates."
@@ -48,8 +48,8 @@
       "photos": {
         "max": "Jūs viršijote maksimalų leistiną nuotraukų limitą vienam maršrutui ({{max}}). Ištrinkite vieną ar kelias nuotraukas norėdami pridėti daugiau."
       },
-      "company": {
-        "invalid": "Nurodyta įmonė neegzistuoja."
+      "provider": {
+        "invalid": "Nurodytas tiekėjas neegzistuoja."
       }
     }
   },
@@ -71,22 +71,22 @@
       "currency": {
         "invalid": "Pasirinkite valiutą."
       },
-      "companyId": {
-        "invalid": "Nurodyta įmonė neegzistuoja."
+      "providerId": {
+        "invalid": "Nurodytas tiekėjas neegzistuoja."
       }
     }
   },
-  "companies": {
+  "providers": {
     "errors": {
       "id": {
-        "invalid": "Nurodyta įmonė neegzistuoja.",
-        "create": "Nepavyko sukurti įmonės.",
-        "update": "Nepavyko atnaujinti įmonės.",
-        "destroy": "Nepavyko ištrinti įmonės."
+        "invalid": "Nurodytas tiekėjas neegzistuoja.",
+        "create": "Nepavyko sukurti tiekėjo.",
+        "update": "Nepavyko atnaujinti tiekėjo.",
+        "destroy": "Nepavyko ištrinti tiekėjo."
       },
       "name": {
-        "invalid": "Įveskite įmonės pavadinimą.",
-        "max": "Naudokite {{ maxLength }} arba mažiau simbolių įmonės pavadinime."
+        "invalid": "Įveskite tiekėjo pavadinimą.",
+        "max": "Naudokite {{ maxLength }} arba mažiau simbolių tiekėjo pavadinime."
       },
       "phone": {
         "invalid": "Įveskite telefono numerį."

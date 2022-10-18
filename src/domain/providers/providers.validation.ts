@@ -2,7 +2,8 @@ import { checkSchema, Meta } from 'express-validator';
 
 import { NotFoundError } from 'errors';
 import { languages } from 'types/common';
-import { boats } from 'domain/companies/companies.types';
+
+import { boats } from './providers.types';
 
 export class Validation {
   static getOne = checkSchema({
@@ -19,12 +20,12 @@ export class Validation {
       isEmpty: {
         negated: true,
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.name.invalid'),
+          req.t('providers.errors.name.invalid'),
       },
       isLength: {
         options: { max: 150 },
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.name.max', { maxLength: 150 }),
+          req.t('providers.errors.name.max', { maxLength: 150 }),
       },
     },
     phone: {
@@ -33,7 +34,7 @@ export class Validation {
       isEmpty: {
         negated: true,
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.phone.invalid'),
+          req.t('providers.errors.phone.invalid'),
       },
     },
     email: {
@@ -42,11 +43,11 @@ export class Validation {
       isEmpty: {
         negated: true,
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.email.invalid'),
+          req.t('providers.errors.email.invalid'),
       },
       isEmail: {
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.email.invalid'),
+          req.t('providers.errors.email.invalid'),
       },
     },
     description: {
@@ -61,7 +62,7 @@ export class Validation {
       in: ['params'],
       isMongoId: {
         errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('companies.errors.id.invalid'));
+          throw new NotFoundError(req.t('providers.errors.id.invalid'));
         },
       },
     },
@@ -72,12 +73,12 @@ export class Validation {
       isEmpty: {
         negated: true,
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.name.invalid'),
+          req.t('providers.errors.name.invalid'),
       },
       isLength: {
         options: { max: 150 },
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.name.max', { maxLength: 150 }),
+          req.t('providers.errors.name.max', { maxLength: 150 }),
       },
     },
     phone: {
@@ -87,7 +88,7 @@ export class Validation {
       isEmpty: {
         negated: true,
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.phone.invalid'),
+          req.t('providers.errors.phone.invalid'),
       },
     },
     email: {
@@ -96,12 +97,12 @@ export class Validation {
       trim: true,
       isEmail: {
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.email.invalid'),
+          req.t('providers.errors.email.invalid'),
       },
       isEmpty: {
         negated: true,
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.email.invalid'),
+          req.t('providers.errors.email.invalid'),
       },
     },
     description: {
@@ -125,7 +126,7 @@ export class Validation {
       isArray: {
         options: { min: 2, max: 2 },
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.location.invalid'),
+          req.t('providers.errors.location.invalid'),
       },
     },
     'location.*': {
@@ -133,14 +134,14 @@ export class Validation {
       isFloat: {
         options: { min: -180, max: 180 },
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.location.invalid'),
+          req.t('providers.errors.location.invalid'),
       },
     },
     languages: {
       optional: true,
       isArray: {
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.languages.invalid'),
+          req.t('providers.errors.languages.invalid'),
       },
     },
     'languages.*': {
@@ -149,14 +150,14 @@ export class Validation {
       isIn: {
         options: [languages],
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.languages.invalid'),
+          req.t('providers.errors.languages.invalid'),
       },
     },
     boats: {
       optional: true,
       isArray: {
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.boats.invalid'),
+          req.t('providers.errors.boats.invalid'),
       },
     },
     'boats.*': {
@@ -165,7 +166,7 @@ export class Validation {
       isIn: {
         options: [boats],
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('companies.errors.boats.invalid'),
+          req.t('providers.errors.boats.invalid'),
       },
     },
   });
@@ -175,7 +176,7 @@ export class Validation {
       in: ['params'],
       isMongoId: {
         errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('companies.errors.id.invalid'));
+          throw new NotFoundError(req.t('providers.errors.id.invalid'));
         },
       },
     },
@@ -186,7 +187,7 @@ export class Validation {
       in: ['params'],
       isMongoId: {
         errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('companies.errors.id.invalid'));
+          throw new NotFoundError(req.t('providers.errors.id.invalid'));
         },
       },
     },

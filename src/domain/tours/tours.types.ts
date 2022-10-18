@@ -2,7 +2,7 @@ import { Document, PaginateModel } from 'mongoose';
 
 import { EntityId, PriceRecord, WithTimestamp } from 'types/common';
 import { AmenityDocument } from 'domain/amenities/amenities.types';
-import { CompanyDocument } from 'domain/companies/companies.types';
+import { ProviderDocument } from 'domain/providers/providers.types';
 import { ImageDocument } from 'domain/images/images.types';
 
 export const regions = [
@@ -253,7 +253,7 @@ export interface TourRecord extends WithTimestamp {
   regions: Region[];
   photos: (EntityId | ImageDocument)[];
   amenities: (EntityId | AmenityDocument)[];
-  company: EntityId | CompanyDocument;
+  provider: EntityId | ProviderDocument;
   user: EntityId;
 }
 

@@ -4,7 +4,7 @@ import { isValidObjectId } from 'mongoose';
 import { JwtService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
 import { Role } from 'domain/users/users.types';
-import { Company } from 'domain/companies/companies.model';
+import { Provider } from 'domain/providers/providers.model';
 import { SocialLink } from 'domain/social-links/social-links.model';
 import { Tour } from 'domain/tours/tours.model';
 import { Amenity } from 'domain/amenities/amenities.model';
@@ -55,7 +55,7 @@ export class AuthMiddleware {
     };
 
   static isOwner =
-    (model: 'company' | 'tour' | 'amenity' | 'image' | 'social-link') =>
+    (model: 'provider' | 'tour' | 'amenity' | 'image' | 'social-link') =>
     async (req: Request, _res: Response, next: NextFunction) => {
       const { user, params } = req;
 
@@ -69,10 +69,10 @@ export class AuthMiddleware {
       };
 
       switch (model) {
-        case 'company': {
-          const company = await Company.findOne(filter).lean();
+        case 'provider': {
+          const provider = await Provider.findOne(filter).lean();
 
-          if (!company) throw new UnauthorizedError();
+          if (!provider) throw new UnauthorizedError();
 
           break;
         }
@@ -112,12 +112,12 @@ export class AuthMiddleware {
             break;
           }
 
-          const company = await Company.findOne({
+          const provider = await Provider.findOne({
             _id: socialLink.host,
             user: user._id,
           }).lean();
 
-          if (!company) {
+          if (!provider) {
             throw new UnauthorizedError();
           }
 

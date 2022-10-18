@@ -17,7 +17,7 @@ export enum ModelName {
   User = 'User',
   Token = 'Token',
   Image = 'Image',
-  Company = 'Company',
+  Provider = 'Provider',
   SocialLink = 'SocialLink',
   Amenity = 'Amenity',
   Tour = 'Tour',

@@ -1,15 +1,16 @@
 import { Router } from 'express';
 
 import { BaseRoute } from 'routes/_base.route';
-import { controller } from 'domain/companies/companies.controller';
 import { AuthMiddleware } from 'middlewares';
 import { filesService, ValidatorService } from 'tools/services';
-import { Validation } from 'domain/companies/companies.validation';
+
+import { controller } from './providers.controller';
+import { Validation } from './providers.validation';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
 
-  path = '/companies';
+  path = '/providers';
 
   constructor() {
     super();
@@ -33,14 +34,14 @@ class Route extends BaseRoute {
       .get(Validation.getOne, ValidatorService.catch, controller.getOne)
       .patch(
         AuthMiddleware.protect,
-        AuthMiddleware.isOwner('company'),
+        AuthMiddleware.isOwner('provider'),
         Validation.update,
         ValidatorService.catch,
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
-        AuthMiddleware.isOwner('company'),
+        AuthMiddleware.isOwner('provider'),
         Validation.destroy,
         ValidatorService.catch,
         controller.destroy
@@ -50,7 +51,7 @@ class Route extends BaseRoute {
       .route('/:id/logo')
       .patch(
         AuthMiddleware.protect,
-        AuthMiddleware.isOwner('company'),
+        AuthMiddleware.isOwner('provider'),
         Validation.addLogo,
         ValidatorService.catch,
         filesService
@@ -61,4 +62,4 @@ class Route extends BaseRoute {
   };
 }
 
-export const companiesRoute = new Route();
+export const providersRoute = new Route();

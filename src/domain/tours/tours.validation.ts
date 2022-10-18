@@ -3,7 +3,7 @@ import { checkSchema, Meta } from 'express-validator';
 import { BadRequestError, NotFoundError } from 'errors';
 import { currencies } from 'types/common';
 import { regions, rivers } from 'domain/tours/tours.types';
-import { Company } from 'domain/companies/companies.model';
+import { Provider } from 'domain/providers/providers.model';
 
 export class Validation {
   static getOne = checkSchema({
@@ -28,19 +28,19 @@ export class Validation {
           req.t('tours.errors.name.max', { maxLength: 200 }),
       },
     },
-    company: {
+    provider: {
       in: ['body'],
       isMongoId: {
         errorMessage: (_: string, { req }: Meta) => {
-          throw new BadRequestError(req.t('tours.errors.company.invalid'));
+          throw new BadRequestError(req.t('tours.errors.provider.invalid'));
         },
       },
       custom: {
         options: async (value, { req }) => {
-          const company = await Company.findById(value);
+          const provider = await Provider.findById(value);
 
-          if (!company) {
-            throw new BadRequestError(req.t('tours.errors.company.invalid'));
+          if (!provider) {
+            throw new BadRequestError(req.t('tours.errors.provider.invalid'));
           }
         },
       },

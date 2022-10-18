@@ -7,7 +7,7 @@ import { Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Currency, EntityId, PaginatedList } from 'types/common';
-import { Company } from 'domain/companies/companies.model';
+import { Provider } from 'domain/providers/providers.model';
 import { Service as ImageService } from 'domain/images/images.service';
 import { MAX_PHOTOS } from 'domain/tours/tours.constants';
 
@@ -25,7 +25,7 @@ interface Create {
   data: {
     userId: EntityId;
     name: string;
-    company: string;
+    provider: string;
   };
   t: TFunction;
 }
@@ -96,7 +96,7 @@ export class Service {
   }: GetOne): Promise<{ data: LeanDocument<TourRecord> | null }> => {
     const tour = await Tour.findById(id)
       .populate([
-        { path: 'company', populate: 'amenities' },
+        { path: 'provider', populate: 'amenities' },
         { path: 'amenities' },
         { path: 'photos' },
       ])
@@ -117,7 +117,7 @@ export class Service {
       sort,
       select,
       populate: [
-        { path: 'company', populate: 'amenities' },
+        { path: 'provider', populate: 'amenities' },
         { path: 'amenities' },
         { path: 'photos' },
       ],
@@ -134,7 +134,7 @@ export class Service {
   };
 
   static create = async ({
-    data: { userId, name, company },
+    data: { userId, name, provider },
     t,
   }: Create): Promise<{ data: TourRecord }> => {
     const slug = await SlugService.get(name);
@@ -142,7 +142,7 @@ export class Service {
     const tour = new Tour({
       name,
       slug,
-      company,
+      provider,
       user: userId,
     });
 
@@ -254,12 +254,12 @@ export class Service {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
 
-    const company = await Company.findOne({
-      _id: tour.company,
+    const provider = await Provider.findOne({
+      _id: tour.provider,
       ...(!!amenities.length && { amenities: { $all: amenities } }),
     });
 
-    if (!company) {
+    if (!provider) {
       throw new BadRequestError(t('tours.errors.amenities.contain'));
     }
 
