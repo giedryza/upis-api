@@ -37,7 +37,7 @@
       },
       "amenities": {
         "invalid": "Choose amenities.",
-        "contain": "Company does not contain one or more amenities you are trying to add to the tour."
+        "contain": "Provider does not contain one or more amenities you are trying to add to the tour."
       },
       "departure": {
         "invalid": "Provide departure point coordinates."
@@ -49,7 +49,7 @@
         "max": "You have exceeded the maximum limit of photos for the tour ({{max}}). Delete some of the current photos to add more."
       },
       "company": {
-        "invalid": "Company does not exist."
+        "invalid": "Provider does not exist."
       }
     }
   },
@@ -72,20 +72,20 @@
         "invalid": "Choose currency."
       },
       "companyId": {
-        "invalid": "Company does not exist."
+        "invalid": "Provider does not exist."
       }
     }
   },
   "companies": {
     "errors": {
       "id": {
-        "invalid": "Company does not exist.",
-        "create": "Failed to create the company.",
-        "update": "Failed to update the company.",
-        "destroy": "Failed to delete the company."
+        "invalid": "Provider does not exist.",
+        "create": "Failed to create the provider.",
+        "update": "Failed to update the provider.",
+        "destroy": "Failed to delete the provider."
       },
       "name": {
-        "invalid": "Enter company name.",
+        "invalid": "Enter providers name.",
         "max": "Use {{ maxLength }} characters or less for name."
       },
       "phone": {
