@@ -80,6 +80,10 @@ export class Validation {
       in: ['body'],
       optional: true,
       trim: true,
+      isURL: {
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('tours.errors.website.invalid'),
+      },
     },
     distance: {
       in: ['body'],

@@ -11,6 +11,9 @@
         "invalid": "Nurodykite maršruto pavadinimą.",
         "max": "Naudokite {{ maxLength }} arba mažiau simbolių maršruto pavadinime."
       },
+      "website": {
+        "invalid": "Įveskite tinklapio adresą."
+      },
       "distance": {
         "invalid": "Įveskite maršruto distanciją."
       },
@@ -93,6 +96,9 @@
       },
       "email": {
         "invalid": "Įveskite el. pašto adresą."
+      },
+      "website": {
+        "invalid": "Įveskite tinklapio adresą."
       },
       "location": {
         "invalid": "Pasirinkite lokaciją."

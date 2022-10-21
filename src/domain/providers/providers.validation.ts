@@ -119,6 +119,10 @@ export class Validation {
       in: ['body'],
       optional: true,
       trim: true,
+      isURL: {
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('providers.errors.website.invalid'),
+      },
     },
     location: {
       in: ['body'],
