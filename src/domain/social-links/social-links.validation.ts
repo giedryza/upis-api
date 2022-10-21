@@ -41,8 +41,7 @@ export class Validation {
     url: {
       in: ['body'],
       trim: true,
-      isEmpty: {
-        negated: true,
+      isURL: {
         errorMessage: (_: string, { req }: Meta) =>
           req.t('socialLinks.errors.url.invalid'),
       },
@@ -70,8 +69,7 @@ export class Validation {
       in: ['body'],
       optional: true,
       trim: true,
-      isEmpty: {
-        negated: true,
+      isURL: {
         errorMessage: (_: string, { req }: Meta) =>
           req.t('socialLinks.errors.url.invalid'),
       },

@@ -11,6 +11,9 @@
         "invalid": "Enter tour name.",
         "max": "Use {{ maxLength }} characters or less for name."
       },
+      "website": {
+        "invalid": "Enter website url."
+      },
       "distance": {
         "invalid": "Enter tour distance."
       },
@@ -93,6 +96,9 @@
       },
       "email": {
         "invalid": "Enter email."
+      },
+      "website": {
+        "invalid": "Enter website url."
       },
       "location": {
         "invalid": "Provide location coordinates."
