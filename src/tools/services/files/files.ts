@@ -44,7 +44,9 @@ class FilesService {
     s3: this.s3,
     acl: 'public-read',
     bucket: this.awsCredentials.bucket,
-    contentType: multerS3.AUTO_CONTENT_TYPE,
+    contentType: (_req, file, cb) => {
+      cb(null, file.mimetype);
+    },
     cacheControl: `max-age=${this.limits.cacheAge}`,
     key: (_req, file, cb) => {
       cb(null, `${this.folder}/${uuid()}${path.extname(file.originalname)}`);
