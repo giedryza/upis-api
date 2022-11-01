@@ -21,6 +21,7 @@ class Route extends BaseRoute {
   protected init = () => {
     this.router
       .route('/:id')
+      .get(Validation.getOne, controller.getOne)
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('image'),

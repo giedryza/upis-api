@@ -3,6 +3,13 @@ import { checkSchema, Meta } from 'express-validator';
 import { NotFoundError } from 'errors';
 
 export class Validation {
+  static getOne = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: true,
+    },
+  });
+
   static update = checkSchema({
     id: {
       in: ['params'],
