@@ -5,6 +5,12 @@ import { ValidatorService } from 'tools/services';
 
 import { Service } from './images.service';
 
+interface GetOne {
+  params: {
+    id: string;
+  };
+}
+
 interface Update {
   params: {
     id: string;
@@ -21,6 +27,18 @@ interface Destroy {
 }
 
 class Controller {
+  getOne = async (req: Request, res: Response) => {
+    const { params } = ValidatorService.getData<GetOne['params']>(req);
+
+    const { data } = await Service.getOne({
+      data: {
+        id: params.id,
+      },
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
   update = async (req: Request, res: Response) => {
     const { params, body } = ValidatorService.getData<
       Update['params'],

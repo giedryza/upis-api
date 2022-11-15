@@ -1,3 +1,4 @@
+import { LeanDocument } from 'mongoose';
 import { TFunction } from 'i18next';
 
 import { BadRequestError } from 'errors';
@@ -5,6 +6,12 @@ import { EntityId } from 'types/common';
 
 import { Image } from './images.model';
 import { ImageDocument, ImageRecord } from './images.types';
+
+interface GetOne {
+  data: {
+    id: string;
+  };
+}
 
 interface CreateMany {
   data: {
@@ -48,6 +55,20 @@ interface Destroy {
 }
 
 export class Service {
+  static getOne = async ({
+    data: { id },
+  }: GetOne): Promise<{ data: LeanDocument<ImageDocument> | null }> => {
+    const image = await Image.findById(id).lean();
+
+    if (!image) {
+      return { data: null };
+    }
+
+    return {
+      data: image,
+    };
+  };
+
   static create = async ({
     data: { file, user },
     t,
