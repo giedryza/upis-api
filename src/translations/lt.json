@@ -39,8 +39,8 @@
         "invalid": "Pasirinkite upes."
       },
       "amenities": {
-        "invalid": "Pasirinkite patogumus.",
-        "contain": "Vienas ar keli patogumai nepriklauso pasirinktam tiekėjui."
+        "invalid": "Pasirinkite ypatumus.",
+        "contain": "Vienas ar keli ypatumai nepriklauso pasirinktam tiekėjui."
       },
       "departure": {
         "invalid": "Nurodykite išvykimo taško koordinates."
@@ -59,11 +59,11 @@
   "amenities": {
     "errors": {
       "id": {
-        "invalid": "Nurodytas patogumas neegzistuoja.",
-        "create": "Nepavyko sukurti patogumo."
+        "invalid": "Nurodytas ypatumas neegzistuoja.",
+        "create": "Nepavyko sukurti ypatumo."
       },
       "variant": {
-        "invalid": "Pasirinkite patogumą."
+        "invalid": "Pasirinkite ypatumą."
       },
       "unit": {
         "invalid": "Pasirinkite vienetą."
