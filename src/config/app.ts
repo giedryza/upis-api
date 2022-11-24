@@ -54,4 +54,9 @@ export const APP = {
     bucket: process.env.AWS_BUCKET,
     region: process.env.AWS_REGION,
   },
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    apiSecret: process.env.CLOUDINARY_API_SECRET,
+  },
 };
