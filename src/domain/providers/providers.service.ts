@@ -186,9 +186,9 @@ export class Service {
     const filter = { _id: id, user: userId };
     const update = {
       logo: {
-        location: file.location,
-        key: file.key,
-        contentType: file.contentType,
+        location: file.path,
+        key: file.filename,
+        contentType: file.mimetype,
       },
     };
 
