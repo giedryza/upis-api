@@ -54,7 +54,7 @@ class Route extends BaseRoute {
         AuthMiddleware.isOwner('provider'),
         Validation.addLogo,
         ValidatorService.catch,
-        filesService
+        filesService('cloudinary')
           .upload(['image/jpeg', 'image/jpg', 'image/png'])
           .single('logo'),
         controller.addLogo

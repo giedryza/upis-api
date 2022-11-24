@@ -3,6 +3,7 @@ import { NodeEnv } from 'types/global/env';
 
 export const APP = {
   name: 'Upis',
+  domain: 'upis',
   email: {
     // TODO: replace with 'info@upis.lt'
     info: 'giedrius.bla@gmail.com',

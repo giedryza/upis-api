@@ -205,7 +205,7 @@ export class Service {
 
   static deleteLogo = ({ data: { logo } }: Cleanup) => {
     if (logo) {
-      filesService.delete([logo]);
+      filesService('cloudinary').delete([logo]);
     }
   };
 }

@@ -137,7 +137,7 @@ schema.post<Query<TourDocument | null, TourDocument>>(
 
     await Promise.all([
       Image.deleteMany({ _id: { $in: doc.photos } }),
-      filesService.delete(photos.map((photo) => photo.key)),
+      filesService('cloudinary').delete(photos.map((photo) => photo.key)),
     ]);
 
     next();

@@ -286,7 +286,7 @@ export class Service {
     }
 
     if (tour.photos.length >= MAX_PHOTOS) {
-      await filesService.delete([photo.key]);
+      await filesService('cloudinary').delete([photo.filename]);
 
       throw new BadRequestError(
         t('tours.errors.photos.max', { max: MAX_PHOTOS })
@@ -296,9 +296,9 @@ export class Service {
     const { data } = await ImageService.create({
       data: {
         file: {
-          url: photo.location,
-          key: photo.key,
-          contentType: photo.contentType,
+          url: photo.path,
+          key: photo.filename,
+          contentType: photo.mimetype,
           description,
         },
         user: userId,
