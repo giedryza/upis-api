@@ -3,6 +3,7 @@ import { NodeEnv } from 'types/global/env';
 
 export const APP = {
   name: 'Upis',
+  domain: 'upis',
   email: {
     // TODO: replace with 'info@upis.lt'
     info: 'giedrius.bla@gmail.com',
@@ -53,5 +54,10 @@ export const APP = {
     secretKey: process.env.AWS_SECRET_KEY,
     bucket: process.env.AWS_BUCKET,
     region: process.env.AWS_REGION,
+  },
+  cloudinary: {
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+    apiKey: process.env.CLOUDINARY_API_KEY,
+    apiSecret: process.env.CLOUDINARY_API_SECRET,
   },
 };

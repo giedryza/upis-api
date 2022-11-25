@@ -46,7 +46,7 @@ schema.post<Query<ImageDocument | null, ImageDocument>>(
 
     await Promise.all([
       Tour.updateMany({ photos: doc._id }, { $pull: { photos: doc._id } }),
-      filesService.delete([doc.key]),
+      filesService('cloudinary').delete([doc.key]),
     ]);
 
     next();

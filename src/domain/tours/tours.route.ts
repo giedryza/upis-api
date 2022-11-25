@@ -82,7 +82,7 @@ class Route extends BaseRoute {
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('tour'),
-        filesService
+        filesService('cloudinary')
           .upload([
             'image/jpeg',
             'image/png',

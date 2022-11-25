@@ -21,6 +21,9 @@ class Environment {
     'AWS_BUCKET',
     'AWS_REGION',
     'CLIENT_ROUTE',
+    'CLOUDINARY_CLOUD_NAME',
+    'CLOUDINARY_API_KEY',
+    'CLOUDINARY_API_SECRET',
   ] as const;
 
   verify = (): Promise<void> =>
