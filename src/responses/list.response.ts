@@ -1,8 +1,9 @@
 import { Response } from 'express';
 
 import { StatusCode } from 'constants/status-code';
+import { Pagination } from 'types/common';
 
-import { BaseResponse, Meta } from './_base.response';
+import { BaseResponse } from './_base.response';
 
 export class ListResponse<T> extends BaseResponse<T> {
   protected statusCode = StatusCode.Ok;
@@ -12,7 +13,7 @@ export class ListResponse<T> extends BaseResponse<T> {
     data: this.data,
   };
 
-  constructor(res: Response, private data: T, private meta: Meta) {
+  constructor(res: Response, private data: T, private meta: Pagination) {
     super(res);
   }
 }
