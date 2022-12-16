@@ -1,16 +1,11 @@
 import { Response } from 'express';
 
 import { StatusCode } from 'constants/status-code';
-
-export interface Meta {
-  total: number;
-  page: number;
-  limit: number;
-}
+import { Pagination } from 'types/common';
 
 interface ApiResponse<T> {
   data: T;
-  meta?: Meta;
+  meta?: Pagination;
   isAppError?: boolean;
 }
 

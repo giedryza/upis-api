@@ -60,12 +60,15 @@ export class Service {
       leanWithId: false,
     };
 
-    const { docs, totalDocs: total } = await SocialLink.paginate(
+    const { docs, totalDocs, totalPages } = await SocialLink.paginate(
       filter,
       options
     );
 
-    return { data: docs, meta: { total, page, limit } };
+    return {
+      data: docs,
+      meta: { total: totalDocs, page, limit, pages: totalPages },
+    };
   };
 
   static getOne = async ({

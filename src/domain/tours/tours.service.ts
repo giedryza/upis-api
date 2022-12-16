@@ -125,11 +125,14 @@ export class Service {
       leanWithId: false,
     };
 
-    const { docs, totalDocs: total } = await Tour.paginate(filter, options);
+    const { docs, totalDocs, totalPages } = await Tour.paginate(
+      filter,
+      options
+    );
 
     return {
       data: docs,
-      meta: { total, page, limit },
+      meta: { total: totalDocs, page, limit, pages: totalPages },
     };
   };
 
