@@ -1,6 +1,5 @@
 import { Request } from 'express';
 import multer, { FileFilterCallback, StorageEngine } from 'multer';
-import { v4 as uuid } from 'uuid';
 
 import { BadRequestError } from 'errors';
 import { APP } from 'config';
@@ -9,8 +8,6 @@ export abstract class BaseProvider {
   protected abstract storage: StorageEngine;
 
   abstract delete: (keys: string[]) => Promise<string[]>;
-
-  protected id = uuid();
 
   protected folder = [APP.domain, APP.root.env].join('/');
 
