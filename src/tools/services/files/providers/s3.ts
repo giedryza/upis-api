@@ -1,6 +1,7 @@
 import path from 'path';
 import multerS3 from 'multer-s3';
 import aws from 'aws-sdk';
+import { v4 as uuid } from 'uuid';
 
 import { APP } from 'config';
 import { BadRequestError } from 'errors';
@@ -30,7 +31,7 @@ export class S3Provider extends BaseProvider {
     },
     cacheControl: `max-age=${this.limits.cacheAge}`,
     key: (_req, file, cb) => {
-      cb(null, `${this.folder}/${this.id}${path.extname(file.originalname)}`);
+      cb(null, `${this.folder}/${uuid()}${path.extname(file.originalname)}`);
     },
   });
 
