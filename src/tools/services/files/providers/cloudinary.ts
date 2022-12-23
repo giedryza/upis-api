@@ -1,6 +1,5 @@
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import { v2 as cloudinary, UploadApiOptions } from 'cloudinary';
-import { v4 as uuid } from 'uuid';
 
 import { APP } from 'config';
 import { BadRequestError } from 'errors';
@@ -30,7 +29,7 @@ export class CloudinaryProvider extends BaseProvider {
       cloudinary: this.provider,
       params: async (_req, _file) => {
         const options: UploadApiOptions = {
-          public_id: uuid(),
+          public_id: this.id,
           folder: this.folder,
           use_filename: false,
         };

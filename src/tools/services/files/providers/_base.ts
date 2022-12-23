@@ -1,5 +1,6 @@
 import { Request } from 'express';
 import multer, { FileFilterCallback, StorageEngine } from 'multer';
+import { v4 as uuid } from 'uuid';
 
 import { BadRequestError } from 'errors';
 import { APP } from 'config';
@@ -16,6 +17,10 @@ export abstract class BaseProvider {
     maxFileSize: 1 * 1000 * 1000,
     cacheAge: 60 * 60 * 24 * 365,
   };
+
+  protected get id() {
+    return uuid();
+  }
 
   protected fileFilter =
     (fileFormats: string[]) =>
