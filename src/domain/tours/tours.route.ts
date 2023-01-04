@@ -29,6 +29,8 @@ class Route extends BaseRoute {
         controller.create
       );
 
+    this.router.route('/filters').get(controller.getFilters);
+
     this.router
       .route('/:id')
       .get(Validation.getOne, controller.getOne)
