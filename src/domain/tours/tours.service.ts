@@ -3,7 +3,7 @@ import { LeanDocument } from 'mongoose';
 import { TFunction } from 'i18next';
 
 import { Tour } from 'domain/tours/tours.model';
-import { Region, TourRecord } from 'domain/tours/tours.types';
+import { FiltersSummary, Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
 import { Currency, EntityId, PaginatedList } from 'types/common';
@@ -322,5 +322,63 @@ export class Service {
     return {
       data: updated,
     };
+  };
+
+  static getFilters = async (): Promise<{ data: FiltersSummary | null }> => {
+    const [summary] = await Tour.aggregate<FiltersSummary>([
+      {
+        $facet: {
+          distance: [
+            {
+              $group: {
+                _id: null,
+                min: { $min: '$distance' },
+                max: { $max: '$distance' },
+              },
+            },
+            {
+              $project: { _id: 0 },
+            },
+          ],
+          duration: [
+            {
+              $group: {
+                _id: null,
+                min: { $min: '$duration' },
+                max: { $max: '$duration' },
+              },
+            },
+            {
+              $project: { _id: 0 },
+            },
+          ],
+          days: [
+            {
+              $group: {
+                _id: null,
+                min: { $min: '$days' },
+                max: { $max: '$days' },
+              },
+            },
+            {
+              $project: { _id: 0 },
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          distance: { $first: '$distance' },
+          duration: { $first: '$duration' },
+          days: { $first: '$days' },
+        },
+      },
+    ]);
+
+    if (!summary) {
+      return { data: null };
+    }
+
+    return { data: summary };
   };
 }

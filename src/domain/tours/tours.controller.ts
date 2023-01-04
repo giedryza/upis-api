@@ -221,6 +221,12 @@ class Controller {
 
     return new SuccessResponse(res, data).send();
   };
+
+  getFilters = async (req: Request, res: Response) => {
+    const { data } = await Service.getFilters();
+
+    return new SuccessResponse(res, data).send();
+  };
 }
 
 export const controller = new Controller();
