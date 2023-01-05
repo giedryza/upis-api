@@ -223,7 +223,7 @@ class Controller {
   };
 
   getFilters = async (req: Request, res: Response) => {
-    const { data } = await Service.getFilters();
+    const { data } = await Service.getFilters({ t: req.t });
 
     return new SuccessResponse(res, data).send();
   };

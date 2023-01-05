@@ -90,6 +90,10 @@ interface AddPhoto {
   t: TFunction;
 }
 
+interface GetFilters {
+  t: TFunction;
+}
+
 export class Service {
   static getOne = async ({
     data: { id },
@@ -324,7 +328,9 @@ export class Service {
     };
   };
 
-  static getFilters = async (): Promise<{ data: FiltersSummary | null }> => {
+  static getFilters = async ({
+    t,
+  }: GetFilters): Promise<{ data: FiltersSummary }> => {
     const [summary] = await Tour.aggregate<FiltersSummary>([
       {
         $facet: {
@@ -376,7 +382,7 @@ export class Service {
     ]);
 
     if (!summary) {
-      return { data: null };
+      throw new BadRequestError(t('tours.errors.filters.failed'));
     }
 
     return { data: summary };
