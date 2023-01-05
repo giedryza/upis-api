@@ -53,6 +53,9 @@
       },
       "provider": {
         "invalid": "Provider does not exist."
+      },
+      "filters": {
+        "failed": "Failed to fetch filters."
       }
     }
   },

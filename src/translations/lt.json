@@ -53,6 +53,9 @@
       },
       "provider": {
         "invalid": "Nurodytas tiekėjas neegzistuoja."
+      },
+      "filters": {
+        "failed": "Nepavyko atnaujinti filtrų."
       }
     }
   },
