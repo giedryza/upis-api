@@ -265,4 +265,5 @@ export interface FiltersSummary {
   distance: { min: number; max: number };
   days: { min: number; max: number };
   duration: { min: number; max: number };
+  difficulty: { min: number; max: number };
 }

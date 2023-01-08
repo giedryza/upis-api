@@ -370,6 +370,18 @@ export class Service {
               $project: { _id: 0 },
             },
           ],
+          difficulty: [
+            {
+              $group: {
+                _id: null,
+                min: { $min: '$difficulty' },
+                max: { $max: '$difficulty' },
+              },
+            },
+            {
+              $project: { _id: 0 },
+            },
+          ],
         },
       },
       {
@@ -377,6 +389,7 @@ export class Service {
           distance: { $first: '$distance' },
           duration: { $first: '$duration' },
           days: { $first: '$days' },
+          difficulty: { $first: '$difficulty' },
         },
       },
     ]);
