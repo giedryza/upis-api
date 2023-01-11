@@ -64,6 +64,12 @@
       "provider": {
         "invalid": "Nurodytas tiekėjas neegzistuoja."
       },
+      "user": {
+        "invalid": "Nurodykite egzistuojantį vartotoją."
+      },
+      "keys": {
+        "invalid": "Neteisingi raktai."
+      },
       "filters": {
         "failed": "Nepavyko atnaujinti filtrų."
       }

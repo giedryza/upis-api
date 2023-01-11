@@ -64,6 +64,12 @@
       "provider": {
         "invalid": "Provider does not exist."
       },
+      "user": {
+        "invalid": "Provide valid user."
+      },
+      "keys": {
+        "invalid": "Invalid keys."
+      },
       "filters": {
         "failed": "Failed to fetch filters."
       }
