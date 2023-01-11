@@ -1,7 +1,7 @@
 import { Response } from 'express';
 
 import { StatusCode } from 'constants/status-code';
-import { Pagination } from 'types/common';
+import { Pagination } from 'domain/pagination/pagination.types';
 
 interface ApiResponse<T> {
   data: T;

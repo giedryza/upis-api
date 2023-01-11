@@ -6,10 +6,11 @@ import { Tour } from 'domain/tours/tours.model';
 import { FiltersSummary, Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
-import { Currency, EntityId, PaginatedList } from 'types/common';
+import { Currency, EntityId } from 'types/common';
 import { Provider } from 'domain/providers/providers.model';
 import { Service as ImageService } from 'domain/images/images.service';
 import { MAX_PHOTOS } from 'domain/tours/tours.constants';
+import { PaginatedList } from 'domain/pagination/pagination.types';
 
 interface GetAll {
   query: Request['query'];
@@ -130,7 +131,7 @@ export class Service {
     };
 
     const { docs, totalDocs, totalPages } = await Tour.paginate(
-      filter,
+      // filter,
       options
     );
 

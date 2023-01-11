@@ -1,4 +1,14 @@
 {
+  "pagination": {
+    "errors": {
+      "page": {
+        "invalid": "Nurodytas netinkamas puslapis."
+      },
+      "limit": {
+        "invalid": "Nurodytas netinkamas puslapio dydis."
+      }
+    }
+  },
   "tours": {
     "errors": {
       "id": {

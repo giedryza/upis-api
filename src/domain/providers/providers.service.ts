@@ -4,7 +4,8 @@ import { TFunction } from 'i18next';
 
 import { BadRequestError } from 'errors';
 import { filesService, QueryService, SlugService } from 'tools/services';
-import { EntityId, Language, PaginatedList } from 'types/common';
+import { EntityId, Language } from 'types/common';
+import { PaginatedList } from 'domain/pagination/pagination.types';
 
 import { Provider } from './providers.model';
 import { Boat, ProviderRecord } from './providers.types';
