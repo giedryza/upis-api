@@ -119,10 +119,10 @@ export class Service {
     query,
   }: GetAll): Promise<PaginatedList<TourRecord>> => {
     const { regions, rivers, page = 1, limit = 15, select } = query;
-    const filter = {
-      ...(regions && { regions: { $in: regions } }),
-      ...(rivers && { rivers: { $in: rivers } }),
-    };
+    const filters = [
+      ...(regions ? [{ regions: { $in: regions } }] : []),
+      ...(rivers ? [{ rivers: { $in: rivers } }] : []),
+    ];
     const options = {
       page,
       limit,
@@ -138,7 +138,7 @@ export class Service {
     };
 
     const { docs, totalDocs, totalPages } = await Tour.paginate(
-      filter,
+      { ...(filters.length && { $and: filters }) },
       options
     );
 
