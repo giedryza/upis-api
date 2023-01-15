@@ -81,15 +81,6 @@ export class Validation {
         },
       },
     },
-    variant: {
-      in: ['body'],
-      trim: true,
-      isIn: {
-        options: [variants],
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('amenities.errors.variant.invalid'),
-      },
-    },
     unit: {
       in: ['body'],
       trim: true,

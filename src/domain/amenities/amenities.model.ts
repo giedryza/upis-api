@@ -72,8 +72,8 @@ schema.post<Query<AmenityDocument | null, AmenityDocument>>(
         { $pull: { amenities: doc._id } }
       ),
       Tour.updateMany(
-        { amenities: doc._id },
-        { $pull: { amenities: doc._id } }
+        { 'amenities._id': doc._id },
+        { $pull: { amenities: { _id: doc._id } } }
       ),
     ]);
 

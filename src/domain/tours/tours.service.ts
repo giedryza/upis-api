@@ -9,6 +9,7 @@ import { Currency, EntityId } from 'types/common';
 import { Provider } from 'domain/providers/providers.model';
 import { Service as ImageService } from 'domain/images/images.service';
 import { PaginatedList } from 'domain/pagination/pagination.types';
+import { Amenity } from 'domain/amenities/amenities.model';
 
 import { Tour } from './tours.model';
 import { FiltersSummary, Region, TourRecord } from './tours.types';
@@ -105,7 +106,7 @@ export class Service {
     const tour = await Tour.findById(id)
       .populate([
         { path: 'provider', populate: 'amenities' },
-        { path: 'amenities' },
+        { path: 'amenities', populate: '_id' },
         { path: 'photos' },
       ])
       .lean();
@@ -130,7 +131,7 @@ export class Service {
       select,
       populate: [
         { path: 'provider', populate: 'amenities' },
-        { path: 'amenities' },
+        { path: 'amenities', populate: '_id' },
         { path: 'photos' },
       ],
       lean: true,
@@ -260,7 +261,7 @@ export class Service {
   };
 
   static updateAmenities = async ({
-    data: { id, amenities },
+    data: { id, amenities: amenityIds },
     t,
   }: UpdateAmenities): Promise<{ data: TourRecord }> => {
     const tour = await Tour.findById(id);
@@ -271,14 +272,26 @@ export class Service {
 
     const provider = await Provider.findOne({
       _id: tour.provider,
-      ...(!!amenities.length && { amenities: { $all: amenities } }),
+      ...(!!amenityIds.length && { amenities: { $all: amenityIds } }),
     });
 
     if (!provider) {
       throw new BadRequestError(t('tours.errors.amenities.contain'));
     }
 
-    tour.set('amenities', amenities);
+    const amenities = await Amenity.find({ _id: { $in: amenityIds } });
+
+    if (!amenities) {
+      throw new BadRequestError(t('tours.errors.amenities.contain'));
+    }
+
+    tour.set(
+      'amenities',
+      amenities.map((amenity) => ({
+        _id: amenity._id,
+        variant: amenity.variant,
+      }))
+    );
     await tour.save();
 
     return {

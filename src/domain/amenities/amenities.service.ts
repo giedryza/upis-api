@@ -29,7 +29,6 @@ interface Create {
 interface Update {
   data: {
     id: string;
-    variant: Variant;
     unit: Unit;
     info: string;
     amount: number;
@@ -95,13 +94,12 @@ export class Service {
   };
 
   static update = async ({
-    data: { id, variant, unit, info, amount, currency },
+    data: { id, unit, info, amount, currency },
     t,
   }: Update): Promise<{ data: AmenityRecord }> => {
     const amenity = await Amenity.findByIdAndUpdate(
       id,
       {
-        variant,
         unit,
         info,
         price: amount ? { amount, currency } : null,
