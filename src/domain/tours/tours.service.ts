@@ -1,18 +1,22 @@
 import { Request } from 'express';
 import { LeanDocument } from 'mongoose';
 import { TFunction } from 'i18next';
+import { z } from 'zod';
 
-import { Tour } from 'domain/tours/tours.model';
-import { FiltersSummary, Region, TourRecord } from 'domain/tours/tours.types';
 import { BadRequestError } from 'errors';
-import { filesService, QueryService, SlugService } from 'tools/services';
-import { Currency, EntityId, PaginatedList } from 'types/common';
+import { filesService, SlugService } from 'tools/services';
+import { Currency, EntityId } from 'types/common';
 import { Provider } from 'domain/providers/providers.model';
 import { Service as ImageService } from 'domain/images/images.service';
-import { MAX_PHOTOS } from 'domain/tours/tours.constants';
+import { PaginatedList } from 'domain/pagination/pagination.types';
+
+import { Tour } from './tours.model';
+import { FiltersSummary, Region, TourRecord } from './tours.types';
+import { MAX_PHOTOS } from './tours.constants';
+import { Validation } from './tours.validation';
 
 interface GetAll {
-  query: Request['query'];
+  query: z.infer<ReturnType<typeof Validation.getAll>>['query'];
 }
 
 interface GetOne {
@@ -114,11 +118,15 @@ export class Service {
   static getAll = async ({
     query,
   }: GetAll): Promise<PaginatedList<TourRecord>> => {
-    const { filter, sort, select, page, limit } = new QueryService(query);
+    const { regions, rivers, page = 1, limit = 15, select } = query;
+    const filters = [
+      ...(regions ? [{ regions: { $in: regions } }] : []),
+      ...(rivers ? [{ rivers: { $in: rivers } }] : []),
+    ];
     const options = {
       page,
       limit,
-      sort,
+      sort: { createdAt: -1 },
       select,
       populate: [
         { path: 'provider', populate: 'amenities' },
@@ -130,7 +138,7 @@ export class Service {
     };
 
     const { docs, totalDocs, totalPages } = await Tour.paginate(
-      filter,
+      { ...(filters.length && { $and: filters }) },
       options
     );
 

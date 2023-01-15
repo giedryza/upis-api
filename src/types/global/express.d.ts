@@ -1,4 +1,5 @@
 import { RateLimitInfo } from 'express-rate-limit';
+import { z } from 'zod';
 
 import { AppUser } from 'domain/users/users.types';
 
@@ -7,6 +8,7 @@ declare global {
     interface Request {
       user?: AppUser;
       rateLimit?: RateLimitInfo;
+      parsedData?: z.ZodTypeAny;
     }
 
     namespace Multer {

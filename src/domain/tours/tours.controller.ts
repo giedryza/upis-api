@@ -8,8 +8,9 @@ import {
   SuccessResponse,
 } from 'responses';
 import { ValidatorService } from 'tools/services';
-import { Region } from 'domain/tours/tours.types';
 
+import { Validation } from './tours.validation';
+import { Region } from './tours.types';
 import { Service } from './tours.service';
 
 interface GetOne {
@@ -90,7 +91,8 @@ interface AddPhoto {
 
 class Controller {
   getAll = async (req: Request, res: Response) => {
-    const { query } = req;
+    const { query } =
+      ValidatorService.getParsedData<typeof Validation.getAll>(req);
 
     const { data, meta } = await Service.getAll({ query });
 

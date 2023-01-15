@@ -9,7 +9,7 @@ import {
 import { SocialLink } from 'domain/social-links/social-links.model';
 import { BadRequestError } from 'errors';
 import { QueryService } from 'tools/services';
-import { PaginatedList } from 'types/common';
+import { PaginatedList } from 'domain/pagination/pagination.types';
 
 interface GetAll {
   query: Request['query'];

@@ -1,9 +1,14 @@
+import { Request } from 'express';
 import { checkSchema, Meta } from 'express-validator';
+import { z } from 'zod';
 
 import { BadRequestError, NotFoundError } from 'errors';
 import { currencies } from 'types/common';
-import { regions, rivers } from 'domain/tours/tours.types';
 import { Provider } from 'domain/providers/providers.model';
+import { variants as amenities } from 'domain/amenities/amenities.types';
+import { Validation as PaginationValidation } from 'domain/pagination/pagination.validation';
+
+import { regions, rivers, tourKeys } from './tours.types';
 
 export class Validation {
   static getOne = checkSchema({
@@ -12,6 +17,111 @@ export class Validation {
       isMongoId: true,
     },
   });
+
+  static getAll = (req: Request) =>
+    z.object({
+      query: z
+        .object({
+          amenities: z.array(
+            z.enum(amenities, {
+              errorMap: () => ({
+                message: req.t('tours.errors.amenities.invalid'),
+              }),
+            }),
+            { invalid_type_error: req.t('tours.errors.amenities.invalid') }
+          ),
+          regions: z.array(
+            z.enum(regions, {
+              errorMap: () => ({
+                message: req.t('tours.errors.regions.invalid'),
+              }),
+            }),
+            { invalid_type_error: req.t('tours.errors.regions.invalid') }
+          ),
+          rivers: z.array(
+            z.enum(rivers, {
+              errorMap: () => ({
+                message: req.t('tours.errors.rivers.invalid'),
+              }),
+            }),
+            { invalid_type_error: req.t('tours.errors.rivers.invalid') }
+          ),
+          distanceFrom: z.coerce
+            .number({
+              invalid_type_error: req.t('tours.errors.distance.invalid'),
+            })
+            .nonnegative({ message: req.t('tours.errors.distance.invalid') }),
+          distanceTo: z.coerce.number({
+            invalid_type_error: req.t('tours.errors.distance.invalid'),
+          }),
+          durationFrom: z.coerce
+            .number({
+              invalid_type_error: req.t('tours.errors.duration.invalid'),
+            })
+            .nonnegative({ message: req.t('tours.errors.duration.invalid') }),
+          durationTo: z.coerce.number({
+            invalid_type_error: req.t('tours.errors.duration.invalid'),
+          }),
+          daysFrom: z.coerce
+            .number({ invalid_type_error: req.t('tours.errors.days.invalid') })
+            .int({ message: req.t('tours.errors.days.invalid') })
+            .nonnegative({ message: req.t('tours.errors.days.invalid') }),
+          daysTo: z.coerce
+            .number({ invalid_type_error: req.t('tours.errors.days.invalid') })
+            .int({ message: req.t('tours.errors.days.invalid') }),
+          difficultyFrom: z.coerce
+            .number({
+              invalid_type_error: req.t('tours.errors.difficulty.invalid', {
+                min: 0,
+                max: 5,
+              }),
+            })
+            .min(0, {
+              message: req.t('tours.errors.difficulty.invalid', {
+                min: 0,
+                max: 5,
+              }),
+            })
+            .max(5, {
+              message: req.t('tours.errors.difficulty.invalid', {
+                min: 0,
+                max: 5,
+              }),
+            }),
+          difficultyTo: z.coerce
+            .number({
+              invalid_type_error: req.t('tours.errors.difficulty.invalid', {
+                min: 0,
+                max: 5,
+              }),
+            })
+            .min(0, {
+              message: req.t('tours.errors.difficulty.invalid', {
+                min: 0,
+                max: 5,
+              }),
+            })
+            .max(5, {
+              message: req.t('tours.errors.difficulty.invalid', {
+                min: 0,
+                max: 5,
+              }),
+            }),
+          user: z.string({
+            invalid_type_error: req.t('tours.errors.user.invalid'),
+          }),
+          select: z.array(
+            z.enum(tourKeys, {
+              errorMap: () => ({
+                message: req.t('tours.errors.keys.invalid'),
+              }),
+            }),
+            { invalid_type_error: req.t('tours.errors.keys.invalid') }
+          ),
+        })
+        .merge(PaginationValidation.paginate(req))
+        .partial(),
+    });
 
   static create = checkSchema({
     name: {

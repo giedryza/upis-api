@@ -49,7 +49,8 @@
     "multer-storage-cloudinary": "^4.0.0",
     "nodemailer": "^6.7.5",
     "slugify": "^1.6.5",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "zod": "^3.20.2"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "^1.11.2",
