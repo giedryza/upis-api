@@ -1,7 +1,7 @@
 import { Document, PaginateModel } from 'mongoose';
 
 import { EntityId, PriceRecord, WithTimestamp } from 'types/common';
-import { AmenityDocument } from 'domain/amenities/amenities.types';
+import { AmenityDocument, Variant } from 'domain/amenities/amenities.types';
 import { ProviderDocument } from 'domain/providers/providers.types';
 import { ImageDocument } from 'domain/images/images.types';
 
@@ -256,7 +256,10 @@ export interface TourRecord extends WithTimestamp {
   rivers: River[];
   regions: Region[];
   photos: (EntityId | ImageDocument)[];
-  amenities: (EntityId | AmenityDocument)[];
+  amenities: {
+    _id: EntityId | AmenityDocument;
+    variant: Variant;
+  }[];
   provider: EntityId | ProviderDocument;
   user: EntityId;
 }

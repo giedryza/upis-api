@@ -4,6 +4,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import { filesService } from 'tools/services';
 import { ModelName, currencies, PriceDocument } from 'types/common';
 import { Image } from 'domain/images/images.model';
+import { variants } from 'domain/amenities/amenities.types';
 
 import { TourDocument, TourModel, regions, rivers } from './tours.types';
 
@@ -85,9 +86,16 @@ const schema = new Schema<TourDocument>(
     amenities: {
       type: [
         {
-          type: Schema.Types.ObjectId,
-          ref: ModelName.Amenity,
-          required: true,
+          _id: {
+            type: Schema.Types.ObjectId,
+            ref: ModelName.Amenity,
+            required: true,
+          },
+          variant: {
+            type: String,
+            enum: variants,
+            required: true,
+          },
         },
       ],
       default: [],

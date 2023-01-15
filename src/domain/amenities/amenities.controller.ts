@@ -30,7 +30,6 @@ interface Update {
     id: string;
   };
   body: {
-    variant: Variant;
     amount: number;
     currency: Currency;
     unit: Unit;
