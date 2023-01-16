@@ -119,10 +119,44 @@ export class Service {
   static getAll = async ({
     query,
   }: GetAll): Promise<PaginatedList<TourRecord>> => {
-    const { regions, rivers, page = 1, limit = 15, select } = query;
+    const {
+      amenities,
+      regions,
+      rivers,
+      distanceFrom,
+      distanceTo,
+      durationFrom,
+      durationTo,
+      daysFrom,
+      difficultyFrom,
+      difficultyTo,
+      daysTo,
+      user,
+      page = 1,
+      limit = 15,
+      select,
+    } = query;
     const filters = [
       ...(regions ? [{ regions: { $in: regions } }] : []),
       ...(rivers ? [{ rivers: { $in: rivers } }] : []),
+      ...(amenities ? [{ 'amenities.variant': { $in: amenities } }] : []),
+      ...(distanceFrom !== undefined
+        ? [{ distance: { $gte: distanceFrom } }]
+        : []),
+      ...(distanceTo !== undefined ? [{ distance: { $lte: distanceTo } }] : []),
+      ...(durationFrom !== undefined
+        ? [{ duration: { $gte: durationFrom } }]
+        : []),
+      ...(durationTo !== undefined ? [{ duration: { $lte: durationTo } }] : []),
+      ...(daysFrom !== undefined ? [{ days: { $gte: daysFrom } }] : []),
+      ...(daysTo !== undefined ? [{ days: { $lte: daysTo } }] : []),
+      ...(difficultyFrom !== undefined
+        ? [{ difficulty: { $gte: difficultyFrom } }]
+        : []),
+      ...(difficultyTo !== undefined
+        ? [{ difficulty: { $lte: difficultyTo } }]
+        : []),
+      ...(user ? [{ user }] : []),
     ];
     const options = {
       page,

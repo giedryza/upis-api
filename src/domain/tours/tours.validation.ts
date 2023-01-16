@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { isValidObjectId } from 'mongoose';
 import { checkSchema, Meta } from 'express-validator';
 import { z } from 'zod';
 
@@ -107,8 +108,8 @@ export class Validation {
                 max: 5,
               }),
             }),
-          user: z.string({
-            invalid_type_error: req.t('tours.errors.user.invalid'),
+          user: z.custom<string>(isValidObjectId, {
+            message: req.t('tours.errors.user.invalid'),
           }),
           select: z.array(
             z.enum(tourKeys, {
