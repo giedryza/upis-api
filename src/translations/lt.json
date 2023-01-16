@@ -68,7 +68,10 @@
         "invalid": "Nurodykite egzistuojantį vartotoją."
       },
       "keys": {
-        "invalid": "Neteisingi raktai."
+        "invalid": "Neteisingi pasirinkimo raktai."
+      },
+      "populate": {
+        "invalid": "Neteisingi užpildymo raktai."
       },
       "filters": {
         "failed": "Nepavyko atnaujinti filtrų."

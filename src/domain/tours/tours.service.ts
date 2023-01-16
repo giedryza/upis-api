@@ -135,6 +135,7 @@ export class Service {
       page = 1,
       limit = 15,
       select,
+      populate,
     } = query;
     const filters = [
       ...(regions ? [{ regions: { $in: regions } }] : []),
@@ -163,11 +164,24 @@ export class Service {
       limit,
       sort: { createdAt: -1 },
       select,
-      populate: [
-        { path: 'provider', populate: 'amenities' },
-        { path: 'amenities', populate: '_id' },
-        { path: 'photos' },
-      ],
+      populate: populate
+        ? [
+            ...(populate.includes('provider')
+              ? [
+                  {
+                    path: 'provider',
+                    ...(populate.includes('provider.amenities')
+                      ? [{ populate: 'amenities' }]
+                      : []),
+                  },
+                ]
+              : []),
+            ...(populate.includes('amenities')
+              ? [{ path: 'amenities', populate: '_id' }]
+              : []),
+            ...(populate.includes('photos') ? [{ path: 'photos' }] : []),
+          ]
+        : undefined,
       lean: true,
       leanWithId: false,
     };
