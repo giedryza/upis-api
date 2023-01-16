@@ -67,7 +67,7 @@
       "user": {
         "invalid": "Provide valid user."
       },
-      "keys": {
+      "select": {
         "invalid": "Invalid select keys."
       },
       "populate": {

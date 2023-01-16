@@ -114,10 +114,10 @@ export class Validation {
           select: z.array(
             z.enum(queryUtils.select, {
               errorMap: () => ({
-                message: req.t('tours.errors.keys.invalid'),
+                message: req.t('tours.errors.select.invalid'),
               }),
             }),
-            { invalid_type_error: req.t('tours.errors.keys.invalid') }
+            { invalid_type_error: req.t('tours.errors.select.invalid') }
           ),
           populate: z.array(
             z.enum(queryUtils.populate, {

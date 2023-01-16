@@ -67,7 +67,7 @@
       "user": {
         "invalid": "Nurodykite egzistuojantį vartotoją."
       },
-      "keys": {
+      "select": {
         "invalid": "Neteisingi pasirinkimo raktai."
       },
       "populate": {
