@@ -1,4 +1,5 @@
 import { Request } from 'express';
+import { isValidObjectId } from 'mongoose';
 import { checkSchema, Meta } from 'express-validator';
 import { z } from 'zod';
 
@@ -8,7 +9,7 @@ import { Provider } from 'domain/providers/providers.model';
 import { variants as amenities } from 'domain/amenities/amenities.types';
 import { Validation as PaginationValidation } from 'domain/pagination/pagination.validation';
 
-import { regions, rivers, tourKeys } from './tours.types';
+import { queryUtils, regions, rivers } from './tours.types';
 
 export class Validation {
   static getOne = checkSchema({
@@ -107,16 +108,24 @@ export class Validation {
                 max: 5,
               }),
             }),
-          user: z.string({
-            invalid_type_error: req.t('tours.errors.user.invalid'),
+          user: z.custom<string>(isValidObjectId, {
+            message: req.t('tours.errors.user.invalid'),
           }),
           select: z.array(
-            z.enum(tourKeys, {
+            z.enum(queryUtils.select, {
               errorMap: () => ({
-                message: req.t('tours.errors.keys.invalid'),
+                message: req.t('tours.errors.select.invalid'),
               }),
             }),
-            { invalid_type_error: req.t('tours.errors.keys.invalid') }
+            { invalid_type_error: req.t('tours.errors.select.invalid') }
+          ),
+          populate: z.array(
+            z.enum(queryUtils.populate, {
+              errorMap: () => ({
+                message: req.t('tours.errors.populate.invalid'),
+              }),
+            }),
+            { invalid_type_error: req.t('tours.errors.populate.invalid') }
           ),
         })
         .merge(PaginationValidation.paginate(req))

@@ -67,8 +67,11 @@
       "user": {
         "invalid": "Provide valid user."
       },
-      "keys": {
-        "invalid": "Invalid keys."
+      "select": {
+        "invalid": "Invalid select keys."
+      },
+      "populate": {
+        "invalid": "Invalid populate keys."
       },
       "filters": {
         "failed": "Failed to fetch filters."

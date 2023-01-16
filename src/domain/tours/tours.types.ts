@@ -230,9 +230,10 @@ export type Region = typeof regions[number];
 
 export type River = typeof rivers[number];
 
-export const tourKeys = ['_id'] as const;
-
-export type TourKeys = typeof tourKeys[number];
+export const queryUtils = {
+  select: ['_id', 'name'],
+  populate: ['provider', 'provider.amenities', 'amenities', 'photos'],
+} as const;
 
 export interface TourRecord extends WithTimestamp {
   name: string;
