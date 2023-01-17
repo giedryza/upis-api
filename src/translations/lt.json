@@ -48,6 +48,9 @@
       "rivers": {
         "invalid": "Pasirinkite upes."
       },
+      "boats": {
+        "invalid": "Pasirinkite valčių tipus."
+      },
       "amenities": {
         "invalid": "Pasirinkite ypatumus.",
         "contain": "Vienas ar keli ypatumai nepriklauso pasirinktam tiekėjui."

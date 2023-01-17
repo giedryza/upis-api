@@ -48,6 +48,9 @@
       "rivers": {
         "invalid": "Choose rivers."
       },
+      "boats": {
+        "invalid": "Select boats."
+      },
       "amenities": {
         "invalid": "Choose amenities.",
         "contain": "Provider does not contain one or more amenities you are trying to add to the tour."
