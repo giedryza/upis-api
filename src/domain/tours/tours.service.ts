@@ -140,7 +140,7 @@ export class Service {
     const filters = [
       ...(regions ? [{ regions: { $in: regions } }] : []),
       ...(rivers ? [{ rivers: { $in: rivers } }] : []),
-      ...(amenities ? [{ 'amenities.variant': { $in: amenities } }] : []),
+      ...(amenities ? [{ 'amenities.variant': { $all: amenities } }] : []),
       ...(distanceFrom !== undefined
         ? [{ distance: { $gte: distanceFrom } }]
         : []),

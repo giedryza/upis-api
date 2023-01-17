@@ -8,6 +8,7 @@ import { currencies } from 'types/common';
 import { Provider } from 'domain/providers/providers.model';
 import { variants as amenities } from 'domain/amenities/amenities.types';
 import { Validation as PaginationValidation } from 'domain/pagination/pagination.validation';
+import { boats } from 'domain/providers/providers.types';
 
 import { queryUtils, regions, rivers } from './tours.types';
 
@@ -46,6 +47,14 @@ export class Validation {
               }),
             }),
             { invalid_type_error: req.t('tours.errors.rivers.invalid') }
+          ),
+          boats: z.array(
+            z.enum(boats, {
+              errorMap: () => ({
+                message: req.t('tours.errors.boats.invalid'),
+              }),
+            }),
+            { invalid_type_error: req.t('tours.errors.boats.invalid') }
           ),
           distanceFrom: z.coerce
             .number({
