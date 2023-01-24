@@ -5,14 +5,9 @@ import { ModelName, languages } from 'types/common';
 import { Tour } from 'domain/tours/tours.model';
 import { Amenity } from 'domain/amenities/amenities.model';
 
-import {
-  boats,
-  ProviderDocument,
-  ProviderModel,
-  ProviderRecord,
-} from './providers.types';
+import { boats, ProviderDocument, ProviderModel } from './providers.types';
 
-const schema = new Schema<ProviderDocument, ProviderModel, ProviderRecord>(
+const schema = new Schema<ProviderDocument>(
   {
     name: {
       type: String,

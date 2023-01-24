@@ -1,4 +1,4 @@
-import { connect, ConnectOptions } from 'mongoose';
+import { connect, set, ConnectOptions } from 'mongoose';
 
 import { APP } from 'config';
 
@@ -22,6 +22,8 @@ class Db {
 
   connect = async () => {
     try {
+      set('strictQuery', false);
+
       const connection = await connect(this.uri, this.options);
 
       const { name, host } = connection.connections[0]!;

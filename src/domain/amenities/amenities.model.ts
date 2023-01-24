@@ -4,16 +4,16 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import { currencies, ModelName, PriceDocument } from 'types/common';
 import { Provider } from 'domain/providers/providers.model';
 import { Tour } from 'domain/tours/tours.model';
+import { SCORE_RATES } from 'domain/tours/tours.constants';
 
 import {
   variants,
   units,
   AmenityDocument,
   AmenityModel,
-  AmenityRecord,
 } from './amenities.types';
 
-export const schema = new Schema<AmenityDocument, AmenityModel, AmenityRecord>(
+export const schema = new Schema<AmenityDocument>(
   {
     variant: {
       type: String,
@@ -73,7 +73,10 @@ schema.post<Query<AmenityDocument | null, AmenityDocument>>(
       ),
       Tour.updateMany(
         { 'amenities._id': doc._id },
-        { $pull: { amenities: { _id: doc._id } } }
+        {
+          $pull: { amenities: { _id: doc._id } },
+          $inc: { score: -SCORE_RATES.amenities },
+        }
       ),
     ]);
 

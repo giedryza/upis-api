@@ -162,7 +162,7 @@ export class Service {
     const options = {
       page,
       limit,
-      sort: { createdAt: -1 },
+      sort: { score: -1, createdAt: 1 },
       select,
       populate: populate
         ? [
@@ -229,24 +229,20 @@ export class Service {
 
     const { id, arrival, departure, ...update } = data;
 
-    const tour = await Tour.findByIdAndUpdate(
-      id,
-      {
-        ...update,
-        ...{
-          $set: {
-            ...(slug && { slug }),
-            ...(!!arrival && { 'arrival.coordinates': arrival }),
-            ...(!!departure && { 'departure.coordinates': departure }),
-          },
-        },
-      },
-      { new: true, runValidators: true }
-    ).lean();
+    const tour = await Tour.findById(id);
 
     if (!tour) {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
+
+    tour.set({
+      ...update,
+      ...(slug && { slug }),
+      ...(!!arrival && { 'arrival.coordinates': arrival }),
+      ...(!!departure && { 'departure.coordinates': departure }),
+    });
+
+    await tour.save();
 
     return {
       data: tour,
@@ -265,19 +261,16 @@ export class Service {
     data: { id, amount, currency },
     t,
   }: UpdatePrice): Promise<{ data: TourRecord }> => {
-    const tour = await Tour.findOneAndUpdate(
-      { _id: id },
-      {
-        $set: {
-          price: amount && currency ? { amount, currency } : null,
-        },
-      },
-      { new: true, runValidators: true }
-    );
+    const tour = await Tour.findById(id);
 
     if (!tour) {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
+
+    tour.set({
+      price: amount && currency ? { amount, currency } : null,
+    });
+    await tour.save();
 
     return {
       data: tour,
@@ -288,20 +281,17 @@ export class Service {
     data: { id, regions, rivers },
     t,
   }: UpdateGeography): Promise<{ data: TourRecord }> => {
-    const tour = await Tour.findOneAndUpdate(
-      { _id: id },
-      {
-        $set: {
-          ...(!!regions && { regions }),
-          ...(!!rivers && { rivers }),
-        },
-      },
-      { new: true, runValidators: true }
-    );
+    const tour = await Tour.findById(id);
 
     if (!tour) {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
+
+    tour.set({
+      ...(!!regions && { regions }),
+      ...(!!rivers && { rivers }),
+    });
+    await tour.save();
 
     return {
       data: tour,
@@ -333,13 +323,12 @@ export class Service {
       throw new BadRequestError(t('tours.errors.amenities.contain'));
     }
 
-    tour.set(
-      'amenities',
-      amenities.map((amenity) => ({
+    tour.set({
+      amenities: amenities.map((amenity) => ({
         _id: amenity._id,
         variant: amenity.variant,
-      }))
-    );
+      })),
+    });
     await tour.save();
 
     return {
@@ -355,7 +344,7 @@ export class Service {
       throw new BadRequestError(t('tours.errors.id.update'));
     }
 
-    const tour = await Tour.findById(id).lean();
+    const tour = await Tour.findById(id);
 
     if (!tour) {
       throw new BadRequestError(t('tours.errors.id.update'));
@@ -382,18 +371,13 @@ export class Service {
       t,
     });
 
-    const updated = await Tour.findByIdAndUpdate(
-      id,
-      { $push: { photos: data._id } },
-      { new: true, runValidators: true }
-    ).lean();
-
-    if (!updated) {
-      throw new BadRequestError(t('tours.errors.id.update'));
-    }
+    tour.set({
+      photos: [...tour.photos, data.id],
+    });
+    await tour.save();
 
     return {
-      data: updated,
+      data: tour,
     };
   };
 
