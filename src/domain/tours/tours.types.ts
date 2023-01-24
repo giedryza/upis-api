@@ -226,9 +226,9 @@ export const rivers = [
   'zvelsa',
 ] as const;
 
-export type Region = typeof regions[number];
+export type Region = (typeof regions)[number];
 
-export type River = typeof rivers[number];
+export type River = (typeof rivers)[number];
 
 export const queryUtils = {
   select: ['_id', 'name'],

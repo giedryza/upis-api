@@ -18,9 +18,9 @@ export const variants = [
 
 export const units = ['tour', 'person', 'day', 'h', 'km'] as const;
 
-export type Variant = typeof variants[number];
+export type Variant = (typeof variants)[number];
 
-export type Unit = typeof units[number];
+export type Unit = (typeof units)[number];
 
 export interface AmenityRecord extends WithTimestamp {
   variant: Variant;

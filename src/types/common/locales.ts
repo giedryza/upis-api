@@ -80,4 +80,4 @@ export const languages = [
   'vi',
 ] as const;
 
-export type Language = typeof languages[number];
+export type Language = (typeof languages)[number];
