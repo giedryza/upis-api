@@ -35,7 +35,7 @@ export class CommonMiddleware {
   useRateLimit = () => {
     const options: Partial<Options> = {
       windowMs: 15 * 60 * 1000,
-      max: 300,
+      max: 500,
       handler: (req) => {
         throw new RateLimitError(req.rateLimit?.resetTime);
       },
