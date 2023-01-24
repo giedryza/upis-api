@@ -4,6 +4,7 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import { currencies, ModelName, PriceDocument } from 'types/common';
 import { Provider } from 'domain/providers/providers.model';
 import { Tour } from 'domain/tours/tours.model';
+import { SCORE_RATES } from 'domain/tours/tours.constants';
 
 import {
   variants,
@@ -72,7 +73,10 @@ schema.post<Query<AmenityDocument | null, AmenityDocument>>(
       ),
       Tour.updateMany(
         { 'amenities._id': doc._id },
-        { $pull: { amenities: { _id: doc._id } } }
+        {
+          $pull: { amenities: { _id: doc._id } },
+          $inc: { score: -SCORE_RATES.amenities },
+        }
       ),
     ]);
 

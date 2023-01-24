@@ -7,6 +7,7 @@ import { Image } from 'domain/images/images.model';
 import { variants } from 'domain/amenities/amenities.types';
 
 import { TourDocument, TourModel, regions, rivers } from './tours.types';
+import { calculateScore } from './tours.utils';
 
 const schema = new Schema<TourDocument>(
   {
@@ -114,6 +115,10 @@ const schema = new Schema<TourDocument>(
       type: String,
       default: '',
     },
+    score: {
+      type: Number,
+      default: 0,
+    },
     provider: {
       type: Schema.Types.ObjectId,
       ref: ModelName.Provider,
@@ -151,5 +156,11 @@ schema.post<Query<TourDocument | null, TourDocument>>(
     next();
   }
 );
+
+schema.pre('save', async function (next) {
+  this.set('score', calculateScore(this));
+
+  next();
+});
 
 export const Tour = model<TourDocument, TourModel>(ModelName.Tour, schema);

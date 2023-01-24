@@ -263,6 +263,7 @@ export interface TourRecord extends WithTimestamp {
   }[];
   provider: EntityId | ProviderDocument;
   user: EntityId;
+  score: number;
 }
 
 export interface TourDocument extends TourRecord, Document {}
