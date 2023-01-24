@@ -6,14 +6,9 @@ import {
   SocialLinkDocument,
   SocialLinkModel,
   SocialLinkType,
-  SocialLinkRecord,
 } from 'domain/social-links/social-links.types';
 
-const schema = new Schema<
-  SocialLinkDocument,
-  SocialLinkModel,
-  SocialLinkRecord
->(
+const schema = new Schema<SocialLinkDocument>(
   {
     type: {
       type: String,

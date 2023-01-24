@@ -10,10 +10,9 @@ import {
   units,
   AmenityDocument,
   AmenityModel,
-  AmenityRecord,
 } from './amenities.types';
 
-export const schema = new Schema<AmenityDocument, AmenityModel, AmenityRecord>(
+export const schema = new Schema<AmenityDocument>(
   {
     variant: {
       type: String,
