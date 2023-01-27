@@ -117,6 +117,9 @@ export class Validation {
                 max: 5,
               }),
             }),
+          departure: z.coerce.boolean({
+            invalid_type_error: req.t('tours.errors.departure.invalid-filter'),
+          }),
           user: z.custom<string>(isValidObjectId, {
             message: req.t('tours.errors.user.invalid'),
           }),
