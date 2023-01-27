@@ -130,6 +130,7 @@ export class Service {
       daysFrom,
       difficultyFrom,
       difficultyTo,
+      departure,
       daysTo,
       user,
       page = 1,
@@ -157,6 +158,7 @@ export class Service {
       ...(difficultyTo !== undefined
         ? [{ difficulty: { $lte: difficultyTo } }]
         : []),
+      ...(departure ? [{ 'departure.coordinates': { $size: 2 } }] : []),
       ...(user ? [{ user }] : []),
     ];
     const options = {

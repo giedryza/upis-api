@@ -56,7 +56,8 @@
         "contain": "Provider does not contain one or more amenities you are trying to add to the tour."
       },
       "departure": {
-        "invalid": "Provide departure point coordinates."
+        "invalid": "Provide departure point coordinates.",
+        "invalid-filter": "Invalid selection for departure filter."
       },
       "arrival": {
         "invalid": "Provide arrival point coordinates."
