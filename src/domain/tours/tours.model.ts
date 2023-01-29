@@ -139,6 +139,8 @@ const schema = new Schema<TourDocument>(
   }
 );
 
+schema.index({ departure: '2dsphere' });
+
 schema.plugin(mongoosePaginate);
 
 schema.post<Query<TourDocument | null, TourDocument>>(
