@@ -132,6 +132,7 @@ export class Service {
       difficultyTo,
       departure,
       daysTo,
+      bounds,
       user,
       page = 1,
       limit = 15,
@@ -159,6 +160,28 @@ export class Service {
         ? [{ difficulty: { $lte: difficultyTo } }]
         : []),
       ...(departure ? [{ 'departure.coordinates': { $size: 2 } }] : []),
+      ...(bounds
+        ? [
+            {
+              departure: {
+                $geoWithin: {
+                  $geometry: {
+                    type: 'Polygon',
+                    coordinates: [
+                      [
+                        [bounds[1], bounds[0]],
+                        [bounds[1], bounds[2]],
+                        [bounds[3], bounds[2]],
+                        [bounds[3], bounds[0]],
+                        [bounds[1], bounds[0]],
+                      ],
+                    ],
+                  },
+                },
+              },
+            },
+          ]
+        : []),
       ...(user ? [{ user }] : []),
     ];
     const options = {

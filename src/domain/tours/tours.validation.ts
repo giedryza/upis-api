@@ -120,6 +120,12 @@ export class Validation {
           departure: z.coerce.boolean({
             invalid_type_error: req.t('tours.errors.departure.invalid-filter'),
           }),
+          bounds: z.tuple([
+            z.coerce.number(),
+            z.coerce.number(),
+            z.coerce.number(),
+            z.coerce.number(),
+          ]),
           user: z.custom<string>(isValidObjectId, {
             message: req.t('tours.errors.user.invalid'),
           }),
