@@ -6,7 +6,7 @@ export const SCORE_RATES = {
   name: 1,
   description: 1,
   website: 1,
-  departure: 0.5,
+  departure: 3,
   arrival: 0.5,
   rivers: 0.25,
   regions: 0.5,
