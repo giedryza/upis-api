@@ -251,7 +251,7 @@ export interface TourRecord extends WithTimestamp {
   website: string;
   departure: {
     type: 'Point';
-    coordinates: number[];
+    coordinates?: number[];
   };
   arrival: {
     type: 'Point';
