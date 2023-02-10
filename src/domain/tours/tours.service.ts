@@ -133,6 +133,7 @@ export class Service {
       departure,
       daysTo,
       bounds,
+      providers,
       user,
       page = 1,
       limit = 15,
@@ -182,6 +183,7 @@ export class Service {
             },
           ]
         : []),
+      ...(providers ? [{ provider: { $in: providers } }] : []),
       ...(user ? [{ user }] : []),
     ];
     const options = {

@@ -68,6 +68,9 @@
       "provider": {
         "invalid": "Provider does not exist."
       },
+      "providers": {
+        "invalid": "Provide valid providers."
+      },
       "user": {
         "invalid": "Provide valid user."
       },
