@@ -126,6 +126,12 @@ export class Validation {
             z.coerce.number(),
             z.coerce.number(),
           ]),
+          providers: z.array(
+            z.custom<string>(isValidObjectId, {
+              message: req.t('tours.errors.providers.invalid'),
+            }),
+            { invalid_type_error: req.t('tours.errors.providers.invalid') }
+          ),
           user: z.custom<string>(isValidObjectId, {
             message: req.t('tours.errors.user.invalid'),
           }),

@@ -68,6 +68,9 @@
       "provider": {
         "invalid": "Nurodytas tiekėjas neegzistuoja."
       },
+      "providers": {
+        "invalid": "Nurodykite egzistuojančius tiekėjus."
+      },
       "user": {
         "invalid": "Nurodykite egzistuojantį vartotoją."
       },
