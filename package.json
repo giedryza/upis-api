@@ -50,7 +50,7 @@
     "nodemailer": "^6.7.5",
     "slugify": "^1.6.5",
     "uuid": "^9.0.0",
-    "zod": "^3.20.2"
+    "zod": "^3.20.6"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "^1.11.2",
