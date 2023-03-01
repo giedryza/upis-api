@@ -5,7 +5,6 @@ import { JwtService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
 import { Role } from 'domain/users/users.types';
 import { Provider } from 'domain/providers/providers.model';
-import { SocialLink } from 'domain/social-links/social-links.model';
 import { Tour } from 'domain/tours/tours.model';
 import { Amenity } from 'domain/amenities/amenities.model';
 import { Image } from 'domain/images/images.model';
@@ -55,7 +54,7 @@ export class AuthMiddleware {
     };
 
   static isOwner =
-    (model: 'provider' | 'tour' | 'amenity' | 'image' | 'social-link') =>
+    (model: 'provider' | 'tour' | 'amenity' | 'image') =>
     async (req: Request, _res: Response, next: NextFunction) => {
       const { user, params } = req;
 
@@ -97,29 +96,6 @@ export class AuthMiddleware {
           const image = await Image.findOne(filter).lean();
 
           if (!image) throw new UnauthorizedError();
-
-          break;
-        }
-
-        case 'social-link': {
-          const socialLink = await SocialLink.findById(params.id).lean();
-
-          if (!socialLink) {
-            throw new UnauthorizedError();
-          }
-
-          if (socialLink.host === user._id) {
-            break;
-          }
-
-          const provider = await Provider.findOne({
-            _id: socialLink.host,
-            user: user._id,
-          }).lean();
-
-          if (!provider) {
-            throw new UnauthorizedError();
-          }
 
           break;
         }

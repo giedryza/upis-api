@@ -35,7 +35,6 @@ const schema = new Schema<ImageRecord>(
     timestamps: true,
     toJSON: {
       versionKey: false,
-      virtuals: true,
     },
   }
 );

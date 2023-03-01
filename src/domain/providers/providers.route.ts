@@ -59,6 +59,29 @@ class Route extends BaseRoute {
           .single('logo'),
         controller.addLogo
       );
+
+    this.router
+      .route('/:id/socials')
+      .post(
+        AuthMiddleware.protect,
+        Validation.createSocial,
+        ValidatorService.catch,
+        controller.createSocial
+      )
+      .patch(
+        AuthMiddleware.protect,
+        AuthMiddleware.isOwner('provider'),
+        Validation.updateSocial,
+        ValidatorService.catch,
+        controller.updateSocial
+      )
+      .delete(
+        AuthMiddleware.protect,
+        AuthMiddleware.isOwner('provider'),
+        Validation.destroySocial,
+        ValidatorService.catch,
+        controller.destroySocial
+      );
   };
 }
 

@@ -54,7 +54,6 @@ export const schema = new Schema<AmenityDocument>(
     timestamps: true,
     toJSON: {
       versionKey: false,
-      virtuals: true,
     },
   }
 );

@@ -3,7 +3,7 @@ import { checkSchema, Meta } from 'express-validator';
 import { NotFoundError } from 'errors';
 import { languages } from 'types/common';
 
-import { boats } from './providers.types';
+import { boats, socials } from './providers.types';
 
 export class Validation {
   static getOne = checkSchema({
@@ -192,6 +192,85 @@ export class Validation {
       isMongoId: {
         errorMessage: (_: string, { req }: Meta) => {
           throw new NotFoundError(req.t('providers.errors.id.invalid'));
+        },
+      },
+    },
+  });
+
+  static createSocial = checkSchema({
+    id: {
+      in: ['params'],
+      isMongoId: {
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('socials.errors.id.invalid'));
+        },
+      },
+    },
+    type: {
+      in: ['body'],
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socials.errors.type.invalid'),
+      },
+      isIn: {
+        options: [socials],
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socials.errors.type.invalid'),
+      },
+    },
+    url: {
+      in: ['body'],
+      trim: true,
+      isURL: {
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socials.errors.url.invalid'),
+      },
+    },
+  });
+
+  static updateSocial = checkSchema({
+    id: {
+      in: ['params', 'body'],
+      isMongoId: {
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('socials.errors.id.invalid'));
+        },
+      },
+    },
+    url: {
+      in: ['body'],
+      optional: true,
+      trim: true,
+      isURL: {
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socials.errors.url.invalid'),
+      },
+    },
+    type: {
+      in: ['body'],
+      optional: true,
+      trim: true,
+      isEmpty: {
+        negated: true,
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socials.errors.type.invalid'),
+      },
+      isIn: {
+        options: [socials],
+        errorMessage: (_: string, { req }: Meta) =>
+          req.t('socials.errors.type.invalid'),
+      },
+    },
+  });
+
+  static destroySocial = checkSchema({
+    id: {
+      in: ['params', 'body'],
+      isMongoId: {
+        errorMessage: (_: string, { req }: Meta) => {
+          throw new NotFoundError(req.t('socials.errors.id.invalid'));
         },
       },
     },
