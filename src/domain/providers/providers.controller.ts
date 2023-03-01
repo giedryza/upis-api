@@ -10,7 +10,7 @@ import {
 } from 'responses';
 
 import { Service } from './providers.service';
-import { Boat } from './providers.types';
+import { Boat, SocialVariant } from './providers.types';
 
 interface GetOne {
   params: {
@@ -26,6 +26,36 @@ interface Destroy {
 
 interface AddLogo {
   params: {
+    id: string;
+  };
+}
+
+interface CreateSocial {
+  params: {
+    id: string;
+  };
+  body: {
+    type: SocialVariant;
+    url: string;
+  };
+}
+
+interface UpdateSocial {
+  params: {
+    id: string;
+  };
+  body: {
+    id: string;
+    type: SocialVariant;
+    url: string;
+  };
+}
+
+interface DestroySocial {
+  params: {
+    id: string;
+  };
+  body: {
     id: string;
   };
 }
@@ -129,6 +159,57 @@ class Controller {
 
     const { data } = await Service.addLogo({
       data: { id: params.id, userId, file },
+      t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  createSocial = async (req: Request, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      CreateSocial['params'],
+      CreateSocial['body']
+    >(req);
+
+    const { data } = await Service.createSocial({
+      data: {
+        id: params.id,
+        ...body,
+      },
+      t: req.t,
+    });
+
+    return new CreatedResponse(res, data).send();
+  };
+
+  updateSocial = async (req: Request, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      UpdateSocial['params'],
+      UpdateSocial['body']
+    >(req);
+
+    const { data } = await Service.updateSocial({
+      data: {
+        id: params.id,
+        social: body,
+      },
+      t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  destroySocial = async (req: Request, res: Response) => {
+    const { params, body } = ValidatorService.getData<
+      DestroySocial['params'],
+      DestroySocial['body']
+    >(req);
+
+    const { data } = await Service.destroySocial({
+      data: {
+        providerId: params.id,
+        socialId: body.id,
+      },
       t: req.t,
     });
 

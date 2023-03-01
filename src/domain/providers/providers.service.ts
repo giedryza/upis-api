@@ -3,12 +3,12 @@ import { LeanDocument } from 'mongoose';
 import { TFunction } from 'i18next';
 
 import { BadRequestError } from 'errors';
-import { filesService, QueryService, SlugService } from 'tools/services';
 import { EntityId, Language } from 'types/common';
+import { filesService, QueryService, SlugService } from 'tools/services';
 import { PaginatedList } from 'domain/pagination/pagination.types';
 
 import { Provider } from './providers.model';
-import { Boat, ProviderRecord } from './providers.types';
+import { Boat, ProviderRecord, SocialVariant } from './providers.types';
 
 interface GetAll {
   query: Request['query'];
@@ -65,6 +65,35 @@ interface AddLogo {
   t: TFunction;
 }
 
+interface CreateSocial {
+  data: {
+    id: string;
+    type: SocialVariant;
+    url: string;
+  };
+  t: TFunction;
+}
+
+interface UpdateSocial {
+  data: {
+    id: string;
+    social: {
+      id: string;
+      type: SocialVariant;
+      url: string;
+    };
+  };
+  t: TFunction;
+}
+
+interface DestroySocial {
+  data: {
+    providerId: string;
+    socialId: string;
+  };
+  t: TFunction;
+}
+
 interface Cleanup {
   data: {
     logo?: string;
@@ -81,7 +110,7 @@ export class Service {
       limit,
       sort,
       select,
-      populate: ['user', 'socialLinks', 'amenities'],
+      populate: ['user', 'amenities'],
       lean: true,
       leanWithId: false,
     };
@@ -101,7 +130,7 @@ export class Service {
     data: { id },
   }: GetOne): Promise<{ data: LeanDocument<ProviderRecord> | null }> => {
     const provider = await Provider.findById(id)
-      .populate(['user', 'socialLinks', 'amenities'])
+      .populate(['user', 'amenities'])
       .lean();
 
     if (!provider) {
@@ -208,6 +237,73 @@ export class Service {
     Service.deleteLogo({ data: { logo: provider.logo.key } });
 
     return { data: { ...provider, ...update } };
+  };
+
+  static createSocial = async ({
+    data,
+    t,
+  }: CreateSocial): Promise<{ data: LeanDocument<ProviderRecord> }> => {
+    const provider = await Provider.findOneAndUpdate(
+      { _id: data.id },
+      {
+        $push: {
+          socials: {
+            type: data.type,
+            url: data.url,
+          },
+        },
+      }
+    ).lean();
+
+    if (!provider) {
+      throw new BadRequestError(t('socials.errors.id.create'));
+    }
+
+    return { data: provider };
+  };
+
+  static updateSocial = async ({
+    data,
+    t,
+  }: UpdateSocial): Promise<{ data: ProviderRecord }> => {
+    const { id, social } = data;
+
+    const provider = await Provider.findOneAndUpdate(
+      { _id: id, 'socials._id': social.id },
+      {
+        $set: {
+          'socials.$': { _id: social.id, type: social.type, url: social.url },
+        },
+      },
+      { new: true }
+    );
+
+    if (!provider) {
+      throw new BadRequestError(t('socials.errors.id.update'));
+    }
+
+    return { data: provider };
+  };
+
+  static destroySocial = async ({
+    data: { providerId, socialId },
+    t,
+  }: DestroySocial): Promise<{ data: ProviderRecord }> => {
+    const provider = await Provider.findOneAndUpdate(
+      {
+        _id: providerId,
+        'socials._id': socialId,
+      },
+      {
+        $pull: { socials: { _id: socialId } },
+      }
+    );
+
+    if (!provider) {
+      throw new BadRequestError(t('socials.errors.id.destroy'));
+    }
+
+    return { data: provider };
   };
 
   static deleteLogo = ({ data: { logo } }: Cleanup) => {

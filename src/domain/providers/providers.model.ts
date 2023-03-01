@@ -5,7 +5,13 @@ import { ModelName, languages } from 'types/common';
 import { Tour } from 'domain/tours/tours.model';
 import { Amenity } from 'domain/amenities/amenities.model';
 
-import { boats, ProviderDocument, ProviderModel } from './providers.types';
+import {
+  boats,
+  ProviderDocument,
+  ProviderModel,
+  SocialLinkDocument,
+  socials,
+} from './providers.types';
 
 const schema = new Schema<ProviderDocument>(
   {
@@ -75,6 +81,22 @@ const schema = new Schema<ProviderDocument>(
       ],
       default: [],
     },
+    socials: {
+      type: [
+        new Schema<SocialLinkDocument>({
+          type: {
+            type: String,
+            enum: socials,
+            required: true,
+          },
+          url: {
+            type: String,
+            required: true,
+          },
+        }),
+      ],
+      default: [],
+    },
     user: {
       type: Schema.Types.ObjectId,
       ref: ModelName.User,
@@ -85,17 +107,11 @@ const schema = new Schema<ProviderDocument>(
     timestamps: true,
     toJSON: {
       versionKey: false,
-      virtuals: true,
     },
   }
 );
 
 schema.plugin(mongoosePaginate);
-schema.virtual('socialLinks', {
-  ref: ModelName.SocialLink,
-  foreignField: 'host',
-  localField: '_id',
-});
 
 schema.post<Query<ProviderDocument | null, ProviderDocument>>(
   'findOneAndDelete',

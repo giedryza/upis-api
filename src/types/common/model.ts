@@ -18,7 +18,6 @@ export enum ModelName {
   Token = 'Token',
   Image = 'Image',
   Provider = 'Provider',
-  SocialLink = 'SocialLink',
   Amenity = 'Amenity',
   Tour = 'Tour',
 }

@@ -12,6 +12,24 @@ export const boats = [
 
 export type Boat = (typeof boats)[number];
 
+export const socials = [
+  'facebook',
+  'instagram',
+  'youtube',
+  'linkedin',
+  'twitter',
+] as const;
+
+export type SocialVariant = (typeof socials)[number];
+
+export interface SocialLinkRecord {
+  type: SocialVariant;
+  url: string;
+  host: EntityId;
+}
+
+export interface SocialLinkDocument extends SocialLinkRecord, Document {}
+
 export interface ProviderRecord extends WithTimestamp {
   name: string;
   phone: string;
@@ -28,6 +46,7 @@ export interface ProviderRecord extends WithTimestamp {
   };
   logo: AppFile;
   amenities: EntityId[];
+  socials: SocialLinkRecord[];
 }
 
 export interface ProviderDocument extends ProviderRecord, Document {}

@@ -134,7 +134,6 @@ const schema = new Schema<TourDocument>(
     timestamps: true,
     toJSON: {
       versionKey: false,
-      virtuals: true,
     },
   }
 );

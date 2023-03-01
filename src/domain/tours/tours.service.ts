@@ -105,7 +105,7 @@ export class Service {
   }: GetOne): Promise<{ data: LeanDocument<TourRecord> | null }> => {
     const tour = await Tour.findById(id)
       .populate([
-        { path: 'provider', populate: ['amenities', 'socialLinks'] },
+        { path: 'provider', populate: ['amenities'] },
         { path: 'amenities', populate: '_id' },
         { path: 'photos' },
       ])
