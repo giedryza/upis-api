@@ -30,6 +30,10 @@ export interface SocialLinkRecord {
 
 export interface SocialLinkDocument extends SocialLinkRecord, Document {}
 
+export const queryUtils = {
+  select: ['_id', 'name'],
+} as const;
+
 export interface ProviderRecord extends WithTimestamp {
   name: string;
   phone: string;

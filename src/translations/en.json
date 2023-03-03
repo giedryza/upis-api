@@ -140,6 +140,12 @@
       },
       "file": {
         "upload": "Failed to upload the file."
+      },
+      "user": {
+        "invalid": "Provide valid user."
+      },
+      "select": {
+        "invalid": "Invalid select keys."
       }
     }
   },

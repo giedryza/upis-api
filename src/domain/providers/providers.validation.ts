@@ -1,9 +1,13 @@
+import { Request } from 'express';
+import { isValidObjectId } from 'mongoose';
 import { checkSchema, Meta } from 'express-validator';
+import { z } from 'zod';
 
 import { NotFoundError } from 'errors';
 import { languages } from 'types/common';
+import { Validation as PaginationValidation } from 'domain/pagination/pagination.validation';
 
-import { boats, socials } from './providers.types';
+import { boats, queryUtils, socials } from './providers.types';
 
 export class Validation {
   static getOne = checkSchema({
@@ -12,6 +16,26 @@ export class Validation {
       isMongoId: true,
     },
   });
+
+  static getAll = (req: Request) =>
+    z.object({
+      query: z
+        .object({
+          user: z.custom<string>(isValidObjectId, {
+            message: req.t('providers.errors.user.invalid'),
+          }),
+          select: z.array(
+            z.enum(queryUtils.select, {
+              errorMap: () => ({
+                message: req.t('providers.errors.select.invalid'),
+              }),
+            }),
+            { invalid_type_error: req.t('providers.errors.select.invalid') }
+          ),
+        })
+        .merge(PaginationValidation.paginate(req))
+        .partial(),
+    });
 
   static create = checkSchema({
     name: {
