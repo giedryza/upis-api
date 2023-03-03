@@ -1,17 +1,19 @@
 import { Request } from 'express';
 import { LeanDocument } from 'mongoose';
 import { TFunction } from 'i18next';
+import { z } from 'zod';
 
 import { BadRequestError } from 'errors';
 import { EntityId, Language } from 'types/common';
-import { filesService, QueryService, SlugService } from 'tools/services';
+import { filesService, SlugService } from 'tools/services';
 import { PaginatedList } from 'domain/pagination/pagination.types';
 
 import { Provider } from './providers.model';
 import { Boat, ProviderRecord, SocialVariant } from './providers.types';
+import { Validation } from './providers.validation';
 
 interface GetAll {
-  query: Request['query'];
+  query: z.infer<ReturnType<typeof Validation.getAll>>['query'];
 }
 
 interface GetOne {
@@ -104,11 +106,12 @@ export class Service {
   static getAll = async ({
     query,
   }: GetAll): Promise<PaginatedList<ProviderRecord>> => {
-    const { filter, sort, select, page, limit } = new QueryService(query);
+    const { user, page = 1, limit = 15, select } = query;
+    const filters = [...(user ? [{ user }] : [])];
     const options = {
       page,
       limit,
-      sort,
+      sort: { name: 1 },
       select,
       populate: ['user', 'amenities'],
       lean: true,
@@ -116,7 +119,7 @@ export class Service {
     };
 
     const { docs, totalDocs, totalPages } = await Provider.paginate(
-      filter,
+      { ...(filters.length && { $and: filters }) },
       options
     );
 

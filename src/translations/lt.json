@@ -140,6 +140,12 @@
       },
       "file": {
         "upload": "Nepavyko įkelti failo."
+      },
+      "user": {
+        "invalid": "Nurodykite egzistuojantį vartotoją."
+      },
+      "select": {
+        "invalid": "Neteisingi pasirinkimo raktai."
       }
     }
   },

@@ -11,6 +11,7 @@ import {
 
 import { Service } from './providers.service';
 import { Boat, SocialVariant } from './providers.types';
+import { Validation } from './providers.validation';
 
 interface GetOne {
   params: {
@@ -89,7 +90,8 @@ interface Update {
 
 class Controller {
   getAll = async (req: Request, res: Response) => {
-    const { query } = req;
+    const { query } =
+      ValidatorService.getParsedData<typeof Validation.getAll>(req);
 
     const { data, meta } = await Service.getAll({ query });
 
