@@ -15,7 +15,7 @@
     "compile": "tsc",
     "clean": "rimraf ./build",
     "browserslist": "npx browserslist",
-    "update": "npx npm-check-updates",
+    "outdated": "npx npm-check-updates",
     "lint": "npm run lint:code && npm run lint:format && npm run lint:filenames && npm run compile -- --noEmit",
     "lint:fix": "npm run lint:code:fix && npm run lint:format:fix",
     "lint:code": "npx eslint src --ext .ts,.tsx",
