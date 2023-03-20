@@ -67,7 +67,6 @@ interface Create {
     name: string;
     phone: string;
     email: string;
-    description?: string;
   };
 }
 
