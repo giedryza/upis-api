@@ -28,7 +28,6 @@ interface Create {
     name: string;
     phone: string;
     email: string;
-    description?: string;
   };
   t: TFunction;
 }
@@ -144,7 +143,7 @@ export class Service {
   };
 
   static create = async ({
-    data: { userId, name, phone, email, description },
+    data: { userId, name, phone, email },
     t,
   }: Create): Promise<{ data: ProviderRecord }> => {
     const slug = await SlugService.get(name);
@@ -155,7 +154,6 @@ export class Service {
       name,
       phone,
       email,
-      description,
     });
 
     if (!provider) {

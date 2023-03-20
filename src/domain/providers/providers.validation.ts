@@ -74,11 +74,6 @@ export class Validation {
           req.t('providers.errors.email.invalid'),
       },
     },
-    description: {
-      in: ['body'],
-      optional: { options: { checkFalsy: true } },
-      trim: true,
-    },
   });
 
   static update = checkSchema({
