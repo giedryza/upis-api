@@ -196,7 +196,11 @@
       },
       "userId": {
         "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
-      }
+      },
+      "role": {
+        "invalid": "Nepavyko atnaujinti vartotojo rolės."
+      },
+      "unauthorized": "Draudžiama užklausa."
     }
   },
   "images": {

@@ -1,11 +1,30 @@
+import { Request } from 'express';
+import { isValidObjectId } from 'mongoose';
 import { checkSchema, Meta } from 'express-validator';
+import { z } from 'zod';
 
-import {
-  PASSWORD_MIN_LENGTH,
-  PASSWORD_MAX_LENGTH,
-} from 'domain/users/users.constants';
+import { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } from './users.constants';
+import { roles } from './users.types';
 
 export class Validation {
+  static user = (req: Request) =>
+    z.object({
+      user: z.object({
+        _id: z.custom<string>(isValidObjectId, {
+          message: req.t('users.errors.unauthorized'),
+        }),
+        email: z.string({
+          required_error: req.t('users.errors.unauthorized'),
+          invalid_type_error: req.t('users.errors.unauthorized'),
+        }),
+        role: z.enum(roles, {
+          errorMap: () => ({
+            message: req.t('users.errors.unauthorized'),
+          }),
+        }),
+      }),
+    });
+
   static signup = checkSchema({
     email: {
       in: ['body'],
@@ -74,6 +93,8 @@ export class Validation {
       },
     },
   });
+
+  static me = (req: Request) => z.object({}).merge(Validation.user(req));
 
   static updatePassword = checkSchema({
     currentPassword: {
@@ -165,4 +186,17 @@ export class Validation {
       },
     },
   });
+
+  static updateRole = (req: Request) =>
+    z
+      .object({
+        body: z.object({
+          role: z.enum(roles, {
+            errorMap: () => ({
+              message: req.t('users.errors.role.invalid'),
+            }),
+          }),
+        }),
+      })
+      .merge(Validation.user(req));
 }

@@ -4,12 +4,8 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 import { PasswordService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
 import { ModelName } from 'types/common';
-import {
-  UserDocument,
-  UserModel,
-  UserRecord,
-  Role,
-} from 'domain/users/users.types';
+
+import { UserDocument, UserModel, UserRecord, roles } from './users.types';
 
 const schema = new Schema<UserDocument, UserModel, UserRecord>(
   {
@@ -27,8 +23,8 @@ const schema = new Schema<UserDocument, UserModel, UserRecord>(
     },
     role: {
       type: String,
-      enum: Object.values(Role),
-      default: Role.User,
+      enum: roles,
+      default: 'user',
     },
   },
   {

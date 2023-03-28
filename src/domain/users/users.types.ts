@@ -2,11 +2,9 @@ import { Document, PaginateModel } from 'mongoose';
 
 import { EntityId, WithTimestamp } from 'types/common';
 
-export enum Role {
-  User = 'user',
-  Manager = 'manager',
-  Admin = 'admin',
-}
+export const roles = ['user', 'manager', 'admin'] as const;
+
+export type Role = (typeof roles)[number];
 
 export interface AppUser {
   _id: EntityId;
