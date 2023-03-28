@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 
 import { SuccessResponse, CreatedResponse, NoContentResponse } from 'responses';
-import { Service } from 'domain/users/users.service';
 import { ValidatorService } from 'tools/services';
+
+import { Service } from './users.service';
+import { Validation } from './users.validation';
 
 interface Signup {
   body: {
@@ -69,9 +71,11 @@ class Controller {
   };
 
   me = async (req: Request, res: Response) => {
-    const { user } = req;
+    const { user } = ValidatorService.getParsedData<typeof Validation.me>(req);
 
-    const { data } = await Service.me({ data: { user } });
+    const { data } = await Service.me({
+      data: user,
+    });
 
     return new SuccessResponse(res, data).send();
   };
@@ -112,6 +116,22 @@ class Controller {
         userId: body.userId,
         token: body.token,
         password: body.password,
+      },
+      t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  updateRole = async (req: Request, res: Response) => {
+    const { user, body } =
+      ValidatorService.getParsedData<typeof Validation.updateRole>(req);
+
+    const { data } = await Service.updateRole({
+      data: {
+        id: user._id,
+        currentRole: user.role,
+        newRole: body.role,
       },
       t: req.t,
     });

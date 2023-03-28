@@ -196,7 +196,11 @@
       },
       "userId": {
         "invalid": "Unable to reset password. Try again."
-      }
+      },
+      "role": {
+        "invalid": "Unable to update user role."
+      },
+      "unauthorized": "Not authorized."
     }
   },
   "images": {

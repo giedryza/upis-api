@@ -1,10 +1,11 @@
 import { Router } from 'express';
 
 import { BaseRoute } from 'routes/_base.route';
-import { controller } from 'domain/users/users.controller';
 import { ValidatorService } from 'tools/services';
-import { Validation } from 'domain/users/users.validation';
 import { AuthMiddleware } from 'middlewares';
+
+import { Validation } from './users.validation';
+import { controller } from './users.controller';
 
 class Route extends BaseRoute {
   router = Router({ caseSensitive: true });
@@ -24,7 +25,13 @@ class Route extends BaseRoute {
     this.router
       .route('/signin')
       .post(Validation.signin, ValidatorService.catch, controller.signin);
-    this.router.route('/me').get(AuthMiddleware.protect, controller.me);
+    this.router
+      .route('/me')
+      .get(
+        AuthMiddleware.protect,
+        ValidatorService.validate(Validation.me),
+        controller.me
+      );
     this.router
       .route('/update-password')
       .patch(
@@ -46,6 +53,13 @@ class Route extends BaseRoute {
         Validation.resetPassword,
         ValidatorService.catch,
         controller.resetPassword
+      );
+    this.router
+      .route('/update-role')
+      .post(
+        AuthMiddleware.protect,
+        ValidatorService.validate(Validation.updateRole),
+        controller.updateRole
       );
   };
 }

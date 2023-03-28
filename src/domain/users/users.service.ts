@@ -8,10 +8,11 @@ import {
 } from 'errors';
 import { JwtService, PasswordService } from 'tools/services';
 import { ResetPasswordEmail } from 'emails';
-import { User } from 'domain/users/users.model';
-import { AppUser } from 'domain/users/users.types';
 import { Token } from 'domain/token/token.model';
 import { EntityId } from 'types/common';
+
+import { Role, UserRecord } from './users.types';
+import { User } from './users.model';
 
 interface Signup {
   data: {
@@ -31,7 +32,9 @@ interface Signin {
 
 interface Me {
   data: {
-    user?: AppUser;
+    _id: string;
+    email: string;
+    role: Role;
   };
 }
 
@@ -55,6 +58,15 @@ interface ResetPassword {
     userId: string;
     token: string;
     password: string;
+  };
+  t: TFunction;
+}
+
+interface UpdateRole {
+  data: {
+    id: string;
+    currentRole: Role;
+    newRole: Role;
   };
   t: TFunction;
 }
@@ -124,9 +136,7 @@ export class Service {
     };
   };
 
-  static me = async ({ data: { user } }: Me) => {
-    const data = user ?? null;
-
+  static me = async ({ data }: Me) => {
     return {
       data,
     };
@@ -234,6 +244,29 @@ export class Service {
       data: {
         email: user.email,
       },
+    };
+  };
+
+  static updateRole = async ({
+    data: { id, currentRole, newRole },
+    t,
+  }: UpdateRole): Promise<{ data: UserRecord }> => {
+    if (currentRole !== 'user' || newRole !== 'manager') {
+      throw new BadRequestError(t('users.errors.role.invalid'));
+    }
+
+    const user = await User.findByIdAndUpdate(
+      id,
+      { role: newRole },
+      { new: true }
+    ).lean();
+
+    if (!user) {
+      throw new BadRequestError(t('users.errors.role.invalid'));
+    }
+
+    return {
+      data: user,
     };
   };
 }
