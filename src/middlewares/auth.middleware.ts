@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { isValidObjectId } from 'mongoose';
 
 import { JwtService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
@@ -26,10 +25,6 @@ export class AuthMiddleware {
     const user = await JwtService.verify(token);
 
     if (!user) {
-      throw new UnauthorizedError();
-    }
-
-    if (!isValidObjectId(user._id)) {
       throw new UnauthorizedError();
     }
 
