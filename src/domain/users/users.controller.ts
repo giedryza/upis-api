@@ -74,7 +74,9 @@ class Controller {
     const { user } = ValidatorService.getParsedData<typeof Validation.me>(req);
 
     const { data } = await Service.me({
-      data: user,
+      data: {
+        id: user._id,
+      },
     });
 
     return new SuccessResponse(res, data).send();
