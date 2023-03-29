@@ -55,8 +55,8 @@ class Route extends BaseRoute {
         controller.resetPassword
       );
     this.router
-      .route('/update-role')
-      .post(
+      .route('/role')
+      .patch(
         AuthMiddleware.protect,
         ValidatorService.validate(Validation.updateRole),
         controller.updateRole

@@ -32,9 +32,7 @@ interface Signin {
 
 interface Me {
   data: {
-    _id: string;
-    email: string;
-    role: Role;
+    id: string;
   };
 }
 
@@ -136,9 +134,17 @@ export class Service {
     };
   };
 
-  static me = async ({ data }: Me) => {
+  static me = async ({
+    data: { id },
+  }: Me): Promise<{ data: UserRecord | null }> => {
+    const user = await User.findById(id).lean();
+
+    if (!user) {
+      return { data: null };
+    }
+
     return {
-      data,
+      data: user,
     };
   };
 

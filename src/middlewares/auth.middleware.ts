@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { isValidObjectId } from 'mongoose';
 
 import { JwtService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
@@ -8,6 +7,7 @@ import { Provider } from 'domain/providers/providers.model';
 import { Tour } from 'domain/tours/tours.model';
 import { Amenity } from 'domain/amenities/amenities.model';
 import { Image } from 'domain/images/images.model';
+import { User } from 'domain/users/users.model';
 
 export class AuthMiddleware {
   static protect = async (req: Request, _res: Response, next: NextFunction) => {
@@ -23,17 +23,23 @@ export class AuthMiddleware {
       throw new UnauthorizedError();
     }
 
-    const user = await JwtService.verify(token);
+    const decoded = await JwtService.verify(token);
+
+    if (!decoded) {
+      throw new UnauthorizedError();
+    }
+
+    const user = await User.findById(decoded._id).lean();
 
     if (!user) {
       throw new UnauthorizedError();
     }
 
-    if (!isValidObjectId(user._id)) {
-      throw new UnauthorizedError();
-    }
-
-    req.user = user;
+    req.user = {
+      ...decoded,
+      email: user.email,
+      role: user.role,
+    };
 
     next();
   };
