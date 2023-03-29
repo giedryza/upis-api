@@ -24,6 +24,7 @@ class Route extends BaseRoute {
       .get(ValidatorService.validate(Validation.getAll), controller.getAll)
       .post(
         AuthMiddleware.protect,
+        AuthMiddleware.restrict(['manager', 'admin']),
         Validation.create,
         ValidatorService.catch,
         controller.create
