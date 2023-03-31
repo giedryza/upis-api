@@ -39,12 +39,6 @@ interface Update {
   };
 }
 
-interface Destroy {
-  params: {
-    id: string;
-  };
-}
-
 interface UpdatePrice {
   params: {
     id: string;
@@ -71,15 +65,6 @@ interface UpdateAmenities {
   };
   body: {
     amenities: string[];
-  };
-}
-
-interface AddPhoto {
-  params: {
-    id: string;
-  };
-  body: {
-    description?: string;
   };
 }
 
@@ -137,7 +122,8 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { params } = ValidatorService.getData<Destroy['params']>(req);
+    const { params } =
+      ValidatorService.getParsedData<typeof Validation.destroy>(req);
 
     await Service.destroy({
       data: {
@@ -201,15 +187,13 @@ class Controller {
   };
 
   addPhoto = async (req: Request, res: Response) => {
-    const { params, body } = ValidatorService.getData<
-      AddPhoto['params'],
-      AddPhoto['body']
-    >(req);
+    const { params, body, user } =
+      ValidatorService.getParsedData<typeof Validation.addPhoto>(req);
 
     const { data } = await Service.addPhoto({
       data: {
         id: params.id,
-        userId: req.user?._id!,
+        userId: user._id,
         photo: req.file,
         description: body.description,
       },

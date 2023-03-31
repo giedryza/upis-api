@@ -88,7 +88,7 @@ interface UpdateAmenities {
 interface AddPhoto {
   data: {
     id: string;
-    userId: EntityId;
+    userId: string;
     photo: Request['file'];
     description?: string;
   };

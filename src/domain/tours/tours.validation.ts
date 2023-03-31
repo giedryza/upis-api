@@ -9,6 +9,7 @@ import { Provider } from 'domain/providers/providers.model';
 import { variants as amenities } from 'domain/amenities/amenities.types';
 import { Validation as PaginationValidation } from 'domain/pagination/pagination.validation';
 import { boats } from 'domain/providers/providers.types';
+import { Validation as UsersValidation } from 'domain/users/users.validation';
 
 import { queryUtils, regions, rivers } from './tours.types';
 
@@ -316,16 +317,14 @@ export class Validation {
     },
   });
 
-  static destroy = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('tours.errors.id.invalid'));
-        },
-      },
-    },
-  });
+  static destroy = (req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId, {
+          message: req.t('tours.errors.id.invalid'),
+        }),
+      }),
+    });
 
   static updatePrice = checkSchema({
     id: {
@@ -435,19 +434,17 @@ export class Validation {
     },
   });
 
-  static addPhoto = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('tours.errors.id.invalid'));
-        },
-      },
-    },
-    description: {
-      in: ['body'],
-      optional: true,
-      trim: true,
-    },
-  });
+  static addPhoto = (req: Request) =>
+    z
+      .object({
+        params: z.object({
+          id: z.custom<string>(isValidObjectId, {
+            message: req.t('tours.errors.id.invalid'),
+          }),
+        }),
+        body: z.object({
+          description: z.string().optional(),
+        }),
+      })
+      .merge(UsersValidation.user(req));
 }
