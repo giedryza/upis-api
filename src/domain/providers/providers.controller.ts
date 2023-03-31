@@ -13,24 +13,6 @@ import { Service } from './providers.service';
 import { Boat, SocialVariant } from './providers.types';
 import { Validation } from './providers.validation';
 
-interface GetOne {
-  params: {
-    id: string;
-  };
-}
-
-interface Destroy {
-  params: {
-    id: string;
-  };
-}
-
-interface AddLogo {
-  params: {
-    id: string;
-  };
-}
-
 interface CreateSocial {
   params: {
     id: string;
@@ -49,15 +31,6 @@ interface UpdateSocial {
     id: string;
     type: SocialVariant;
     url: string;
-  };
-}
-
-interface DestroySocial {
-  params: {
-    id: string;
-  };
-  body: {
-    id: string;
   };
 }
 
@@ -98,7 +71,8 @@ class Controller {
   };
 
   getOne = async (req: Request, res: Response) => {
-    const { params } = ValidatorService.getData<GetOne['params']>(req);
+    const { params } =
+      ValidatorService.getParsedData<typeof Validation.getOne>(req);
 
     const { data } = await Service.getOne({ data: { id: params.id } });
 
@@ -142,11 +116,11 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { _id: userId } = req.user!;
-    const { params } = ValidatorService.getData<Destroy['params']>(req);
+    const { params, user } =
+      ValidatorService.getParsedData<typeof Validation.destroy>(req);
 
     await Service.destroy({
-      data: { id: params.id, userId },
+      data: { id: params.id, userId: user._id },
       t: req.t,
     });
 
@@ -154,12 +128,12 @@ class Controller {
   };
 
   addLogo = async (req: Request, res: Response) => {
-    const { _id: userId } = req.user!;
     const { file } = req;
-    const { params } = ValidatorService.getData<AddLogo['params']>(req);
+    const { params, user } =
+      ValidatorService.getParsedData<typeof Validation.addLogo>(req);
 
     const { data } = await Service.addLogo({
-      data: { id: params.id, userId, file },
+      data: { id: params.id, userId: user._id, file },
       t: req.t,
     });
 
@@ -201,10 +175,8 @@ class Controller {
   };
 
   destroySocial = async (req: Request, res: Response) => {
-    const { params, body } = ValidatorService.getData<
-      DestroySocial['params'],
-      DestroySocial['body']
-    >(req);
+    const { params, body } =
+      ValidatorService.getParsedData<typeof Validation.destroySocial>(req);
 
     const { data } = await Service.destroySocial({
       data: {

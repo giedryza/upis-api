@@ -52,7 +52,7 @@ interface Update {
 interface Destroy {
   data: {
     id: string;
-    userId: EntityId;
+    userId: string;
   };
   t: TFunction;
 }
@@ -60,7 +60,7 @@ interface Destroy {
 interface AddLogo {
   data: {
     id: string;
-    userId: EntityId;
+    userId: string;
     file?: Request['file'];
   };
   t: TFunction;
@@ -131,6 +131,10 @@ export class Service {
   static getOne = async ({
     data: { id },
   }: GetOne): Promise<{ data: LeanDocument<ProviderRecord> | null }> => {
+    if (!id) {
+      return { data: null };
+    }
+
     const provider = await Provider.findById(id)
       .populate(['user', 'amenities'])
       .lean();

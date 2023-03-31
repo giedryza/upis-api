@@ -34,7 +34,7 @@ interface Create {
       contentType: string;
       description?: string;
     };
-    user: EntityId;
+    user: string;
   };
   t: TFunction;
 }
