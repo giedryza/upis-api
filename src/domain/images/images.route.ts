@@ -21,19 +21,17 @@ class Route extends BaseRoute {
   protected init = () => {
     this.router
       .route('/:id')
-      .get(Validation.getOne, controller.getOne)
+      .get(ValidatorService.validate(Validation.getOne), controller.getOne)
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('image'),
-        Validation.update,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.update),
         controller.update
       )
       .delete(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('image'),
-        Validation.destroy,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.destroy),
         controller.destroy
       );
   };

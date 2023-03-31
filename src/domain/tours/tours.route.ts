@@ -34,7 +34,7 @@ class Route extends BaseRoute {
 
     this.router
       .route('/:id')
-      .get(Validation.getOne, controller.getOne)
+      .get(ValidatorService.validate(Validation.getOne), controller.getOne)
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('tour'),
@@ -45,8 +45,7 @@ class Route extends BaseRoute {
       .delete(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('tour'),
-        Validation.destroy,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.destroy),
         controller.destroy
       );
 
@@ -95,8 +94,7 @@ class Route extends BaseRoute {
             'image/bmp',
           ])
           .single('photo'),
-        Validation.addPhoto,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.addPhoto),
         controller.addPhoto
       );
   };

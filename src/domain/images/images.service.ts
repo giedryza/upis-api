@@ -34,7 +34,7 @@ interface Create {
       contentType: string;
       description?: string;
     };
-    user: EntityId;
+    user: string;
   };
   t: TFunction;
 }
@@ -58,6 +58,10 @@ export class Service {
   static getOne = async ({
     data: { id },
   }: GetOne): Promise<{ data: LeanDocument<ImageDocument> | null }> => {
+    if (!id) {
+      return { data: null };
+    }
+
     const image = await Image.findById(id).lean();
 
     if (!image) {

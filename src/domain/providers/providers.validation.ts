@@ -6,16 +6,17 @@ import { z } from 'zod';
 import { NotFoundError } from 'errors';
 import { languages } from 'types/common';
 import { Validation as PaginationValidation } from 'domain/pagination/pagination.validation';
+import { Validation as UsersValidation } from 'domain/users/users.validation';
 
 import { boats, queryUtils, socials } from './providers.types';
 
 export class Validation {
-  static getOne = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: true,
-    },
-  });
+  static getOne = (_req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId).catch(''),
+      }),
+    });
 
   static getAll = (req: Request) =>
     z.object({
@@ -194,27 +195,27 @@ export class Validation {
     },
   });
 
-  static destroy = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('providers.errors.id.invalid'));
-        },
-      },
-    },
-  });
+  static destroy = (req: Request) =>
+    z
+      .object({
+        params: z.object({
+          id: z.custom<string>(isValidObjectId, {
+            message: req.t('providers.errors.id.invalid'),
+          }),
+        }),
+      })
+      .merge(UsersValidation.user(req));
 
-  static addLogo = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('providers.errors.id.invalid'));
-        },
-      },
-    },
-  });
+  static addLogo = (req: Request) =>
+    z
+      .object({
+        params: z.object({
+          id: z.custom<string>(isValidObjectId, {
+            message: req.t('providers.errors.id.invalid'),
+          }),
+        }),
+      })
+      .merge(UsersValidation.user(req));
 
   static createSocial = checkSchema({
     id: {
@@ -284,14 +285,17 @@ export class Validation {
     },
   });
 
-  static destroySocial = checkSchema({
-    id: {
-      in: ['params', 'body'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('socials.errors.id.invalid'));
-        },
-      },
-    },
-  });
+  static destroySocial = (req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId, {
+          message: req.t('socials.errors.id.invalid'),
+        }),
+      }),
+      body: z.object({
+        id: z.custom<string>(isValidObjectId, {
+          message: req.t('socials.errors.id.invalid'),
+        }),
+      }),
+    });
 }

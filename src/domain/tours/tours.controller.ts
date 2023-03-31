@@ -13,12 +13,6 @@ import { Validation } from './tours.validation';
 import { Region } from './tours.types';
 import { Service } from './tours.service';
 
-interface GetOne {
-  params: {
-    id: string;
-  };
-}
-
 interface Create {
   params: {};
   body: {
@@ -42,12 +36,6 @@ interface Update {
     days: number;
     difficulty: number;
     primaryPhoto: string;
-  };
-}
-
-interface Destroy {
-  params: {
-    id: string;
   };
 }
 
@@ -80,15 +68,6 @@ interface UpdateAmenities {
   };
 }
 
-interface AddPhoto {
-  params: {
-    id: string;
-  };
-  body: {
-    description?: string;
-  };
-}
-
 class Controller {
   getAll = async (req: Request, res: Response) => {
     const { query } =
@@ -100,7 +79,8 @@ class Controller {
   };
 
   getOne = async (req: Request, res: Response) => {
-    const { params } = ValidatorService.getData<GetOne['params']>(req);
+    const { params } =
+      ValidatorService.getParsedData<typeof Validation.getOne>(req);
 
     const { data } = await Service.getOne({ data: { id: params.id } });
 
@@ -142,7 +122,8 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { params } = ValidatorService.getData<Destroy['params']>(req);
+    const { params } =
+      ValidatorService.getParsedData<typeof Validation.destroy>(req);
 
     await Service.destroy({
       data: {
@@ -206,15 +187,13 @@ class Controller {
   };
 
   addPhoto = async (req: Request, res: Response) => {
-    const { params, body } = ValidatorService.getData<
-      AddPhoto['params'],
-      AddPhoto['body']
-    >(req);
+    const { params, body, user } =
+      ValidatorService.getParsedData<typeof Validation.addPhoto>(req);
 
     const { data } = await Service.addPhoto({
       data: {
         id: params.id,
-        userId: req.user?._id!,
+        userId: user._id,
         photo: req.file,
         description: body.description,
       },

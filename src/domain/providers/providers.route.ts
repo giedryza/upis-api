@@ -32,7 +32,7 @@ class Route extends BaseRoute {
 
     this.router
       .route('/:id')
-      .get(Validation.getOne, ValidatorService.catch, controller.getOne)
+      .get(ValidatorService.validate(Validation.getOne), controller.getOne)
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('provider'),
@@ -43,8 +43,7 @@ class Route extends BaseRoute {
       .delete(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('provider'),
-        Validation.destroy,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.destroy),
         controller.destroy
       );
 
@@ -53,8 +52,7 @@ class Route extends BaseRoute {
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('provider'),
-        Validation.addLogo,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.addLogo),
         filesService('cloudinary')
           .upload(['image/jpeg', 'image/jpg', 'image/png'])
           .single('logo'),
@@ -80,8 +78,7 @@ class Route extends BaseRoute {
       .delete(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('provider'),
-        Validation.destroySocial,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.destroySocial),
         controller.destroySocial
       );
   };

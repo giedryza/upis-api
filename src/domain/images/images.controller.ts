@@ -3,32 +3,13 @@ import { Request, Response } from 'express';
 import { NoContentResponse, SuccessResponse } from 'responses';
 import { ValidatorService } from 'tools/services';
 
+import { Validation } from './images.validation';
 import { Service } from './images.service';
-
-interface GetOne {
-  params: {
-    id: string;
-  };
-}
-
-interface Update {
-  params: {
-    id: string;
-  };
-  body: {
-    description?: string;
-  };
-}
-
-interface Destroy {
-  params: {
-    id: string;
-  };
-}
 
 class Controller {
   getOne = async (req: Request, res: Response) => {
-    const { params } = ValidatorService.getData<GetOne['params']>(req);
+    const { params } =
+      ValidatorService.getParsedData<typeof Validation.getOne>(req);
 
     const { data } = await Service.getOne({
       data: {
@@ -40,10 +21,8 @@ class Controller {
   };
 
   update = async (req: Request, res: Response) => {
-    const { params, body } = ValidatorService.getData<
-      Update['params'],
-      Update['body']
-    >(req);
+    const { params, body } =
+      ValidatorService.getParsedData<typeof Validation.update>(req);
 
     const { data } = await Service.update({
       data: {
@@ -57,7 +36,8 @@ class Controller {
   };
 
   destroy = async (req: Request, res: Response) => {
-    const { params } = ValidatorService.getData<Destroy['params']>(req);
+    const { params } =
+      ValidatorService.getParsedData<typeof Validation.destroy>(req);
 
     await Service.destroy({
       data: {
