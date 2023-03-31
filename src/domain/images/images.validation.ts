@@ -1,39 +1,33 @@
-import { checkSchema, Meta } from 'express-validator';
-
-import { NotFoundError } from 'errors';
+import { Request } from 'express';
+import { isValidObjectId } from 'mongoose';
+import { z } from 'zod';
 
 export class Validation {
-  static getOne = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: true,
-    },
-  });
+  static getOne = (_req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId).catch(''),
+      }),
+    });
 
-  static update = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('images.errors.id.invalid'));
-        },
-      },
-    },
-    description: {
-      in: ['body'],
-      optional: true,
-      trim: true,
-    },
-  });
+  static update = (req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId, {
+          message: req.t('images.errors.id.invalid'),
+        }),
+      }),
+      body: z.object({
+        description: z.string().optional(),
+      }),
+    });
 
-  static destroy = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('images.errors.id.invalid'));
-        },
-      },
-    },
-  });
+  static destroy = (req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId, {
+          message: req.t('images.errors.id.invalid'),
+        }),
+      }),
+    });
 }
