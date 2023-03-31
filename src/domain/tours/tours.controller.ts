@@ -13,12 +13,6 @@ import { Validation } from './tours.validation';
 import { Region } from './tours.types';
 import { Service } from './tours.service';
 
-interface GetOne {
-  params: {
-    id: string;
-  };
-}
-
 interface Create {
   params: {};
   body: {
@@ -100,7 +94,8 @@ class Controller {
   };
 
   getOne = async (req: Request, res: Response) => {
-    const { params } = ValidatorService.getData<GetOne['params']>(req);
+    const { params } =
+      ValidatorService.getParsedData<typeof Validation.getOne>(req);
 
     const { data } = await Service.getOne({ data: { id: params.id } });
 

@@ -13,12 +13,12 @@ import { boats } from 'domain/providers/providers.types';
 import { queryUtils, regions, rivers } from './tours.types';
 
 export class Validation {
-  static getOne = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: true,
-    },
-  });
+  static getOne = (_req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId).catch(''),
+      }),
+    });
 
   static getAll = (req: Request) =>
     z.object({
