@@ -8,10 +8,11 @@
     "node": "18.x"
   },
   "scripts": {
-    "start": "npm run build && npm run start:prod",
+    "start": "npm run build:prod && npm run start:prod",
     "start:dev": "nodemon",
     "start:prod": "cross-env NODE_PATH=build NODE_ENV=production node -r ./dotenv.js ./build/index.js",
-    "build": "npm run clean && npm run compile",
+    "build:prod": "npm i typescript && npm run compile",
+    "build:prod:local": "npm run clean && npm run compile",
     "compile": "tsc",
     "clean": "rimraf ./build",
     "browserslist": "npx browserslist",
