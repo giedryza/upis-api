@@ -23,7 +23,6 @@ export const APP = {
   root: {
     env: process.env.NODE_ENV as NodeEnv,
     port: Number(process.env.PORT),
-    host: process.env.HOST_API,
   },
   db: {
     connectionString: process.env.DB_CONNECTION_STRING,
