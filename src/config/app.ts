@@ -5,8 +5,7 @@ export const APP = {
   name: 'Upis',
   domain: 'upis',
   email: {
-    // TODO: replace with 'info@upis.lt'
-    info: 'giedrius.bla@gmail.com',
+    info: 'info@upis.lt',
   },
   client: {
     host: process.env.HOST_CLIENT,
