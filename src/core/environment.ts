@@ -3,7 +3,6 @@ class Environment {
     'NODE_ENV',
     'PORT',
     'HOST_CLIENT',
-    'HOST_API',
     'DB_CONNECTION_STRING',
     'DB_USERNAME',
     'DB_PASSWORD',
