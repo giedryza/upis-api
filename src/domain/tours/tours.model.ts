@@ -5,6 +5,7 @@ import { filesService } from 'tools/services';
 import { ModelName, currencies, PriceDocument } from 'types/common';
 import { Image } from 'domain/images/images.model';
 import { variants } from 'domain/amenities/amenities.types';
+import { pointSchema } from 'domain/geo/geo.schema';
 
 import { TourDocument, TourModel, regions, rivers } from './tours.types';
 import { calculateScore } from './tours.utils';
@@ -28,24 +29,12 @@ const schema = new Schema<TourDocument>(
       default: '',
     },
     departure: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        default: 'Point',
-      },
-      coordinates: {
-        type: [Number],
-      },
+      type: pointSchema,
+      default: null,
     },
     arrival: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        default: 'Point',
-      },
-      coordinates: {
-        type: [Number],
-      },
+      type: pointSchema,
+      default: null,
     },
     distance: {
       type: Number,

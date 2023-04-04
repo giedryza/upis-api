@@ -251,12 +251,12 @@ export interface TourRecord extends WithTimestamp {
   website: string;
   departure: {
     type: 'Point';
-    coordinates?: number[];
-  };
+    coordinates: [number, number];
+  } | null;
   arrival: {
     type: 'Point';
-    coordinates: number[];
-  };
+    coordinates: [number, number];
+  } | null;
   distance: number | null;
   duration: number | null;
   days: number;

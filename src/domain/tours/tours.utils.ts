@@ -7,10 +7,13 @@ export const calculateScore = (tour: TourDocument): number => {
     { value: Number(Boolean(tour.description)), rate: SCORE_RATES.description },
     { value: Number(Boolean(tour.website)), rate: SCORE_RATES.website },
     {
-      value: tour.departure.coordinates?.length ?? 0,
+      value: tour.departure?.coordinates.length ?? 0,
       rate: SCORE_RATES.departure,
     },
-    { value: tour.arrival.coordinates.length, rate: SCORE_RATES.arrival },
+    {
+      value: tour.arrival?.coordinates.length ?? 0,
+      rate: SCORE_RATES.arrival,
+    },
     { value: tour.rivers.length, rate: SCORE_RATES.rivers },
     { value: tour.regions.length, rate: SCORE_RATES.regions },
     { value: Number(Boolean(tour.distance)), rate: SCORE_RATES.distance },
