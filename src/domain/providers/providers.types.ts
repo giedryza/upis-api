@@ -17,6 +17,7 @@ export const socials = [
   'instagram',
   'youtube',
   'linkedin',
+  'tiktok',
   'twitter',
 ] as const;
 
