@@ -256,7 +256,7 @@ export class Service {
   static updateRole = async ({
     data: { id, currentRole, newRole },
     t,
-  }: UpdateRole): Promise<{ data: UserRecord }> => {
+  }: UpdateRole): Promise<{ data: { user: UserRecord; token: string } }> => {
     if (currentRole !== 'user' || newRole !== 'manager') {
       throw new BadRequestError(t('users.errors.role.invalid'));
     }
@@ -271,8 +271,19 @@ export class Service {
       throw new BadRequestError(t('users.errors.role.invalid'));
     }
 
+    const baseUser = {
+      _id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+
+    const token = JwtService.token(baseUser);
+
     return {
-      data: user,
+      data: {
+        user,
+        token,
+      },
     };
   };
 }
