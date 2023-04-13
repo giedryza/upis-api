@@ -56,10 +56,9 @@ class Route extends BaseRoute {
         filesService('cloudinary')
           .upload([
             'image/jpeg',
-            'image/jpg',
             'image/png',
             'image/avif',
-            'image/svg',
+            'image/svg+xml',
             'image/gif',
             'image/bmp',
           ])
