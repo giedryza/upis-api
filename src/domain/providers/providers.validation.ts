@@ -209,38 +209,26 @@ export class Validation {
       })
       .merge(UsersValidation.user(req));
 
-  static createSocial = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('socials.errors.id.invalid'));
-        },
-      },
-    },
-    type: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('socials.errors.type.invalid'),
-      },
-      isIn: {
-        options: [socials],
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('socials.errors.type.invalid'),
-      },
-    },
-    url: {
-      in: ['body'],
-      trim: true,
-      isURL: {
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('socials.errors.url.invalid'),
-      },
-    },
-  });
+  static createSocial = (req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId, {
+          message: req.t('socials.errors.id.invalid'),
+        }),
+      }),
+      body: z.object({
+        type: z.enum(socials, {
+          errorMap: () => ({
+            message: req.t('socials.errors.type.invalid'),
+          }),
+        }),
+        url: z
+          .string({
+            required_error: req.t('socials.errors.url.invalid'),
+          })
+          .trim(),
+      }),
+    });
 
   static updateSocial = checkSchema({
     id: {

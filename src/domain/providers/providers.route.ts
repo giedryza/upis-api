@@ -70,8 +70,7 @@ class Route extends BaseRoute {
       .post(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('provider'),
-        Validation.createSocial,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.createSocial),
         controller.createSocial
       )
       .patch(
