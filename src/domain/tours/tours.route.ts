@@ -85,14 +85,7 @@ class Route extends BaseRoute {
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('tour'),
         filesService('cloudinary')
-          .upload([
-            'image/jpeg',
-            'image/png',
-            'image/avif',
-            'image/gif',
-            'image/svg+xml',
-            'image/bmp',
-          ])
+          .upload(['jpg', 'jpeg', 'png', 'avif', 'svg', 'gif', 'bmp'])
           .single('photo'),
         ValidatorService.validate(Validation.addPhoto),
         controller.addPhoto
