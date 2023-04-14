@@ -271,13 +271,11 @@ export class Service {
       throw new BadRequestError(t('users.errors.role.invalid'));
     }
 
-    const baseUser = {
-      _id: user.id,
+    const token = JwtService.token({
+      _id: user._id,
       email: user.email,
       role: user.role,
-    };
-
-    const token = JwtService.token(baseUser);
+    });
 
     return {
       data: {
