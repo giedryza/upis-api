@@ -24,7 +24,7 @@ interface GetOne {
 
 interface Create {
   data: {
-    userId: EntityId;
+    userId: string;
     name: string;
     phone: string;
     email: string;

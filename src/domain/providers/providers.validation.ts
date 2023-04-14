@@ -5,6 +5,7 @@ import { z } from 'zod';
 
 import { NotFoundError } from 'errors';
 import { languages } from 'types/common';
+import { stripPhone } from 'tools/utils';
 import { Validation as PaginationValidation } from 'domain/pagination/pagination.validation';
 import { Validation as UsersValidation } from 'domain/users/users.validation';
 
@@ -38,44 +39,35 @@ export class Validation {
         .partial(),
     });
 
-  static create = checkSchema({
-    name: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('providers.errors.name.invalid'),
-      },
-      isLength: {
-        options: { max: 150 },
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('providers.errors.name.max', { maxLength: 150 }),
-      },
-    },
-    phone: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('providers.errors.phone.invalid'),
-      },
-    },
-    email: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('providers.errors.email.invalid'),
-      },
-      isEmail: {
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('providers.errors.email.invalid'),
-      },
-    },
-  });
+  static create = (req: Request) =>
+    z
+      .object({
+        body: z.object({
+          name: z
+            .string({
+              required_error: req.t('providers.errors.name.invalid'),
+            })
+            .trim()
+            .max(150, {
+              message: req.t('providers.errors.name.max', { maxLength: 150 }),
+            }),
+          phone: z
+            .string({
+              required_error: req.t('providers.errors.phone.invalid'),
+            })
+            .trim()
+            .transform(stripPhone),
+          email: z
+            .string({
+              required_error: req.t('providers.errors.email.invalid'),
+            })
+            .trim()
+            .email({
+              message: req.t('providers.errors.email.invalid'),
+            }),
+        }),
+      })
+      .merge(UsersValidation.user(req));
 
   static update = checkSchema({
     id: {
