@@ -76,8 +76,7 @@ class Route extends BaseRoute {
       .patch(
         AuthMiddleware.protect,
         AuthMiddleware.isOwner('provider'),
-        Validation.updateSocial,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.updateSocial),
         controller.updateSocial
       )
       .delete(

@@ -230,40 +230,29 @@ export class Validation {
       }),
     });
 
-  static updateSocial = checkSchema({
-    id: {
-      in: ['params', 'body'],
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) => {
-          throw new NotFoundError(req.t('socials.errors.id.invalid'));
-        },
-      },
-    },
-    url: {
-      in: ['body'],
-      optional: true,
-      trim: true,
-      isURL: {
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('socials.errors.url.invalid'),
-      },
-    },
-    type: {
-      in: ['body'],
-      optional: true,
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('socials.errors.type.invalid'),
-      },
-      isIn: {
-        options: [socials],
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('socials.errors.type.invalid'),
-      },
-    },
-  });
+  static updateSocial = (req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId, {
+          message: req.t('socials.errors.id.invalid'),
+        }),
+      }),
+      body: z.object({
+        id: z.custom<string>(isValidObjectId, {
+          message: req.t('socials.errors.id.invalid'),
+        }),
+        type: z.enum(socials, {
+          errorMap: () => ({
+            message: req.t('socials.errors.type.invalid'),
+          }),
+        }),
+        url: z
+          .string({
+            required_error: req.t('socials.errors.url.invalid'),
+          })
+          .trim(),
+      }),
+    });
 
   static destroySocial = (req: Request) =>
     z.object({

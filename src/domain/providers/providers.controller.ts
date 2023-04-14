@@ -10,19 +10,8 @@ import {
 } from 'responses';
 
 import { Service } from './providers.service';
-import { Boat, SocialVariant } from './providers.types';
+import { Boat } from './providers.types';
 import { Validation } from './providers.validation';
-
-interface UpdateSocial {
-  params: {
-    id: string;
-  };
-  body: {
-    id: string;
-    type: SocialVariant;
-    url: string;
-  };
-}
 
 interface Create {
   params: {};
@@ -147,10 +136,8 @@ class Controller {
   };
 
   updateSocial = async (req: Request, res: Response) => {
-    const { params, body } = ValidatorService.getData<
-      UpdateSocial['params'],
-      UpdateSocial['body']
-    >(req);
+    const { params, body } =
+      ValidatorService.getParsedData<typeof Validation.updateSocial>(req);
 
     const { data } = await Service.updateSocial({
       data: {
