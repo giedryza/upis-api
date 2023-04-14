@@ -257,7 +257,8 @@ export class Service {
             url: data.url,
           },
         },
-      }
+      },
+      { new: true }
     ).lean();
 
     if (!provider) {
@@ -270,7 +271,7 @@ export class Service {
   static updateSocial = async ({
     data,
     t,
-  }: UpdateSocial): Promise<{ data: ProviderRecord }> => {
+  }: UpdateSocial): Promise<{ data: LeanDocument<ProviderRecord> }> => {
     const { id, social } = data;
 
     const provider = await Provider.findOneAndUpdate(
@@ -281,7 +282,7 @@ export class Service {
         },
       },
       { new: true }
-    );
+    ).lean();
 
     if (!provider) {
       throw new BadRequestError(t('socials.errors.id.update'));
@@ -293,7 +294,7 @@ export class Service {
   static destroySocial = async ({
     data: { providerId, socialId },
     t,
-  }: DestroySocial): Promise<{ data: ProviderRecord }> => {
+  }: DestroySocial): Promise<{ data: LeanDocument<ProviderRecord> }> => {
     const provider = await Provider.findOneAndUpdate(
       {
         _id: providerId,
@@ -301,8 +302,9 @@ export class Service {
       },
       {
         $pull: { socials: { _id: socialId } },
-      }
-    );
+      },
+      { new: true }
+    ).lean();
 
     if (!provider) {
       throw new BadRequestError(t('socials.errors.id.destroy'));

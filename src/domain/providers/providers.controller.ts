@@ -10,29 +10,8 @@ import {
 } from 'responses';
 
 import { Service } from './providers.service';
-import { Boat, SocialVariant } from './providers.types';
+import { Boat } from './providers.types';
 import { Validation } from './providers.validation';
-
-interface CreateSocial {
-  params: {
-    id: string;
-  };
-  body: {
-    type: SocialVariant;
-    url: string;
-  };
-}
-
-interface UpdateSocial {
-  params: {
-    id: string;
-  };
-  body: {
-    id: string;
-    type: SocialVariant;
-    url: string;
-  };
-}
 
 interface Create {
   params: {};
@@ -141,15 +120,14 @@ class Controller {
   };
 
   createSocial = async (req: Request, res: Response) => {
-    const { params, body } = ValidatorService.getData<
-      CreateSocial['params'],
-      CreateSocial['body']
-    >(req);
+    const { params, body } =
+      ValidatorService.getParsedData<typeof Validation.createSocial>(req);
 
     const { data } = await Service.createSocial({
       data: {
         id: params.id,
-        ...body,
+        type: body.type,
+        url: body.url,
       },
       t: req.t,
     });
@@ -158,10 +136,8 @@ class Controller {
   };
 
   updateSocial = async (req: Request, res: Response) => {
-    const { params, body } = ValidatorService.getData<
-      UpdateSocial['params'],
-      UpdateSocial['body']
-    >(req);
+    const { params, body } =
+      ValidatorService.getParsedData<typeof Validation.updateSocial>(req);
 
     const { data } = await Service.updateSocial({
       data: {
