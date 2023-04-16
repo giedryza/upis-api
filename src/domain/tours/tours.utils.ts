@@ -1,6 +1,12 @@
 import { TourDocument } from './tours.types';
 import { SCORE_RATES } from './tours.constants';
 
+const CAPS = {
+  rivers: 3,
+  regions: 2,
+  amenities: 10,
+};
+
 export const calculateScore = (tour: TourDocument): number => {
   const values: Array<{ value: number; rate: number }> = [
     { value: Number(Boolean(tour.name)), rate: SCORE_RATES.name },
@@ -14,11 +20,20 @@ export const calculateScore = (tour: TourDocument): number => {
       value: tour.arrival?.coordinates.length ?? 0,
       rate: SCORE_RATES.arrival,
     },
-    { value: tour.rivers.length, rate: SCORE_RATES.rivers },
-    { value: tour.regions.length, rate: SCORE_RATES.regions },
+    {
+      value: Math.min(tour.rivers.length, CAPS.rivers),
+      rate: SCORE_RATES.rivers,
+    },
+    {
+      value: Math.min(tour.regions.length, CAPS.regions),
+      rate: SCORE_RATES.regions,
+    },
     { value: Number(Boolean(tour.distance)), rate: SCORE_RATES.distance },
     { value: Number(Boolean(tour.price)), rate: SCORE_RATES.price },
-    { value: tour.amenities.length, rate: SCORE_RATES.amenities },
+    {
+      value: Math.min(tour.amenities.length, CAPS.amenities),
+      rate: SCORE_RATES.amenities,
+    },
     { value: tour.photos.length, rate: SCORE_RATES.photos },
   ];
 
