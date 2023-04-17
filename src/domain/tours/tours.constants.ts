@@ -15,3 +15,9 @@ export const SCORE_RATES = {
   amenities: 0.5,
   photos: 1,
 } satisfies Partial<Record<keyof TourRecord, number>>;
+
+export const SCORE_CAPS = {
+  rivers: 3,
+  regions: 2,
+  amenities: 10,
+} satisfies Partial<Record<keyof TourRecord, number>>;
