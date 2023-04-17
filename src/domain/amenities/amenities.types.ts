@@ -11,6 +11,7 @@ export const variants = [
   'tent',
   'sleeping-bag',
   'grill',
+  'map',
   'guide',
   'camera',
   'pet-friendly',
