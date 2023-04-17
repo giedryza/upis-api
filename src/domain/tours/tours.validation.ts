@@ -326,6 +326,24 @@ export class Validation {
       }),
     });
 
+  static updateMany = (req: Request) =>
+    z
+      .object({
+        body: z.object({
+          filter: z.object({
+            provider: z.custom<string>(isValidObjectId, {
+              message: req.t('tours.errors.id.update'),
+            }),
+          }),
+          update: z.object({
+            amenity: z.custom<string>(isValidObjectId, {
+              message: req.t('tours.errors.id.update'),
+            }),
+          }),
+        }),
+      })
+      .merge(UsersValidation.user(req));
+
   static updatePrice = checkSchema({
     id: {
       in: ['params'],

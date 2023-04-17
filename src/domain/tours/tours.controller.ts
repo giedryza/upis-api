@@ -135,6 +135,24 @@ class Controller {
     return new NoContentResponse(res).send();
   };
 
+  updateMany = async (req: Request, res: Response) => {
+    const { body, user } =
+      ValidatorService.getParsedData<typeof Validation.updateMany>(req);
+
+    await Service.updateMany({
+      data: {
+        filter: {
+          user: user._id,
+          provider: body.filter.provider,
+        },
+        update: body.update,
+      },
+      t: req.t,
+    });
+
+    return new NoContentResponse(res).send();
+  };
+
   updatePrice = async (req: Request, res: Response) => {
     const { params, body } = ValidatorService.getData<
       UpdatePrice['params'],

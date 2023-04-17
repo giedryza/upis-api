@@ -28,6 +28,12 @@ class Route extends BaseRoute {
         Validation.create,
         ValidatorService.catch,
         controller.create
+      )
+      .patch(
+        AuthMiddleware.protect,
+        AuthMiddleware.restrict(['manager', 'admin']),
+        ValidatorService.validate(Validation.updateMany),
+        controller.updateMany
       );
 
     this.router.route('/filters').get(controller.getFilters);
