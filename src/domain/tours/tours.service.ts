@@ -59,6 +59,19 @@ interface Destroy {
   t: TFunction;
 }
 
+interface UpdateMany {
+  data: {
+    filter: {
+      user: string;
+      provider: string;
+    };
+    update: {
+      amenity: string;
+    };
+  };
+  t: TFunction;
+}
+
 interface UpdatePrice {
   data: {
     id: string;
@@ -284,6 +297,42 @@ export class Service {
     if (!tour) {
       throw new BadRequestError(t('tours.errors.id.destroy'));
     }
+  };
+
+  static updateMany = async ({
+    data: { filter, update },
+    t,
+  }: UpdateMany): Promise<void> => {
+    const provider = await Provider.findOne({
+      _id: filter.provider,
+      amenities: { $all: [update.amenity] },
+    }).lean();
+
+    if (!provider) {
+      throw new BadRequestError(t('tours.errors.amenities.contain'));
+    }
+
+    const amenity = await Amenity.findOne({ _id: update.amenity }).lean();
+
+    if (!amenity) {
+      throw new BadRequestError(t('tours.errors.amenities.contain'));
+    }
+
+    await Tour.updateMany(
+      {
+        user: filter.user,
+        provider: provider._id,
+        'amenities._id': { $nin: [update.amenity] },
+      },
+      {
+        $addToSet: {
+          amenities: {
+            _id: amenity._id,
+            variant: amenity.variant,
+          },
+        },
+      }
+    ).lean();
   };
 
   static updatePrice = async ({
