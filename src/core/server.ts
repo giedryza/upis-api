@@ -1,9 +1,11 @@
 import gracefulShutdown from 'http-graceful-shutdown';
 
 import { APP } from 'config';
-import { app } from 'core/app';
-import { db } from 'core/db';
-import { environment } from 'core/environment';
+
+import { app } from './app';
+import { db } from './db';
+import { environment } from './environment';
+import { cron } from './cron';
 
 class Server {
   private port = APP.root.port;
@@ -18,6 +20,8 @@ class Server {
       await environment.verify();
 
       await db.connect();
+
+      cron.start();
 
       const server = this.listen();
 
