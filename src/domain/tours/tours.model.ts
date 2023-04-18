@@ -8,7 +8,6 @@ import { variants } from 'domain/amenities/amenities.types';
 import { pointSchema } from 'domain/geo/geo.schema';
 
 import { TourDocument, TourModel, regions, rivers } from './tours.types';
-import { calculateScore } from './tours.utils';
 
 const schema = new Schema<TourDocument>(
   {
@@ -146,11 +145,5 @@ schema.post<Query<TourDocument | null, TourDocument>>(
     next();
   }
 );
-
-schema.pre('save', async function (next) {
-  this.set('score', calculateScore(this));
-
-  next();
-});
 
 export const Tour = model<TourDocument, TourModel>(ModelName.Tour, schema);
