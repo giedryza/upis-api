@@ -158,7 +158,10 @@ export class Aggregation {
             {
               $multiply: [
                 {
-                  $min: [{ $size: '$rivers' }, SCORE_CAPS.rivers],
+                  $min: [
+                    { $size: '$rivers' },
+                    SCORE_CAPS.rivers * SCORE_RATES.rivers,
+                  ],
                 },
                 SCORE_RATES.rivers,
               ],
@@ -166,7 +169,10 @@ export class Aggregation {
             {
               $multiply: [
                 {
-                  $min: [{ $size: '$regions' }, SCORE_CAPS.regions],
+                  $min: [
+                    { $size: '$regions' },
+                    SCORE_CAPS.regions * SCORE_RATES.regions,
+                  ],
                 },
                 SCORE_RATES.regions,
               ],
@@ -174,7 +180,10 @@ export class Aggregation {
             {
               $multiply: [
                 {
-                  $min: [{ $size: '$amenities' }, SCORE_CAPS.amenities],
+                  $min: [
+                    { $size: '$amenities' },
+                    SCORE_CAPS.amenities * SCORE_RATES.amenities,
+                  ],
                 },
                 SCORE_RATES.amenities,
               ],
