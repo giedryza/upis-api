@@ -19,6 +19,8 @@ class Cron {
     const job = async () => {
       try {
         await ToursService.updateScores();
+
+        console.info('cron success: "updateScores"');
       } catch (error) {
         console.error(error);
       }
