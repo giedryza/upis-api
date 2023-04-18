@@ -1,7 +1,6 @@
 import { Schema, model, Query } from 'mongoose';
 
 import { Tour } from 'domain/tours/tours.model';
-import { SCORE_RATES } from 'domain/tours/tours.constants';
 import { ModelName } from 'types/common';
 import { filesService } from 'tools/services';
 
@@ -45,10 +44,7 @@ schema.post<Query<ImageDocument | null, ImageDocument>>(
     if (!doc) return next();
 
     await Promise.all([
-      Tour.updateMany(
-        { photos: doc._id },
-        { $pull: { photos: doc._id }, $inc: { score: -SCORE_RATES.photos } }
-      ),
+      Tour.updateMany({ photos: doc._id }, { $pull: { photos: doc._id } }),
       filesService('cloudinary').delete([doc.key]),
     ]);
 

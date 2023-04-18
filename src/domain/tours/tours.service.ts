@@ -15,6 +15,7 @@ import { Tour } from './tours.model';
 import { FiltersSummary, Region, TourRecord } from './tours.types';
 import { MAX_PHOTOS } from './tours.constants';
 import { Validation } from './tours.validation';
+import { Aggregation } from './tours.aggregation';
 
 interface GetAll {
   query: z.infer<ReturnType<typeof Validation.getAll>>['query'];
@@ -462,73 +463,18 @@ export class Service {
   static getFilters = async ({
     t,
   }: GetFilters): Promise<{ data: FiltersSummary }> => {
-    const [summary] = await Tour.aggregate<FiltersSummary>([
-      {
-        $facet: {
-          distance: [
-            {
-              $group: {
-                _id: null,
-                min: { $min: '$distance' },
-                max: { $max: '$distance' },
-              },
-            },
-            {
-              $project: { _id: 0 },
-            },
-          ],
-          duration: [
-            {
-              $group: {
-                _id: null,
-                min: { $min: '$duration' },
-                max: { $max: '$duration' },
-              },
-            },
-            {
-              $project: { _id: 0 },
-            },
-          ],
-          days: [
-            {
-              $group: {
-                _id: null,
-                min: { $min: '$days' },
-                max: { $max: '$days' },
-              },
-            },
-            {
-              $project: { _id: 0 },
-            },
-          ],
-          difficulty: [
-            {
-              $group: {
-                _id: null,
-                min: { $min: '$difficulty' },
-                max: { $max: '$difficulty' },
-              },
-            },
-            {
-              $project: { _id: 0 },
-            },
-          ],
-        },
-      },
-      {
-        $project: {
-          distance: { $first: '$distance' },
-          duration: { $first: '$duration' },
-          days: { $first: '$days' },
-          difficulty: { $first: '$difficulty' },
-        },
-      },
-    ]);
+    const [summary] = await Tour.aggregate<FiltersSummary>(
+      Aggregation.getFilters()
+    );
 
     if (!summary) {
       throw new BadRequestError(t('tours.errors.filters.failed'));
     }
 
     return { data: summary };
+  };
+
+  static updateScores = async (): Promise<void> => {
+    await Tour.updateMany({}, Aggregation.updateScores()).lean();
   };
 }
