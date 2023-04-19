@@ -40,7 +40,7 @@ export abstract class BaseProvider {
 
   protected limits = {
     maxFiles: 5,
-    maxFileSize: 1 * 1000 * 1000,
+    maxFileSize: 2 * 1024 * 1024,
     cacheAge: 60 * 60 * 24 * 365,
   };
 

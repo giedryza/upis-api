@@ -1,6 +1,6 @@
 import { TourRecord } from './tours.types';
 
-export const MAX_PHOTOS = 6;
+export const MAX_PHOTOS = 5;
 
 export const SCORE_RATES = {
   name: 1,
