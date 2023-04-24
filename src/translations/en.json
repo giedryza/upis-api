@@ -194,7 +194,7 @@
       "token": {
         "invalid": "Unable to reset password. Try again."
       },
-      "userId": {
+      "user": {
         "invalid": "Unable to reset password. Try again."
       },
       "role": {

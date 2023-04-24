@@ -24,7 +24,7 @@ const schema = new Schema<UserDocument, UserModel, UserRecord>(
     role: {
       type: String,
       enum: roles,
-      default: 'user',
+      default: 'pending',
     },
   },
   {

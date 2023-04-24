@@ -35,7 +35,7 @@ interface ForgotPassword {
 
 interface ResetPassword {
   body: {
-    userId: string;
+    user: string;
     token: string;
     password: string;
   };
@@ -115,7 +115,7 @@ class Controller {
 
     const { data } = await Service.resetPassword({
       data: {
-        userId: body.userId,
+        userId: body.user,
         token: body.token,
         password: body.password,
       },

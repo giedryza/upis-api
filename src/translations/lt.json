@@ -194,7 +194,7 @@
       "token": {
         "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
       },
-      "userId": {
+      "user": {
         "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
       },
       "role": {

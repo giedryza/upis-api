@@ -156,16 +156,16 @@ export class Validation {
   });
 
   static resetPassword = checkSchema({
-    userId: {
+    user: {
       in: ['body'],
       isEmpty: {
         negated: true,
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.userId.invalid'),
+          req.t('users.errors.user.invalid'),
       },
       isMongoId: {
         errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.userId.invalid'),
+          req.t('users.errors.user.invalid'),
       },
     },
     token: {

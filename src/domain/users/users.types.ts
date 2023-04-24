@@ -2,7 +2,7 @@ import { Document, PaginateModel } from 'mongoose';
 
 import { EntityId, WithTimestamp } from 'types/common';
 
-export const roles = ['user', 'manager', 'admin'] as const;
+export const roles = ['pending', 'user', 'manager', 'admin'] as const;
 
 export type Role = (typeof roles)[number];
 
