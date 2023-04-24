@@ -8,7 +8,6 @@ import {
 } from 'errors';
 import { JwtService, PasswordService } from 'tools/services';
 import { ResetPasswordEmail } from 'emails';
-import { Token } from 'domain/token/token.model';
 import { Service as TokenService } from 'domain/token/token.service';
 import { EntityId } from 'types/common';
 
@@ -211,19 +210,15 @@ export class Service {
     data: { userId, token, password },
     t,
   }: ResetPassword) => {
-    const resetToken = await Token.findOneAndDelete({ user: userId });
+    const { match } = await TokenService.compare({ user: userId, token });
 
-    if (!resetToken) {
+    if (!match) {
       throw new BadRequestError(t('users.errors.password.reset'));
     }
 
-    const [user, match, hashed] = await Promise.all([
-      User.findById(userId),
-      PasswordService.compare(resetToken.token, token),
-      PasswordService.hash(password),
-    ]);
+    const hashed = await PasswordService.hash(password);
 
-    if (!user || !match || !hashed) {
+    if (!hashed) {
       throw new BadRequestError(t('users.errors.password.reset'));
     }
 
@@ -235,7 +230,7 @@ export class Service {
 
     return {
       data: {
-        email: user.email,
+        id: userId,
       },
     };
   };

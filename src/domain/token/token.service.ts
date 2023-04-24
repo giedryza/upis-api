@@ -7,6 +7,11 @@ interface Create {
   email: string;
 }
 
+interface Compare {
+  user: string;
+  token: string;
+}
+
 export class Service {
   static create = async ({
     email,
@@ -41,5 +46,24 @@ export class Service {
       user,
       token: raw,
     };
+  };
+
+  static compare = async (income: Compare): Promise<{ match: boolean }> => {
+    const token = await Token.findOneAndDelete({ user: income.user });
+
+    if (!token) {
+      return { match: false };
+    }
+
+    const [user, match] = await Promise.all([
+      User.findById(income.user),
+      PasswordService.compare(token.token, income.token),
+    ]);
+
+    if (!user || !match) {
+      return { match: false };
+    }
+
+    return { match: true };
   };
 }
