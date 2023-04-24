@@ -9,6 +9,7 @@ import {
 import { JwtService, PasswordService } from 'tools/services';
 import { ResetPasswordEmail } from 'emails';
 import { Token } from 'domain/token/token.model';
+import { Service as TokenService } from 'domain/token/token.service';
 import { EntityId } from 'types/common';
 
 import { Role, UserRecord } from './users.types';
@@ -174,33 +175,19 @@ export class Service {
   };
 
   static forgotPassword = async ({ data: { email } }: ForgotPassword) => {
-    const user = await User.findOne({ email });
+    const { user, token } = await TokenService.create({ email });
 
-    if (!user) {
+    if (!user || !token) {
       return {
-        data: { email },
+        data: null,
       };
     }
-
-    const token = await Token.findOne({ user: user._id });
-
-    if (token) {
-      await token.deleteOne();
-    }
-
-    const resetToken = PasswordService.randomString();
-    const hashed = await PasswordService.hash(resetToken);
-
-    await new Token({
-      user: user._id,
-      token: hashed,
-    }).save();
 
     const url = new URL(APP.client.route, APP.client.host);
 
     const params = {
       location: APP.client.locations.passwordReset,
-      token: resetToken,
+      token,
       userId: user._id,
     };
 
