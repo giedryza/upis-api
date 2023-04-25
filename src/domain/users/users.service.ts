@@ -69,6 +69,11 @@ interface UpdateRole {
   t: TFunction;
 }
 
+interface SendVerifyEmail {
+  id: string;
+  email: string;
+}
+
 export class Service {
   static signup = async ({ data: { email, password }, t }: Signup) => {
     const existingUser = await User.findOne({ email });
@@ -82,25 +87,12 @@ export class Service {
     const user = new User({ email, password });
     await user.save();
 
-    const { token } = await TokenService.create({ user: user._id });
-
-    const url = new URL(APP.client.route, APP.client.host);
-    const params = {
-      location: APP.client.locations.verifyEmail,
-      token,
-      userId: user._id,
-    };
-
-    Object.entries(params).forEach(([key, value]) => {
-      url.searchParams.append(key, value);
-    });
-
-    await new VerifyEmailEmail({
-      url: url.href,
-    }).send([user.email]);
+    if (APP.features.isVerifyEmailEnabled) {
+      await Service.sendVerifyEmail({ id: user._id, email: user.email });
+    }
 
     const baseUser = {
-      _id: user.id,
+      _id: user._id,
       email: user.email,
       role: user.role,
     };
@@ -288,5 +280,24 @@ export class Service {
         token,
       },
     };
+  };
+
+  static sendVerifyEmail = async ({ id, email }: SendVerifyEmail) => {
+    const { token } = await TokenService.create({ user: id });
+
+    const url = new URL(APP.client.route, APP.client.host);
+    const params = {
+      location: APP.client.locations.verifyEmail,
+      token,
+      userId: id,
+    };
+
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+
+    await new VerifyEmailEmail({
+      url: url.href,
+    }).send([email]);
   };
 }
