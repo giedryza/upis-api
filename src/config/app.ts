@@ -59,4 +59,8 @@ export const APP = {
     apiKey: process.env.CLOUDINARY_API_KEY,
     apiSecret: process.env.CLOUDINARY_API_SECRET,
   },
+  features: {
+    isVerifyEmailEnabled:
+      process.env.FEATURE_IS_VERIFY_EMAIL_ENABLED === 'true',
+  },
 };

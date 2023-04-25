@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import mongoosePaginate from 'mongoose-paginate-v2';
 
+import { APP } from 'config';
 import { PasswordService } from 'tools/services';
 import { UnauthorizedError } from 'errors';
 import { ModelName } from 'types/common';
@@ -24,7 +25,7 @@ const schema = new Schema<UserDocument, UserModel, UserRecord>(
     role: {
       type: String,
       enum: roles,
-      default: 'pending',
+      default: APP.features.isVerifyEmailEnabled ? 'pending' : 'user',
     },
   },
   {
