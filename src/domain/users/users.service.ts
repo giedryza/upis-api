@@ -60,7 +60,7 @@ interface ResetPassword {
   t: TFunction;
 }
 
-interface UpdateRole {
+interface BecomeProvider {
   data: {
     id: string;
     currentRole: Role;
@@ -250,10 +250,12 @@ export class Service {
     };
   };
 
-  static updateRole = async ({
+  static becomeProvider = async ({
     data: { id, currentRole, newRole },
     t,
-  }: UpdateRole): Promise<{ data: { user: UserRecord; token: string } }> => {
+  }: BecomeProvider): Promise<{
+    data: { user: UserRecord; token: string };
+  }> => {
     if (currentRole !== 'user' || newRole !== 'manager') {
       throw new BadRequestError(t('users.errors.role.invalid'));
     }

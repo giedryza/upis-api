@@ -55,11 +55,11 @@ class Route extends BaseRoute {
         controller.resetPassword
       );
     this.router
-      .route('/role')
+      .route('/become-provider')
       .patch(
         AuthMiddleware.protect,
-        ValidatorService.validate(Validation.updateRole),
-        controller.updateRole
+        ValidatorService.validate(Validation.becomeProvider),
+        controller.becomeProvider
       );
   };
 }

@@ -125,11 +125,11 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  updateRole = async (req: Request, res: Response) => {
+  becomeProvider = async (req: Request, res: Response) => {
     const { user, body } =
-      ValidatorService.getParsedData<typeof Validation.updateRole>(req);
+      ValidatorService.getParsedData<typeof Validation.becomeProvider>(req);
 
-    const { data } = await Service.updateRole({
+    const { data } = await Service.becomeProvider({
       data: {
         id: user._id,
         currentRole: user.role,

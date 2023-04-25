@@ -187,7 +187,7 @@ export class Validation {
     },
   });
 
-  static updateRole = (req: Request) =>
+  static becomeProvider = (req: Request) =>
     z
       .object({
         body: z.object({
