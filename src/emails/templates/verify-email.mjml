@@ -1,6 +1,6 @@
 <mjml>
   <mj-head>
-    <mj-title>Upis | Password Reset</mj-title>
+    <mj-title>Upis | Verify Email</mj-title>
 
     <mj-attributes>
       <mj-all
@@ -55,17 +55,15 @@
     <mj-section background-color="#fff">
       <mj-column>
         <mj-text>
-          <h1>Password Reset</h1>
+          <h1>Verify Email</h1>
         </mj-text>
 
         <mj-text mj-class="text-md">
-          <p>Hello!</p>
+          <p>Welcome to Upis!</p>
           <p>
-            We have received a request to reset the password for Upis account
-            associated with <u>{{email}}</u>. No changes have been made to your
-            account yet.
+            In order to start using your account, you need to verify your email
+            address. You can do so by clicking the link below:
           </p>
-          <p>You can reset your password by clicking the link below:</p>
         </mj-text>
 
         <mj-button
@@ -74,7 +72,7 @@
           mj-class="button"
           align="left"
         >
-          Reset your password
+          Verify your email
         </mj-button>
 
         <mj-text mj-class="text-md">
@@ -86,9 +84,10 @@
 
         <mj-text mj-class="text-sm">
           <p>
-            If you did not request a password reset, you can safely ignore this
-            email. This password reset link is only valid one time for the next
-            1 hour.
+            This email verification link is only valid one time for the next 1
+            hour. If you couldn't make it on time, just click on
+            <u>Verify email</u>
+            in your Upis account.
           </p>
         </mj-text>
       </mj-column>
