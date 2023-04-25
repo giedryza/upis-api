@@ -174,9 +174,17 @@ export class Service {
   };
 
   static forgotPassword = async ({ data: { email } }: ForgotPassword) => {
-    const { user, token } = await TokenService.create({ email });
+    const user = await User.findOne({ email });
 
-    if (!user || !token) {
+    if (!user) {
+      return {
+        data: null,
+      };
+    }
+
+    const { token } = await TokenService.create({ user: user._id });
+
+    if (!token) {
       return {
         data: null,
       };

@@ -4,7 +4,7 @@ import { User } from 'domain/users/users.model';
 import { UserDocument } from 'domain/users/users.types';
 
 interface Create {
-  email: string;
+  user: string;
 }
 
 interface Compare {
@@ -14,21 +14,11 @@ interface Compare {
 
 export class Service {
   static create = async ({
-    email,
+    user,
   }: Create): Promise<{
-    user: UserDocument | null;
     token: string;
   }> => {
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return {
-        user: null,
-        token: '',
-      };
-    }
-
-    const token = await Token.findOne({ user: user._id });
+    const token = await Token.findOne({ user });
 
     if (token) {
       await token.deleteOne();
@@ -38,12 +28,11 @@ export class Service {
     const hashed = await PasswordService.hash(raw);
 
     await new Token({
-      user: user._id,
+      user,
       token: hashed,
     }).save();
 
     return {
-      user,
       token: raw,
     };
   };
