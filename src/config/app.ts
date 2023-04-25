@@ -12,6 +12,7 @@ export const APP = {
     route: process.env.CLIENT_ROUTE,
     locations: {
       passwordReset: 'password-reset',
+      verifyEmail: 'verify-email',
     },
   },
   assets: {

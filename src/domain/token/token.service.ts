@@ -1,7 +1,6 @@
 import { PasswordService } from 'tools/services';
 import { Token } from 'domain/token/token.model';
 import { User } from 'domain/users/users.model';
-import { UserDocument } from 'domain/users/users.types';
 
 interface Create {
   user: string;

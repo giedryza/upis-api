@@ -7,7 +7,7 @@ import {
   UnauthorizedError,
 } from 'errors';
 import { JwtService, PasswordService } from 'tools/services';
-import { ResetPasswordEmail } from 'emails';
+import { ResetPasswordEmail, VerifyEmailEmail } from 'emails';
 import { Service as TokenService } from 'domain/token/token.service';
 import { EntityId } from 'types/common';
 
@@ -82,18 +82,34 @@ export class Service {
     const user = new User({ email, password });
     await user.save();
 
+    const { token } = await TokenService.create({ user: user._id });
+
+    const url = new URL(APP.client.route, APP.client.host);
+    const params = {
+      location: APP.client.locations.verifyEmail,
+      token,
+      userId: user._id,
+    };
+
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+
+    await new VerifyEmailEmail({
+      url: url.href,
+    }).send([user.email]);
+
     const baseUser = {
       _id: user.id,
       email: user.email,
       role: user.role,
     };
-
-    const token = JwtService.token(baseUser);
+    const jwt = JwtService.token(baseUser);
 
     return {
       data: {
         user: baseUser,
-        token,
+        token: jwt,
       },
     };
   };
@@ -191,7 +207,6 @@ export class Service {
     }
 
     const url = new URL(APP.client.route, APP.client.host);
-
     const params = {
       location: APP.client.locations.passwordReset,
       token,
