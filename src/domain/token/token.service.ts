@@ -60,10 +60,10 @@ export class Service {
       PasswordService.compare(token.token, income.token),
     ]);
 
-    if (!user || !match) {
+    if (!user) {
       return { match: false };
     }
 
-    return { match: true };
+    return { match };
   };
 }
