@@ -24,7 +24,7 @@ class Route extends BaseRoute {
       .post(Validation.signup, ValidatorService.catch, controller.signup);
     this.router
       .route('/signin')
-      .post(Validation.signin, ValidatorService.catch, controller.signin);
+      .post(ValidatorService.validate(Validation.signin), controller.signin);
     this.router
       .route('/me')
       .get(
@@ -49,8 +49,7 @@ class Route extends BaseRoute {
     this.router
       .route('/reset-password')
       .post(
-        Validation.resetPassword,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.resetPassword),
         controller.resetPassword
       );
     this.router

@@ -13,25 +13,10 @@ interface Signup {
   };
 }
 
-interface Signin {
-  body: {
-    email: string;
-    password: string;
-  };
-}
-
 interface UpdatePassword {
   body: {
     currentPassword: string;
     newPassword: string;
-  };
-}
-
-interface ResetPassword {
-  body: {
-    user: string;
-    token: string;
-    password: string;
   };
 }
 
@@ -51,7 +36,8 @@ class Controller {
   };
 
   signin = async (req: Request, res: Response) => {
-    const { body } = ValidatorService.getData<{}, Signin['body']>(req);
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.signin>(req);
 
     const { data } = await Service.signin({
       data: {
@@ -106,7 +92,8 @@ class Controller {
   };
 
   resetPassword = async (req: Request, res: Response) => {
-    const { body } = ValidatorService.getData<{}, ResetPassword['body']>(req);
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.resetPassword>(req);
 
     const { data } = await Service.resetPassword({
       data: {

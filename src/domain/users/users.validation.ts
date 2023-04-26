@@ -70,29 +70,21 @@ export class Validation {
     },
   });
 
-  static signin = checkSchema({
-    email: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.email.invalid'),
-      },
-      isEmail: {
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.email.invalid'),
-      },
-    },
-    password: {
-      in: ['body'],
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.password.invalid'),
-      },
-    },
-  });
+  static signin = (req: Request) =>
+    z.object({
+      body: z.object({
+        email: z
+          .string({
+            required_error: req.t('users.errors.email.invalid'),
+            invalid_type_error: req.t('users.errors.email.invalid'),
+          })
+          .trim(),
+        password: z.string({
+          required_error: req.t('users.errors.password.invalid'),
+          invalid_type_error: req.t('users.errors.password.invalid'),
+        }),
+      }),
+    });
 
   static me = (req: Request) => z.object({}).merge(Validation.user(req));
 
@@ -152,37 +144,22 @@ export class Validation {
       }),
     });
 
-  static resetPassword = checkSchema({
-    user: {
-      in: ['body'],
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.user.invalid'),
-      },
-      isMongoId: {
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.user.invalid'),
-      },
-    },
-    token: {
-      in: ['body'],
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.token.invalid'),
-      },
-    },
-    password: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.password.invalid'),
-      },
-    },
-  });
+  static resetPassword = (req: Request) =>
+    z.object({
+      body: z.object({
+        user: z.custom<string>(isValidObjectId, {
+          message: req.t('users.errors.user.invalid'),
+        }),
+        token: z.string({
+          required_error: req.t('users.errors.token.invalid'),
+          invalid_type_error: req.t('users.errors.token.invalid'),
+        }),
+        password: z.string({
+          required_error: req.t('users.errors.password.invalid'),
+          invalid_type_error: req.t('users.errors.password.invalid'),
+        }),
+      }),
+    });
 
   static becomeProvider = (req: Request) =>
     z
