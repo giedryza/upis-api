@@ -200,6 +200,7 @@
       "role": {
         "invalid": "Nepavyko atnaujinti vartotojo rolės."
       },
+      "verify_email": "Nepavyko patvirtinti jūsų el. pašto adreso. Spauskite 'Patvirtinti el. paštą' ir dar kartą sekite instrukcijas.",
       "unauthorized": "Draudžiama užklausa."
     }
   },

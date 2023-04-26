@@ -136,6 +136,21 @@ class Controller {
 
     return new SuccessResponse(res, data).send();
   };
+
+  verifyEmail = async (req: Request, res: Response) => {
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.verifyEmail>(req);
+
+    const { data } = await Service.verifyEmail({
+      data: {
+        userId: body.user,
+        token: body.token,
+      },
+      t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
 }
 
 export const controller = new Controller();

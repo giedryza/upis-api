@@ -200,6 +200,7 @@
       "role": {
         "invalid": "Unable to update user role."
       },
+      "verify_email": "Unable to verify your email address. Click 'Verify email' and follow the instructions again.",
       "unauthorized": "Not authorized."
     }
   },

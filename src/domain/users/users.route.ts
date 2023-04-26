@@ -66,6 +66,12 @@ class Route extends BaseRoute {
         ValidatorService.validate(Validation.sendVerifyEmail),
         controller.sendVerifyEmail
       );
+    this.router
+      .route('/verify-email')
+      .patch(
+        ValidatorService.validate(Validation.verifyEmail),
+        controller.verifyEmail
+      );
   };
 }
 

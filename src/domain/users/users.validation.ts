@@ -176,4 +176,17 @@ export class Validation {
 
   static sendVerifyEmail = (req: Request) =>
     z.object({}).merge(Validation.user(req));
+
+  static verifyEmail = (req: Request) =>
+    z.object({
+      body: z.object({
+        user: z.custom<string>(isValidObjectId, {
+          message: req.t('users.errors.verify_email'),
+        }),
+        token: z.string({
+          required_error: req.t('users.errors.verify_email'),
+          invalid_type_error: req.t('users.errors.verify_email'),
+        }),
+      }),
+    });
 }

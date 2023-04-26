@@ -76,6 +76,14 @@ interface SendVerifyEmail {
   };
 }
 
+interface VerifyEmail {
+  data: {
+    userId: string;
+    token: string;
+  };
+  t: TFunction;
+}
+
 export class Service {
   static signup = async ({ data: { email, password }, t }: Signup) => {
     const existingUser = await User.findOne({ email });
@@ -308,6 +316,37 @@ export class Service {
 
     return {
       data: { email },
+    };
+  };
+
+  static verifyEmail = async ({ data: { userId, token }, t }: VerifyEmail) => {
+    const { match } = await TokenService.compare({ user: userId, token });
+
+    if (!match) {
+      throw new BadRequestError(t('users.errors.verify_email'));
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { role: 'user' },
+      { new: true }
+    ).lean();
+
+    if (!user) {
+      throw new BadRequestError(t('users.errors.verify_email'));
+    }
+
+    const jwt = JwtService.token({
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+    });
+
+    return {
+      data: {
+        user,
+        token: jwt,
+      },
     };
   };
 }
