@@ -88,48 +88,44 @@ export class Validation {
 
   static me = (req: Request) => z.object({}).merge(Validation.user(req));
 
-  static updatePassword = checkSchema({
-    currentPassword: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.currentPassword.invalid'),
-      },
-    },
-    newPassword: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.newPassword.invalid'),
-      },
-      isLength: {
-        options: { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH },
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.password.length', {
-            min: PASSWORD_MIN_LENGTH,
-            max: PASSWORD_MAX_LENGTH,
-          }),
-      },
-    },
-    confirmPassword: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.confirmPassword.invalid'),
-      },
-      custom: {
-        options: (value, { req }) => value === req.body.newPassword,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.confirmPassword.match'),
-      },
-    },
-  });
+  static updatePassword = (req: Request) =>
+    z
+      .object({
+        body: z
+          .object({
+            currentPassword: z.string({
+              required_error: req.t('users.errors.currentPassword.invalid'),
+              invalid_type_error: req.t('users.errors.currentPassword.invalid'),
+            }),
+            newPassword: z
+              .string({
+                required_error: req.t('users.errors.newPassword.invalid'),
+                invalid_type_error: req.t('users.errors.newPassword.invalid'),
+              })
+              .min(PASSWORD_MIN_LENGTH, {
+                message: req.t('users.errors.password.length', {
+                  min: PASSWORD_MIN_LENGTH,
+                  max: PASSWORD_MAX_LENGTH,
+                }),
+              })
+              .max(PASSWORD_MAX_LENGTH, {
+                message: req.t('users.errors.password.length', {
+                  min: PASSWORD_MIN_LENGTH,
+                  max: PASSWORD_MAX_LENGTH,
+                }),
+              }),
+            confirmPassword: z.string({
+              required_error: req.t('users.errors.confirmPassword.invalid'),
+              invalid_type_error: req.t('users.errors.confirmPassword.invalid'),
+            }),
+          })
+          .refine(
+            ({ newPassword, confirmPassword }) =>
+              newPassword === confirmPassword,
+            { message: req.t('users.errors.confirmPassword.match') }
+          ),
+      })
+      .merge(Validation.user(req));
 
   static forgotPassword = (req: Request) =>
     z.object({

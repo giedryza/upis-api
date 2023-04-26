@@ -176,7 +176,7 @@
       },
       "password": {
         "invalid": "Įveskite slaptažodį.",
-        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo.",
+        "length": "Slaptažodis turi būti tarp {{ min }} ir {{ max }} simbolių ilgumo.",
         "wrong": "Neteisingi prisijungimo duomenys. Bandykite dar kartą arba spauskite 'Pamiršai slaptažodį?', kad atstatytumėte.",
         "reset": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
       },
@@ -189,7 +189,7 @@
       },
       "newPassword": {
         "invalid": "Įveskite naują slaptažodį.",
-        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo."
+        "length": "Slaptažodis turi būti tarp {{ min }} ir {{ max }} simbolių ilgumo."
       },
       "token": {
         "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."

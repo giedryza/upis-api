@@ -9,7 +9,6 @@ import {
 import { JwtService, PasswordService } from 'tools/services';
 import { ResetPasswordEmail, VerifyEmailEmail } from 'emails';
 import { Service as TokenService } from 'domain/token/token.service';
-import { EntityId } from 'types/common';
 
 import { Role, UserRecord } from './users.types';
 import { User } from './users.model';
@@ -38,7 +37,7 @@ interface Me {
 
 interface UpdatePassword {
   data: {
-    userId: EntityId;
+    userId: string;
     currentPassword: string;
     newPassword: string;
   };

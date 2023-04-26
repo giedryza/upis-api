@@ -36,8 +36,7 @@ class Route extends BaseRoute {
       .route('/update-password')
       .patch(
         AuthMiddleware.protect,
-        Validation.updatePassword,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.updatePassword),
         controller.updatePassword
       );
     this.router

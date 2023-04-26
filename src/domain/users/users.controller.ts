@@ -13,13 +13,6 @@ interface Signup {
   };
 }
 
-interface UpdatePassword {
-  body: {
-    currentPassword: string;
-    newPassword: string;
-  };
-}
-
 class Controller {
   signup = async (req: Request, res: Response) => {
     const { body } = ValidatorService.getData<{}, Signup['body']>(req);
@@ -63,12 +56,12 @@ class Controller {
   };
 
   updatePassword = async (req: Request, res: Response) => {
-    const { _id: userId } = req.user!;
-    const { body } = ValidatorService.getData<{}, UpdatePassword['body']>(req);
+    const { user, body } =
+      ValidatorService.getParsedData<typeof Validation.updatePassword>(req);
 
     await Service.updatePassword({
       data: {
-        userId,
+        userId: user._id,
         currentPassword: body.currentPassword,
         newPassword: body.newPassword,
       },
