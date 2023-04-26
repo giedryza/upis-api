@@ -63,8 +63,7 @@ interface ResetPassword {
 interface BecomeProvider {
   data: {
     id: string;
-    currentRole: Role;
-    newRole: Role;
+    role: Role;
   };
   t: TFunction;
 }
@@ -263,18 +262,18 @@ export class Service {
   };
 
   static becomeProvider = async ({
-    data: { id, currentRole, newRole },
+    data: { id, role },
     t,
   }: BecomeProvider): Promise<{
     data: { user: UserRecord; token: string };
   }> => {
-    if (currentRole !== 'user' || newRole !== 'manager') {
+    if (role !== 'user') {
       throw new BadRequestError(t('users.errors.role.invalid'));
     }
 
     const user = await User.findByIdAndUpdate(
       id,
-      { role: newRole },
+      { role: 'manager' },
       { new: true }
     ).lean();
 

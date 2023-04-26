@@ -108,14 +108,13 @@ class Controller {
   };
 
   becomeProvider = async (req: Request, res: Response) => {
-    const { user, body } =
+    const { user } =
       ValidatorService.getParsedData<typeof Validation.becomeProvider>(req);
 
     const { data } = await Service.becomeProvider({
       data: {
         id: user._id,
-        currentRole: user.role,
-        newRole: body.role,
+        role: user.role,
       },
       t: req.t,
     });

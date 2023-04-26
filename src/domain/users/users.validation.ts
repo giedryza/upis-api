@@ -162,17 +162,7 @@ export class Validation {
     });
 
   static becomeProvider = (req: Request) =>
-    z
-      .object({
-        body: z.object({
-          role: z.enum(roles, {
-            errorMap: () => ({
-              message: req.t('users.errors.role.invalid'),
-            }),
-          }),
-        }),
-      })
-      .merge(Validation.user(req));
+    z.object({}).merge(Validation.user(req));
 
   static sendVerifyEmail = (req: Request) =>
     z.object({}).merge(Validation.user(req));
