@@ -27,12 +27,6 @@ interface UpdatePassword {
   };
 }
 
-interface ForgotPassword {
-  body: {
-    email: string;
-  };
-}
-
 interface ResetPassword {
   body: {
     user: string;
@@ -99,7 +93,8 @@ class Controller {
   };
 
   forgotPassword = async (req: Request, res: Response) => {
-    const { body } = ValidatorService.getData<{}, ForgotPassword['body']>(req);
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.forgotPassword>(req);
 
     const { data } = await Service.forgotPassword({
       data: {
@@ -136,6 +131,20 @@ class Controller {
         newRole: body.role,
       },
       t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  sendVerifyEmail = async (req: Request, res: Response) => {
+    const { user } =
+      ValidatorService.getParsedData<typeof Validation.sendVerifyEmail>(req);
+
+    const { data } = await Service.sendVerifyEmail({
+      data: {
+        id: user._id,
+        email: user.email,
+      },
     });
 
     return new SuccessResponse(res, data).send();

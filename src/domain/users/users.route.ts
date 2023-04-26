@@ -43,8 +43,7 @@ class Route extends BaseRoute {
     this.router
       .route('/forgot-password')
       .post(
-        Validation.forgotPassword,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.forgotPassword),
         controller.forgotPassword
       );
     this.router
@@ -60,6 +59,13 @@ class Route extends BaseRoute {
         AuthMiddleware.protect,
         ValidatorService.validate(Validation.becomeProvider),
         controller.becomeProvider
+      );
+    this.router
+      .route('/send-verify-email')
+      .patch(
+        AuthMiddleware.protect,
+        ValidatorService.validate(Validation.sendVerifyEmail),
+        controller.sendVerifyEmail
       );
   };
 }

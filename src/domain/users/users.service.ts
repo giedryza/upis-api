@@ -70,8 +70,10 @@ interface BecomeProvider {
 }
 
 interface SendVerifyEmail {
-  id: string;
-  email: string;
+  data: {
+    id: string;
+    email: string;
+  };
 }
 
 export class Service {
@@ -88,7 +90,9 @@ export class Service {
     await user.save();
 
     if (APP.features.isVerifyEmailEnabled) {
-      await Service.sendVerifyEmail({ id: user._id, email: user.email });
+      await Service.sendVerifyEmail({
+        data: { id: user._id, email: user.email },
+      });
     }
 
     const baseUser = {
@@ -284,7 +288,7 @@ export class Service {
     };
   };
 
-  static sendVerifyEmail = async ({ id, email }: SendVerifyEmail) => {
+  static sendVerifyEmail = async ({ data: { id, email } }: SendVerifyEmail) => {
     const { token } = await TokenService.create({ user: id });
 
     const url = new URL(APP.client.route, APP.client.host);
@@ -301,5 +305,9 @@ export class Service {
     await new VerifyEmailEmail({
       url: url.href,
     }).send([email]);
+
+    return {
+      data: { email },
+    };
   };
 }

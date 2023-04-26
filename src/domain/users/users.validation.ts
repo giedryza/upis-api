@@ -139,21 +139,18 @@ export class Validation {
     },
   });
 
-  static forgotPassword = checkSchema({
-    email: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.email.invalid'),
-      },
-      isEmail: {
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.email.invalid'),
-      },
-    },
-  });
+  static forgotPassword = (req: Request) =>
+    z.object({
+      body: z.object({
+        email: z
+          .string({
+            required_error: req.t('users.errors.email.invalid'),
+            invalid_type_error: req.t('users.errors.email.invalid'),
+          })
+          .trim()
+          .email({ message: req.t('users.errors.email.invalid') }),
+      }),
+    });
 
   static resetPassword = checkSchema({
     user: {
@@ -199,4 +196,7 @@ export class Validation {
         }),
       })
       .merge(Validation.user(req));
+
+  static sendVerifyEmail = (req: Request) =>
+    z.object({}).merge(Validation.user(req));
 }
