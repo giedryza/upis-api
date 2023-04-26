@@ -1,6 +1,5 @@
 import { Request } from 'express';
 import { isValidObjectId } from 'mongoose';
-import { checkSchema, Meta } from 'express-validator';
 import { z } from 'zod';
 
 import { PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH } from './users.constants';
@@ -25,50 +24,44 @@ export class Validation {
       }),
     });
 
-  static signup = checkSchema({
-    email: {
-      in: ['body'],
-      trim: true,
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.email.invalid'),
-      },
-      isEmail: {
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.email.invalid'),
-      },
-    },
-    password: {
-      in: ['body'],
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.password.invalid'),
-      },
-      isLength: {
-        options: { min: PASSWORD_MIN_LENGTH, max: PASSWORD_MAX_LENGTH },
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.password.length', {
-            min: PASSWORD_MIN_LENGTH,
-            max: PASSWORD_MAX_LENGTH,
+  static signup = (req: Request) =>
+    z.object({
+      body: z
+        .object({
+          email: z
+            .string({
+              required_error: req.t('users.errors.email.invalid'),
+              invalid_type_error: req.t('users.errors.email.invalid'),
+            })
+            .trim()
+            .email({ message: req.t('users.errors.email.invalid') }),
+          password: z
+            .string({
+              required_error: req.t('users.errors.password.invalid'),
+              invalid_type_error: req.t('users.errors.password.invalid'),
+            })
+            .min(PASSWORD_MIN_LENGTH, {
+              message: req.t('users.errors.password.length', {
+                min: PASSWORD_MIN_LENGTH,
+                max: PASSWORD_MAX_LENGTH,
+              }),
+            })
+            .max(PASSWORD_MAX_LENGTH, {
+              message: req.t('users.errors.password.length', {
+                min: PASSWORD_MIN_LENGTH,
+                max: PASSWORD_MAX_LENGTH,
+              }),
+            }),
+          confirmPassword: z.string({
+            required_error: req.t('users.errors.confirmPassword.invalid'),
+            invalid_type_error: req.t('users.errors.confirmPassword.invalid'),
           }),
-      },
-    },
-    confirmPassword: {
-      in: ['body'],
-      isEmpty: {
-        negated: true,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.confirmPassword.invalid'),
-      },
-      custom: {
-        options: (value, { req }) => value === req.body.password,
-        errorMessage: (_: string, { req }: Meta) =>
-          req.t('users.errors.confirmPassword.match'),
-      },
-    },
-  });
+        })
+        .refine(
+          ({ password, confirmPassword }) => password === confirmPassword,
+          { message: req.t('users.errors.confirmPassword.match') }
+        ),
+    });
 
   static signin = (req: Request) =>
     z.object({

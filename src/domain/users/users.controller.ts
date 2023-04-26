@@ -6,16 +6,10 @@ import { ValidatorService } from 'tools/services';
 import { Service } from './users.service';
 import { Validation } from './users.validation';
 
-interface Signup {
-  body: {
-    email: string;
-    password: string;
-  };
-}
-
 class Controller {
   signup = async (req: Request, res: Response) => {
-    const { body } = ValidatorService.getData<{}, Signup['body']>(req);
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.signup>(req);
 
     const { data } = await Service.signup({
       data: {
