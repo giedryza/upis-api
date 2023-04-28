@@ -301,7 +301,7 @@ export class Service {
     const params = {
       location: APP.client.locations.verifyEmail,
       token,
-      userId: id,
+      user: id,
     };
 
     Object.entries(params).forEach(([key, value]) => {
