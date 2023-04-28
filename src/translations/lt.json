@@ -192,7 +192,7 @@
         "length": "Slaptažodis turi būti tarp {{ min }} ir {{ max }} simbolių ilgumo."
       },
       "token": {
-        "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
+        "invalid": "Baigėsi nuorodos galiojimo laikas. Bandykite dar kartą."
       },
       "user": {
         "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."

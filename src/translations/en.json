@@ -192,7 +192,7 @@
         "length": "Use between {{ min }} and {{ max }} characters for password."
       },
       "token": {
-        "invalid": "Unable to reset password. Try again."
+        "invalid": "Link expired. Try again."
       },
       "user": {
         "invalid": "Unable to reset password. Try again."

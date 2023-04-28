@@ -79,6 +79,16 @@ export class Validation {
       }),
     });
 
+  static signinWithToken = (req: Request) =>
+    z.object({
+      body: z.object({
+        token: z.string({
+          required_error: req.t('users.errors.token.invalid'),
+          invalid_type_error: req.t('users.errors.token.invalid'),
+        }),
+      }),
+    });
+
   static me = (req: Request) => z.object({}).merge(Validation.user(req));
 
   static updatePassword = (req: Request) =>

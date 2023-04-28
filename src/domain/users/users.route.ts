@@ -26,6 +26,12 @@ class Route extends BaseRoute {
       .route('/signin')
       .post(ValidatorService.validate(Validation.signin), controller.signin);
     this.router
+      .route('/signin-with-token')
+      .post(
+        ValidatorService.validate(Validation.signinWithToken),
+        controller.signinWithToken
+      );
+    this.router
       .route('/me')
       .get(
         AuthMiddleware.protect,

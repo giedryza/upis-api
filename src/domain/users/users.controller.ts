@@ -37,6 +37,19 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
+  signinWithToken = async (req: Request, res: Response) => {
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.signinWithToken>(req);
+
+    const { data } = await Service.signinWithToken({
+      data: {
+        token: body.token,
+      },
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
   me = async (req: Request, res: Response) => {
     const { user } = ValidatorService.getParsedData<typeof Validation.me>(req);
 

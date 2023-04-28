@@ -29,6 +29,12 @@ interface Signin {
   t: TFunction;
 }
 
+interface SigninWithToken {
+  data: {
+    token: string;
+  };
+}
+
 interface Me {
   data: {
     id: string;
@@ -137,12 +143,39 @@ export class Service {
     }
 
     const baseUser = {
-      _id: user.id,
+      _id: user._id,
       email: user.email,
       role: user.role,
     };
 
     const token = JwtService.token(baseUser);
+
+    return {
+      data: {
+        user: baseUser,
+        token,
+      },
+    };
+  };
+
+  static signinWithToken = async ({ data: { token } }: SigninWithToken) => {
+    const decoded = await JwtService.verify(token);
+
+    if (!decoded) {
+      throw new UnauthorizedError();
+    }
+
+    const user = await User.findById(decoded._id).lean();
+
+    if (!user) {
+      throw new UnauthorizedError();
+    }
+
+    const baseUser = {
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+    };
 
     return {
       data: {
