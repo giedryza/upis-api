@@ -66,7 +66,7 @@ class Route extends BaseRoute {
       );
     this.router
       .route('/send-verify-email')
-      .patch(
+      .post(
         AuthMiddleware.protect,
         ValidatorService.validate(Validation.sendVerifyEmail),
         controller.sendVerifyEmail
