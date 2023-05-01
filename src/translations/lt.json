@@ -176,7 +176,7 @@
       },
       "password": {
         "invalid": "Įveskite slaptažodį.",
-        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo.",
+        "length": "Slaptažodis turi būti tarp {{ min }} ir {{ max }} simbolių ilgumo.",
         "wrong": "Neteisingi prisijungimo duomenys. Bandykite dar kartą arba spauskite 'Pamiršai slaptažodį?', kad atstatytumėte.",
         "reset": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
       },
@@ -189,17 +189,18 @@
       },
       "newPassword": {
         "invalid": "Įveskite naują slaptažodį.",
-        "length": "Slaptažodis turi būti tarp {{ minLength }} ir {{ maxLength }} simbolių ilgumo."
+        "length": "Slaptažodis turi būti tarp {{ min }} ir {{ max }} simbolių ilgumo."
       },
       "token": {
-        "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
+        "invalid": "Baigėsi nuorodos galiojimo laikas. Bandykite dar kartą."
       },
-      "userId": {
+      "user": {
         "invalid": "Nepavyko atstatyti slaptažodžio. Bandykite dar kartą."
       },
       "role": {
         "invalid": "Nepavyko atnaujinti vartotojo rolės."
       },
+      "verify_email": "Nepavyko patvirtinti jūsų el. pašto adreso. Spauskite 'Patvirtinti el. paštą' ir dar kartą sekite instrukcijas.",
       "unauthorized": "Draudžiama užklausa."
     }
   },

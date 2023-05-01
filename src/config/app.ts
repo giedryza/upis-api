@@ -12,6 +12,7 @@ export const APP = {
     route: process.env.CLIENT_ROUTE,
     locations: {
       passwordReset: 'password-reset',
+      verifyEmail: 'verify-email',
     },
   },
   assets: {
@@ -57,5 +58,9 @@ export const APP = {
     cloudName: process.env.CLOUDINARY_CLOUD_NAME,
     apiKey: process.env.CLOUDINARY_API_KEY,
     apiSecret: process.env.CLOUDINARY_API_SECRET,
+  },
+  features: {
+    isVerifyEmailEnabled:
+      process.env.FEATURE_IS_VERIFY_EMAIL_ENABLED === 'true',
   },
 };

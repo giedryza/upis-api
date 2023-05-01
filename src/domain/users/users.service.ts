@@ -7,9 +7,8 @@ import {
   UnauthorizedError,
 } from 'errors';
 import { JwtService, PasswordService } from 'tools/services';
-import { ResetPasswordEmail } from 'emails';
-import { Token } from 'domain/token/token.model';
-import { EntityId } from 'types/common';
+import { ResetPasswordEmail, VerifyEmailEmail } from 'emails';
+import { Service as TokenService } from 'domain/token/token.service';
 
 import { Role, UserRecord } from './users.types';
 import { User } from './users.model';
@@ -30,6 +29,12 @@ interface Signin {
   t: TFunction;
 }
 
+interface SigninWithToken {
+  data: {
+    token: string;
+  };
+}
+
 interface Me {
   data: {
     id: string;
@@ -38,7 +43,7 @@ interface Me {
 
 interface UpdatePassword {
   data: {
-    userId: EntityId;
+    userId: string;
     currentPassword: string;
     newPassword: string;
   };
@@ -60,11 +65,25 @@ interface ResetPassword {
   t: TFunction;
 }
 
-interface UpdateRole {
+interface BecomeProvider {
   data: {
     id: string;
-    currentRole: Role;
-    newRole: Role;
+    role: Role;
+  };
+  t: TFunction;
+}
+
+interface SendVerifyEmail {
+  data: {
+    id: string;
+    email: string;
+  };
+}
+
+interface VerifyEmail {
+  data: {
+    userId: string;
+    token: string;
   };
   t: TFunction;
 }
@@ -82,18 +101,23 @@ export class Service {
     const user = new User({ email, password });
     await user.save();
 
+    if (APP.features.isVerifyEmailEnabled) {
+      await Service.sendVerifyEmail({
+        data: { id: user._id, email: user.email },
+      });
+    }
+
     const baseUser = {
-      _id: user.id,
+      _id: user._id,
       email: user.email,
       role: user.role,
     };
-
-    const token = JwtService.token(baseUser);
+    const jwt = JwtService.token(baseUser);
 
     return {
       data: {
         user: baseUser,
-        token,
+        token: jwt,
       },
     };
   };
@@ -119,12 +143,39 @@ export class Service {
     }
 
     const baseUser = {
-      _id: user.id,
+      _id: user._id,
       email: user.email,
       role: user.role,
     };
 
     const token = JwtService.token(baseUser);
+
+    return {
+      data: {
+        user: baseUser,
+        token,
+      },
+    };
+  };
+
+  static signinWithToken = async ({ data: { token } }: SigninWithToken) => {
+    const decoded = await JwtService.verify(token);
+
+    if (!decoded) {
+      throw new UnauthorizedError();
+    }
+
+    const user = await User.findById(decoded._id).lean();
+
+    if (!user) {
+      throw new UnauthorizedError();
+    }
+
+    const baseUser = {
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+    };
 
     return {
       data: {
@@ -178,29 +229,22 @@ export class Service {
 
     if (!user) {
       return {
-        data: { email },
+        data: null,
       };
     }
 
-    const token = await Token.findOne({ user: user._id });
+    const { token } = await TokenService.create({ user: user._id });
 
-    if (token) {
-      await token.deleteOne();
+    if (!token) {
+      return {
+        data: null,
+      };
     }
 
-    const resetToken = PasswordService.randomString();
-    const hashed = await PasswordService.hash(resetToken);
-
-    await new Token({
-      user: user._id,
-      token: hashed,
-    }).save();
-
     const url = new URL(APP.client.route, APP.client.host);
-
     const params = {
       location: APP.client.locations.passwordReset,
-      token: resetToken,
+      token,
       userId: user._id,
     };
 
@@ -224,19 +268,15 @@ export class Service {
     data: { userId, token, password },
     t,
   }: ResetPassword) => {
-    const resetToken = await Token.findOneAndDelete({ user: userId });
+    const { match } = await TokenService.compare({ user: userId, token });
 
-    if (!resetToken) {
+    if (!match) {
       throw new BadRequestError(t('users.errors.password.reset'));
     }
 
-    const [user, match, hashed] = await Promise.all([
-      User.findById(userId),
-      PasswordService.compare(resetToken.token, token),
-      PasswordService.hash(password),
-    ]);
+    const hashed = await PasswordService.hash(password);
 
-    if (!user || !match || !hashed) {
+    if (!hashed) {
       throw new BadRequestError(t('users.errors.password.reset'));
     }
 
@@ -248,22 +288,24 @@ export class Service {
 
     return {
       data: {
-        email: user.email,
+        id: userId,
       },
     };
   };
 
-  static updateRole = async ({
-    data: { id, currentRole, newRole },
+  static becomeProvider = async ({
+    data: { id, role },
     t,
-  }: UpdateRole): Promise<{ data: { user: UserRecord; token: string } }> => {
-    if (currentRole !== 'user' || newRole !== 'manager') {
+  }: BecomeProvider): Promise<{
+    data: { user: UserRecord; token: string };
+  }> => {
+    if (role !== 'user') {
       throw new BadRequestError(t('users.errors.role.invalid'));
     }
 
     const user = await User.findByIdAndUpdate(
       id,
-      { role: newRole },
+      { role: 'manager' },
       { new: true }
     ).lean();
 
@@ -281,6 +323,60 @@ export class Service {
       data: {
         user,
         token,
+      },
+    };
+  };
+
+  static sendVerifyEmail = async ({ data: { id, email } }: SendVerifyEmail) => {
+    const { token } = await TokenService.create({ user: id });
+
+    const url = new URL(APP.client.route, APP.client.host);
+    const params = {
+      location: APP.client.locations.verifyEmail,
+      token,
+      user: id,
+    };
+
+    Object.entries(params).forEach(([key, value]) => {
+      url.searchParams.append(key, value);
+    });
+
+    await new VerifyEmailEmail({
+      url: url.href,
+    }).send([email]);
+
+    return {
+      data: { email },
+    };
+  };
+
+  static verifyEmail = async ({ data: { userId, token }, t }: VerifyEmail) => {
+    const { match } = await TokenService.compare({ user: userId, token });
+
+    if (!match) {
+      throw new BadRequestError(t('users.errors.verify_email'));
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { role: 'user' },
+      { new: true }
+    ).lean();
+
+    if (!user) {
+      throw new BadRequestError(t('users.errors.verify_email'));
+    }
+
+    const jwt = JwtService.token({
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+    });
+
+    return {
+      data: {
+        user,
+        token: jwt,
       },
     };
   };

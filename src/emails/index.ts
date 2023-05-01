@@ -1,2 +1,2 @@
-export * from './reset-password.email';
-export * from './welcome.email';
+export * from './reset-password';
+export * from './verify-email';

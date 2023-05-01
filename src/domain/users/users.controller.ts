@@ -6,44 +6,10 @@ import { ValidatorService } from 'tools/services';
 import { Service } from './users.service';
 import { Validation } from './users.validation';
 
-interface Signup {
-  body: {
-    email: string;
-    password: string;
-  };
-}
-
-interface Signin {
-  body: {
-    email: string;
-    password: string;
-  };
-}
-
-interface UpdatePassword {
-  body: {
-    currentPassword: string;
-    newPassword: string;
-  };
-}
-
-interface ForgotPassword {
-  body: {
-    email: string;
-  };
-}
-
-interface ResetPassword {
-  body: {
-    userId: string;
-    token: string;
-    password: string;
-  };
-}
-
 class Controller {
   signup = async (req: Request, res: Response) => {
-    const { body } = ValidatorService.getData<{}, Signup['body']>(req);
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.signup>(req);
 
     const { data } = await Service.signup({
       data: {
@@ -57,7 +23,8 @@ class Controller {
   };
 
   signin = async (req: Request, res: Response) => {
-    const { body } = ValidatorService.getData<{}, Signin['body']>(req);
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.signin>(req);
 
     const { data } = await Service.signin({
       data: {
@@ -65,6 +32,19 @@ class Controller {
         password: body.password,
       },
       t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  signinWithToken = async (req: Request, res: Response) => {
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.signinWithToken>(req);
+
+    const { data } = await Service.signinWithToken({
+      data: {
+        token: body.token,
+      },
     });
 
     return new SuccessResponse(res, data).send();
@@ -83,12 +63,12 @@ class Controller {
   };
 
   updatePassword = async (req: Request, res: Response) => {
-    const { _id: userId } = req.user!;
-    const { body } = ValidatorService.getData<{}, UpdatePassword['body']>(req);
+    const { user, body } =
+      ValidatorService.getParsedData<typeof Validation.updatePassword>(req);
 
     await Service.updatePassword({
       data: {
-        userId,
+        userId: user._id,
         currentPassword: body.currentPassword,
         newPassword: body.newPassword,
       },
@@ -99,7 +79,8 @@ class Controller {
   };
 
   forgotPassword = async (req: Request, res: Response) => {
-    const { body } = ValidatorService.getData<{}, ForgotPassword['body']>(req);
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.forgotPassword>(req);
 
     const { data } = await Service.forgotPassword({
       data: {
@@ -111,11 +92,12 @@ class Controller {
   };
 
   resetPassword = async (req: Request, res: Response) => {
-    const { body } = ValidatorService.getData<{}, ResetPassword['body']>(req);
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.resetPassword>(req);
 
     const { data } = await Service.resetPassword({
       data: {
-        userId: body.userId,
+        userId: body.user,
         token: body.token,
         password: body.password,
       },
@@ -125,15 +107,43 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
-  updateRole = async (req: Request, res: Response) => {
-    const { user, body } =
-      ValidatorService.getParsedData<typeof Validation.updateRole>(req);
+  becomeProvider = async (req: Request, res: Response) => {
+    const { user } =
+      ValidatorService.getParsedData<typeof Validation.becomeProvider>(req);
 
-    const { data } = await Service.updateRole({
+    const { data } = await Service.becomeProvider({
       data: {
         id: user._id,
-        currentRole: user.role,
-        newRole: body.role,
+        role: user.role,
+      },
+      t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  sendVerifyEmail = async (req: Request, res: Response) => {
+    const { user } =
+      ValidatorService.getParsedData<typeof Validation.sendVerifyEmail>(req);
+
+    const { data } = await Service.sendVerifyEmail({
+      data: {
+        id: user._id,
+        email: user.email,
+      },
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
+  verifyEmail = async (req: Request, res: Response) => {
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.verifyEmail>(req);
+
+    const { data } = await Service.verifyEmail({
+      data: {
+        userId: body.user,
+        token: body.token,
       },
       t: req.t,
     });

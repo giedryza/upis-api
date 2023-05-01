@@ -21,10 +21,16 @@ class Route extends BaseRoute {
   protected init = () => {
     this.router
       .route('/signup')
-      .post(Validation.signup, ValidatorService.catch, controller.signup);
+      .post(ValidatorService.validate(Validation.signup), controller.signup);
     this.router
       .route('/signin')
-      .post(Validation.signin, ValidatorService.catch, controller.signin);
+      .post(ValidatorService.validate(Validation.signin), controller.signin);
+    this.router
+      .route('/signin-with-token')
+      .post(
+        ValidatorService.validate(Validation.signinWithToken),
+        controller.signinWithToken
+      );
     this.router
       .route('/me')
       .get(
@@ -36,30 +42,40 @@ class Route extends BaseRoute {
       .route('/update-password')
       .patch(
         AuthMiddleware.protect,
-        Validation.updatePassword,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.updatePassword),
         controller.updatePassword
       );
     this.router
       .route('/forgot-password')
       .post(
-        Validation.forgotPassword,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.forgotPassword),
         controller.forgotPassword
       );
     this.router
       .route('/reset-password')
       .post(
-        Validation.resetPassword,
-        ValidatorService.catch,
+        ValidatorService.validate(Validation.resetPassword),
         controller.resetPassword
       );
     this.router
-      .route('/role')
+      .route('/become-provider')
       .patch(
         AuthMiddleware.protect,
-        ValidatorService.validate(Validation.updateRole),
-        controller.updateRole
+        ValidatorService.validate(Validation.becomeProvider),
+        controller.becomeProvider
+      );
+    this.router
+      .route('/send-verify-email')
+      .post(
+        AuthMiddleware.protect,
+        ValidatorService.validate(Validation.sendVerifyEmail),
+        controller.sendVerifyEmail
+      );
+    this.router
+      .route('/verify-email')
+      .patch(
+        ValidatorService.validate(Validation.verifyEmail),
+        controller.verifyEmail
       );
   };
 }
