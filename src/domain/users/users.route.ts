@@ -32,6 +32,12 @@ class Route extends BaseRoute {
         controller.signinWithToken
       );
     this.router
+      .route('/signin-with-google')
+      .post(
+        ValidatorService.validate(Validation.signinWithGoogle),
+        controller.signinWithGoogle
+      );
+    this.router
       .route('/me')
       .get(
         AuthMiddleware.protect,

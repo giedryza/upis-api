@@ -59,6 +59,9 @@ export const APP = {
     apiKey: process.env.CLOUDINARY_API_KEY,
     apiSecret: process.env.CLOUDINARY_API_SECRET,
   },
+  google: {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+  },
   features: {
     isVerifyEmailEnabled:
       process.env.FEATURE_IS_VERIFY_EMAIL_ENABLED === 'true',

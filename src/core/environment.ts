@@ -23,6 +23,7 @@ class Environment {
     'CLOUDINARY_CLOUD_NAME',
     'CLOUDINARY_API_KEY',
     'CLOUDINARY_API_SECRET',
+    'GOOGLE_CLIENT_ID',
     'FEATURE_IS_VERIFY_EMAIL_ENABLED',
   ] as const;
 

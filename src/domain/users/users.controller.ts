@@ -50,6 +50,20 @@ class Controller {
     return new SuccessResponse(res, data).send();
   };
 
+  signinWithGoogle = async (req: Request, res: Response) => {
+    const { body } =
+      ValidatorService.getParsedData<typeof Validation.signinWithGoogle>(req);
+
+    const { data } = await Service.signinWithGoogle({
+      data: {
+        token: body.token,
+      },
+      t: req.t,
+    });
+
+    return new SuccessResponse(res, data).send();
+  };
+
   me = async (req: Request, res: Response) => {
     const { user } = ValidatorService.getParsedData<typeof Validation.me>(req);
 

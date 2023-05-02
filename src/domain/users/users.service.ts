@@ -6,11 +6,11 @@ import {
   RequestValidationError,
   UnauthorizedError,
 } from 'errors';
-import { JwtService, PasswordService } from 'tools/services';
+import { GoogleAuth, JwtService, PasswordService } from 'tools/services';
 import { ResetPasswordEmail, VerifyEmailEmail } from 'emails';
 import { Service as TokenService } from 'domain/token/token.service';
 
-import { Role, UserRecord } from './users.types';
+import { AppUser, Role, UserRecord } from './users.types';
 import { User } from './users.model';
 
 interface Signup {
@@ -33,6 +33,13 @@ interface SigninWithToken {
   data: {
     token: string;
   };
+}
+
+interface SigninWithGoogle {
+  data: {
+    token: string;
+  };
+  t: TFunction;
 }
 
 interface Me {
@@ -89,7 +96,10 @@ interface VerifyEmail {
 }
 
 export class Service {
-  static signup = async ({ data: { email, password }, t }: Signup) => {
+  static signup = async ({
+    data: { email, password },
+    t,
+  }: Signup): Promise<{ data: { user: AppUser; token: string } }> => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
@@ -107,7 +117,7 @@ export class Service {
       });
     }
 
-    const baseUser = {
+    const baseUser: AppUser = {
       _id: user._id,
       email: user.email,
       role: user.role,
@@ -122,7 +132,10 @@ export class Service {
     };
   };
 
-  static signin = async ({ data: { email, password }, t }: Signin) => {
+  static signin = async ({
+    data: { email, password },
+    t,
+  }: Signin): Promise<{ data: { user: AppUser; token: string } }> => {
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
@@ -142,7 +155,7 @@ export class Service {
       ]);
     }
 
-    const baseUser = {
+    const baseUser: AppUser = {
       _id: user._id,
       email: user.email,
       role: user.role,
@@ -158,7 +171,9 @@ export class Service {
     };
   };
 
-  static signinWithToken = async ({ data: { token } }: SigninWithToken) => {
+  static signinWithToken = async ({
+    data: { token },
+  }: SigninWithToken): Promise<{ data: { user: AppUser; token: string } }> => {
     const decoded = await JwtService.verify(token);
 
     if (!decoded) {
@@ -171,7 +186,7 @@ export class Service {
       throw new UnauthorizedError();
     }
 
-    const baseUser = {
+    const baseUser: AppUser = {
       _id: user._id,
       email: user.email,
       role: user.role,
@@ -181,6 +196,50 @@ export class Service {
       data: {
         user: baseUser,
         token,
+      },
+    };
+  };
+
+  static signinWithGoogle = async ({
+    data: { token },
+    t,
+  }: SigninWithGoogle): Promise<{ data: { user: AppUser; token: string } }> => {
+    const decoded = await GoogleAuth.parseToken(token);
+
+    if (!decoded || !decoded.email) {
+      throw new UnauthorizedError();
+    }
+
+    const user = await User.findOne({ email: decoded.email }).lean();
+
+    if (user) {
+      const baseUser: AppUser = {
+        _id: user._id,
+        email: user.email,
+        role: user.role,
+      };
+      const jwt = JwtService.token(baseUser);
+
+      return {
+        data: {
+          user: baseUser,
+          token: jwt,
+        },
+      };
+    }
+
+    const { data } = await Service.signup({
+      data: {
+        email: decoded.email,
+        password: PasswordService.randomString(),
+      },
+      t,
+    });
+
+    return {
+      data: {
+        user: data.user,
+        token: data.token,
       },
     };
   };
