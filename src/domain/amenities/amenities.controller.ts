@@ -6,12 +6,7 @@ import { SuccessResponse, NoContentResponse } from 'responses';
 
 import { Service } from './amenities.service';
 import { Variant, Unit } from './amenities.types';
-
-interface GetOne {
-  params: {
-    id: string;
-  };
-}
+import { Validation } from './amenities.validation';
 
 interface Create {
   params: {};
@@ -45,7 +40,8 @@ interface Destroy {
 
 class Controller {
   getOne = async (req: Request, res: Response) => {
-    const { params } = ValidatorService.getData<GetOne['params']>(req);
+    const { params } =
+      ValidatorService.getParsedData<typeof Validation.getOne>(req);
 
     const { data } = await Service.getOne({
       data: {

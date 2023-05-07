@@ -48,6 +48,10 @@ export class Service {
   static getOne = async ({
     data: { id },
   }: GetOne): Promise<{ data: AmenityRecord | null }> => {
+    if (!id) {
+      return { data: null };
+    }
+
     const amenity = await Amenity.findById(id).lean();
 
     if (!amenity) {

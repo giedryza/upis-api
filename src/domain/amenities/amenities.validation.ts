@@ -1,3 +1,6 @@
+import { Request } from 'express';
+import { isValidObjectId } from 'mongoose';
+import { z } from 'zod';
 import { checkSchema, Meta } from 'express-validator';
 
 import { NotFoundError } from 'errors';
@@ -6,12 +9,12 @@ import { currencies } from 'types/common';
 import { variants, units } from './amenities.types';
 
 export class Validation {
-  static getOne = checkSchema({
-    id: {
-      in: ['params'],
-      isMongoId: true,
-    },
-  });
+  static getOne = (_req: Request) =>
+    z.object({
+      params: z.object({
+        id: z.custom<string>(isValidObjectId).catch(''),
+      }),
+    });
 
   static create = checkSchema({
     variant: {
