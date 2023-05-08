@@ -17,7 +17,7 @@ export const APP = {
   },
   assets: {
     logo: {
-      512: 'https://upis.s3.eu-central-1.amazonaws.com/app/logo_512.png',
+      512: 'https://upis.lt/logo-512x512.png',
     },
   },
   root: {
