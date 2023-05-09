@@ -17,6 +17,9 @@
         "update": "Failed to update the tour.",
         "destroy": "Failed to delete the tour."
       },
+      "ids": {
+        "invalid": "Invalid tours."
+      },
       "name": {
         "invalid": "Enter tour name.",
         "max": "Use {{ maxLength }} characters or less for name."

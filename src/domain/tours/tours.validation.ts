@@ -136,6 +136,12 @@ export class Validation {
           user: z.custom<string>(isValidObjectId, {
             message: req.t('tours.errors.user.invalid'),
           }),
+          ids: z.array(
+            z.custom<string>(isValidObjectId, {
+              message: req.t('tours.errors.ids.invalid'),
+            }),
+            { invalid_type_error: req.t('tours.errors.ids.invalid') }
+          ),
           select: z.array(
             z.enum(queryUtils.select, {
               errorMap: () => ({
