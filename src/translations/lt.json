@@ -17,6 +17,9 @@
         "update": "Nepavyko atnaujinti maršruto.",
         "destroy": "Nepavyko ištrinti maršruto."
       },
+      "ids": {
+        "invalid": "Neteisingi maršrutai."
+      },
       "name": {
         "invalid": "Nurodykite maršruto pavadinimą.",
         "max": "Naudokite {{ maxLength }} arba mažiau simbolių maršruto pavadinime."

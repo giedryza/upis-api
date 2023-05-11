@@ -151,6 +151,7 @@ export class Service {
       bounds,
       providers,
       user,
+      ids,
       page = 1,
       limit = 15,
       select,
@@ -201,6 +202,7 @@ export class Service {
         : []),
       ...(providers ? [{ provider: { $in: providers } }] : []),
       ...(user ? [{ user }] : []),
+      ...(ids ? [{ _id: { $in: ids } }] : []),
     ];
     const options = {
       page,
