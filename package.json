@@ -21,7 +21,7 @@
     "outdated": "npx npm-check-updates",
     "lint": "npm run lint:code && npm run lint:format && npm run lint:filenames && npm run compile -- --noEmit",
     "lint:fix": "npm run lint:code:fix && npm run lint:format:fix",
-    "lint:code": "npx eslint src --ext .ts,.tsx",
+    "lint:code": "npx eslint src --ext .ts,.tsx --report-unused-disable-directives",
     "lint:code:fix": "npm run lint:code -- --fix",
     "lint:filenames": "npx @ls-lint/ls-lint",
     "lint:format": "npx prettier --check \"src/**\"",
